@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using WebApplication1.Models.Entities;
 
 namespace Mooshack_2.Models
 {
@@ -16,10 +17,17 @@ namespace Mooshack_2.Models
             // Add custom user claims here
             return userIdentity;
         }
-    }
+    } 
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Assignment>    Assignments     { get; set; }
+        public DbSet<Course>        Cources         { get; set; }
+        public DbSet<CourseStudent> CourcesStudents { get; set; }
+        public DbSet<CourseTeacher> CourcesTeachers { get; set; }
+        public DbSet<Milestone>     Milestones      { get; set; }
+        public DbSet<Submission>    Submissions     { get; set; }
+        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
