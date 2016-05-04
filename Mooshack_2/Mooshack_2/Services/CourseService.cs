@@ -7,5 +7,6 @@ namespace Mooshack_2.Services
 {
     public class CourseService
     {
+
     }
 }
