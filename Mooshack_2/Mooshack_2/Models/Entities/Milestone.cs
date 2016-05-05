@@ -7,7 +7,7 @@ namespace WebApplication1.Models.Entities
 {
     public class Milestone
     {
-        public int idMilestones { get; set; }
+        public int id { get; set; }
         public int AssignmentID { get; set; }
         public string Title { get; set; }
         public int Description { get; set; }

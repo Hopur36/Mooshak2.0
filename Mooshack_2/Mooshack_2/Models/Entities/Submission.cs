@@ -7,8 +7,8 @@ namespace WebApplication1.Models.Entities
 {
     public class Submission
     {
-        public int idSubmissions { get; set; }
-        public int StudentID { get; set; }
+        public int id{ get; set; }
+        public string StudentID { get; set; }
         public int MilestoneID { get; set; }
     }
 }
