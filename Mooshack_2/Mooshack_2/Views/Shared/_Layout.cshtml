@@ -37,7 +37,6 @@
 
 
     <!--Vertical Navigation Bar-->
-    <div class="put-left"
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
@@ -53,30 +52,26 @@
                             <span class="visible-xs navbar-brand">Sidebar menu</span>
                         </div>
                         <div class="navbar-collapse collapse sidebar-navbar-collapse">
-                        <div class="centerText">
                             <ul class="nav navbar-nav">
                                 <li class="active"><a href="#">Menu Item 1</a></li>
                                 <li><a href="#">Menu Item 2</a></li>
                                 <li><a href="#">Menu Item 3</a></li>
                                 <li><a href="#">Menu Item 4</a></li>
+                                <li><a href="#">Reviews <span class="badge">1,118</span></a></li>
                             </ul>
-                            </div>
                         </div><!--/.nav-collapse -->
                     </div>
                 </div>
-                </div>
             </div>
+            <div class="col-sm-9">
+                Main content goes here
+                @RenderBody()
             </div>
         </div>
+    </div>
 
-            <div class="container body-content">
-                @RenderBody()
-                
-                <footer></footer>
-            </div>
-
-            @Scripts.Render("~/bundles/jquery")
-            @Scripts.Render("~/bundles/bootstrap")
-            @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </body>
 </html>
