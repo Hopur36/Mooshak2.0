@@ -10,7 +10,22 @@ namespace Mooshack_2.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if(User.IsInRole("Administrator") == true)
+            {
+                return View("index");
+            }
+
+            else if (User.IsInRole("Teacher") == true)
+            {
+                return View("index");
+            }
+
+            else if (User.IsInRole("Student") == true)
+            {
+                return View("index");
+            }
+            
+            return RedirectToAction("Login", "Account");
         }
 
         public ActionResult About()
