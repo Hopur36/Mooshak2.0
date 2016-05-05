@@ -21,6 +21,7 @@ namespace Mooshack_2.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+<<<<<<< HEAD
         public DbSet<Course> Courses { get; set; }
         public DbSet<Assignment>    Assignments     { get; set; }
         public DbSet<CourseStudent> CourseStudents { get; set; }
@@ -28,6 +29,15 @@ namespace Mooshack_2.Models
         public DbSet<Milestone>     Milestones      { get; set; }
         public DbSet<Submission>    Submissions     { get; set; }
 
+=======
+        //public DbSet<Assignment>    Assignments     { get; set; }
+        public DbSet<Course>        Courses         { get; set; }
+        //public DbSet<CourseStudent> CourcesStudents { get; set; }
+        //public DbSet<CourseTeacher> CourcesTeachers { get; set; }
+        //public DbSet<Milestone>     Milestones      { get; set; }
+        //public DbSet<Submission>    Submissions     { get; set; }
+        
+>>>>>>> refs/remotes/origin/Conection-to-database
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
