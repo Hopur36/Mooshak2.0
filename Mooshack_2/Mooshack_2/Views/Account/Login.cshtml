@@ -14,8 +14,13 @@
             {
                 @Html.AntiForgeryToken()
                
+                <!--
                 <h4>Hér kemur logo</h4>
-                
+                -->
+                <a href="@Url.Action("Index", "Home")" title="" class="links">
+                    <img alt="List View" src="@Url.Content("~/content/images/moose-hi.png")">
+                </a>
+
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">

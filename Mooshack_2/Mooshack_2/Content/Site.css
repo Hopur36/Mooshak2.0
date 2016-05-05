@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +22,13 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+a.logo
+{
+    background: url(~/content/images/moose-hi.png) no-repeat top left;
+     display: block;
+     width: 150px;
+     height: 150px;
+     text-indent: -9999px; /* hides the link text */
 }
