@@ -26,5 +26,20 @@ namespace Mooshack_2.Controllers
 
             return View();
         }
+
+        public ActionResult TeacherFrontPage()
+        {
+            return View();
+        }
+
+        public ActionResult AdminFrontPage()
+        {
+            return View();
+        }
+
+        public ActionResult StudentFrontPage()
+        {
+            return View();
+        }
     }
 }
