@@ -425,6 +425,32 @@ namespace Mooshack_2.Controllers
             base.Dispose(disposing);
         }
 
+        [Authorize(Roles = "Administrator")]
+        public ActionResult createUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> createUser(CreateUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+
+                
+            }
+
+          return View(model);
+        }
 
         public void init()
         {
