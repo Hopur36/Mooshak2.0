@@ -1,13 +1,18 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    
+}
+
+.centerText
+{
+    padding-left: 50px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -24,11 +29,42 @@ textarea {
     max-width: 280px;
 }
 
-a.logo
+
+.links
 {
+    display:block;
+text-align:center;
+}
+
+.logo
+{
+    
     background: url(~/content/images/moose-hi.png) no-repeat top left;
      display: block;
-     width: 150px;
-     height: 150px;
+     width: 50px;
+     height: 50px;
      text-indent: -9999px; /* hides the link text */
 }
+
+
+/* make sidebar nav vertical */ 
+
+  .sidebar-nav .navbar .navbar-collapse {
+    padding: 0em;
+    max-height: none;
+  }
+  .sidebar-nav .navbar ul {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav .navbar li {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav .navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+
+
