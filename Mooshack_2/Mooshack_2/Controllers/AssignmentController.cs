@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mooshack_2.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,9 @@ namespace Mooshack_2.Controllers
         // GET: Assignment
         public ActionResult Index()
         {
-            return View();
+            var _assignmentService = new AssignmentService();
+            var _assignmentModels = _assignmentService.getAllAssignmentViewModels();
+            return View(_assignmentModels);
         }
     }
 }

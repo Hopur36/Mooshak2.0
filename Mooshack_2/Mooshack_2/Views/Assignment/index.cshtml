@@ -1,0 +1,24 @@
+﻿@model List<Mooshack_2.Models.ViewModels.AssignmentViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Assignments</h2>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+        </tr>
+        @foreach (var _assignment in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => _assignment.Title)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
