@@ -85,7 +85,10 @@ namespace Mooshack_2.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            MailAddress _email = new MailAddress(model.Email);
+            string _userName = _email.User;
+
+            var result = await SignInManager.PasswordSignInAsync(_userName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -466,8 +469,9 @@ namespace Mooshack_2.Controllers
             if (ModelState.IsValid)
             {
                 MailAddress _email = new MailAddress(model.Email);
-                string _userName = _email.User;
-                var user = new ApplicationUser { UserName = _userName, Email = model.Email };
+                string _userName = _email.User.ToLower();
+
+                var user = new ApplicationUser { UserName = _userName, Email = model.Email.ToLower() };
                 var result = await UserManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
