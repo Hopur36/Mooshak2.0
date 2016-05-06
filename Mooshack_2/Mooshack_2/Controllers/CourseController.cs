@@ -13,5 +13,9 @@ namespace Mooshack_2.Controllers
         {
             return View();
         }
+        public ActionResult TeacherCoursePage()
+        {
+            return View();
+        }
     }
 }
