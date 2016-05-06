@@ -133,4 +133,10 @@ namespace Mooshack_2.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+    public class UserViewModel
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+    }
 }

@@ -432,6 +432,21 @@ namespace Mooshack_2.Controllers
             base.Dispose(disposing);
         }
 
+        [Authorize(Roles ="Administrator")]
+        public ActionResult showAllUsers()
+        {
+          var _dbContext = new ApplicationDbContext();
+          var _allUsers = _dbContext.Users.OrderBy(x => x.UserName).ToList(); 
+          List<UserViewModel> _allUsersViewModels = new List<UserViewModel>();
+            
+          foreach(var user in _allUsers)
+          {
+              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName});
+          }
+
+          return View(_allUsersViewModels);
+        }
+
         [Authorize(Roles = "Administrator")]
         public ActionResult createUser()
         {
