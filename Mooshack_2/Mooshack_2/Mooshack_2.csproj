@@ -284,11 +284,11 @@
     <Content Include="Views\Home\TeacherFrontPage.cshtml" />
     <Content Include="Views\Account\CreateUser.cshtml" />
     <Content Include="Views\Account\showAllUsers.cshtml" />
+    <Content Include="Views\Course\TeacherCoursePage.cshtml" />
+    <Content Include="Views\Assignment\TeacherNewAssignmentPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Assignment\" />
-    <Folder Include="Views\Course\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
