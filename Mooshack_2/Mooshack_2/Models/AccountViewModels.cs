@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace Mooshack_2.Models
 {
@@ -104,6 +105,7 @@ namespace Mooshack_2.Models
 
     public class CreateUserViewModel
     {
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
