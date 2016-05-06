@@ -1,42 +1,47 @@
-﻿html, body
-{
-    
-    height: 100vh; 
+﻿/*CSS Frontpage*/
+html, body
+{   
+    height: 100vh;  
     margin-left: 0px;
     margin-right: 0px;
     padding-right: 0px;
 }
 
-body {
-    padding-top: 125px;
-  }
-
-navbar-default {
-    background-color: #f8f8f8;
-    border-color: #e7e7e7;
-    padding-right: 20px;
-    padding-left: 20px;
-    padding-top: 20px;
-}
-
+/*CSS Frontpage*/
 .container
 {
-    width: 100%
-    
+    margin-top: -20px;
+    padding-top: 0px;    
     height: 100%;
-    
-        padding-left: 30px;
+    padding-left: 30px;
     margin-left: 0px;
     padding-right: 0px;
     margin-right: 0px;
-
 }
 
+/*CSS Frontpage*/
+.navbar-collapse.collapse {
+
+    padding-right: 150px;
+}
+
+/*CSS Frontpage*/
+.navbar-header
+{
+    padding-left: 100px;
+}
+
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+/*CSS Frontpage*/
 .dl-horizontal dt {
     white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
+/*CSS Frontpage*/
 input,
 select,
 textarea {
@@ -56,32 +61,36 @@ textarea {
     text-indent: -9999px; /* hides the link text */
 }
 
-.navbar-collapse collapse sidebar-navbar-collapse {
+.navbar-collapse collapse sidebar-navbar-collapse
+{
     position: absolute;
     top: 0;
     bottom: 0;
     background-color: green;
 }
 
-    .sidebar-nav .navbar .navbar-collapse {
+.sidebar-nav .navbar .navbar-collapse 
+{
         padding: 0;
         max-height: none;
-    }
+}
 
-    .sidebar-nav .navbar ul {
+.sidebar-nav .navbar ul 
+{
         float: none;
         display: block;
-    }
+}
 
-    .sidebar-nav .navbar li {
+.sidebar-nav .navbar li 
+{
         float: none;
         display: block;
-    }
+}
 
-        .sidebar-nav .navbar li a {
+.sidebar-nav .navbar li a 
+{
             padding-top: 12px;
             padding-bottom: 12px;
-        }
 }
 
 /*CSS Buttons on Admin FrontPage*/
@@ -114,3 +123,34 @@ textarea {
     box-sizing: border-box;
 }
 
+/*Padding horizontal navbar*/
+.horizontalNavBar
+{
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+/*Padding Login Links*/
+.paddingLogin
+ {
+    padding-top: 15px;
+}
+
+.colorNavbarVertical
+{
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-bottom: 100%;
+    margin-left: -10%;
+    padding-right: 5%;
+    margin-right: 10%;
+        border-right-style: solid;
+    border-right-width: thin;
+}
+
+.paddingMainContent
+{
+
+}
