@@ -51,10 +51,13 @@ textarea {
 .links {
     display: block;
     text-align: center;
+    width: 65%;
+    height: 100%;
+    margin-bottom: 10%;
 }
 
 .logo {
-    background: url(~/content/images/moose-hi.png) no-repeat top left;
+    background: url(~/content/images/mooshak2.png) no-repeat top left;
     display: block;
     width: 70px;
     height: 70px;
@@ -136,6 +139,7 @@ textarea {
     padding-top: 15px;
 }
 
+/*Color and Style of vertical navbar*/
 .colorNavbarVertical
 {
     background-color: #f8f8f8;
@@ -150,7 +154,49 @@ textarea {
     border-right-width: thin;
 }
 
+/*Position of main content*/
 .paddingMainContent
 {
-
+    padding: 10%;
 }
+
+/*Style of Login page*/
+.loginPage
+{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+}
+
+
+/*Centering Logo at Login Page*/
+.centerLogo
+{
+    margin: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/*Centering Button at Login Page*/
+.centerButton
+{
+    margin: 0;
+    position: relative;
+    padding: 2% 10%;
+}
+
+.changeTextBox
+{
+    -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #848484; 
+    outline:0; 
+    height: 35px;
+    width: 275px;
+    padding-left: 15px;
+ } 
