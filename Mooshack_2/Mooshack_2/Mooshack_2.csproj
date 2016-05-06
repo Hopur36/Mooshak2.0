@@ -283,6 +283,7 @@
     <Content Include="Views\Home\StudentFrontPage.cshtml" />
     <Content Include="Views\Home\TeacherFrontPage.cshtml" />
     <Content Include="Views\Account\CreateUser.cshtml" />
+    <Content Include="Views\Account\showAllUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

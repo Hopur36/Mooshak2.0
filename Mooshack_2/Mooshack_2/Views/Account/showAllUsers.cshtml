@@ -1,0 +1,24 @@
+﻿@model List<Mooshack_2.Models.UserViewModel>
+@{
+    ViewBag.Title = "showAllUsers";
+}
+
+<h2>showAllUsers</h2>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Username
+            </th>
+        </tr>
+        @foreach(var user in Model)
+        {
+          <tr>
+              <td>
+                  @Html.DisplayFor(modelItem =>user.UserName)
+              </td>
+          </tr>
+        }
+    </table>
+</div>
