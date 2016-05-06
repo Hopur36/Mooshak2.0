@@ -16,5 +16,10 @@ namespace Mooshack_2.Controllers
             var _assignmentModels = _assignmentService.getAllAssignmentViewModels();
             return View(_assignmentModels);
         }
+        
+        public ActionResult TeacherNewAssignmentPage()
+        {
+            return View();
+        }
     }
 }

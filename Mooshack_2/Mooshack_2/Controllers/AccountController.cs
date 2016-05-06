@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using Mooshack_2.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Net.Mail;
 
 namespace Mooshack_2.Controllers
 {
@@ -441,7 +442,7 @@ namespace Mooshack_2.Controllers
             
           foreach(var user in _allUsers)
           {
-              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName});
+              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email});
           }
 
           return View(_allUsersViewModels);
@@ -461,9 +462,12 @@ namespace Mooshack_2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> createUser(CreateUserViewModel model,string UserRoles)
         {
+            
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                MailAddress _email = new MailAddress(model.Email);
+                string _userName = _email.User;
+                var user = new ApplicationUser { UserName = _userName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
