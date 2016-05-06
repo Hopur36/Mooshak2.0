@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Mooshack_2.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace Mooshack_2.Controllers
 {
@@ -18,9 +19,15 @@ namespace Mooshack_2.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private List<SelectListItem> _userRoles;
 
         public AccountController()
         {
+             _userRoles = new List<SelectListItem>();
+
+            _userRoles.Add(new SelectListItem { Text = "Administrator", Value = "Administrator" });
+            _userRoles.Add(new SelectListItem { Text = "Teacher", Value = "Teacher" });
+            _userRoles.Add(new SelectListItem { Text = "Student", Value = "Student", Selected = true });
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -428,20 +435,25 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult createUser()
         {
+            
+            ViewBag.UserRoles = _userRoles;
+
             return View();
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> createUser(CreateUserViewModel model)
+        public async Task<ActionResult> createUser(CreateUserViewModel model,string UserRoles)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, UserRoles);
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -449,7 +461,8 @@ namespace Mooshack_2.Controllers
                 
             }
 
-          return View(model);
+            ViewBag.UserRoles = _userRoles;
+            return View(model);
         }
 
         public void init()
