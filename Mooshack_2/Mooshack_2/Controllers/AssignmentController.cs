@@ -13,7 +13,8 @@ namespace Mooshack_2.Controllers
         public ActionResult Index()
         {
             var _assignmentService = new AssignmentService();
-            var _assignmentModels = _assignmentService.getAllAssignmentViewModels();
+            //var _assignmentModels = _assignmentService.getAllAssignmentViewModels();
+            var _assignmentModels = _assignmentService.getAssignmentByCourseID(4);
             return View(_assignmentModels);
         }
         
