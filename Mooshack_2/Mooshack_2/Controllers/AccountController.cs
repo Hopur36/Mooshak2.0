@@ -12,6 +12,7 @@ using Mooshack_2.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Net.Mail;
+using System.Web.Security;
 
 namespace Mooshack_2.Controllers
 {
@@ -21,9 +22,11 @@ namespace Mooshack_2.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private List<SelectListItem> _userRoles;
+        private ApplicationDbContext _dbContext; 
 
         public AccountController()
         {
+             _dbContext = new ApplicationDbContext();
              _userRoles = new List<SelectListItem>();
 
             _userRoles.Add(new SelectListItem { Text = "Administrator", Value = "Administrator" });
@@ -439,7 +442,7 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles ="Administrator")]
         public ActionResult showAllUsers()
         {
-          var _dbContext = new ApplicationDbContext();
+          
           var _allUsers = _dbContext.Users.OrderBy(x => x.UserName).ToList(); 
           List<UserViewModel> _allUsersViewModels = new List<UserViewModel>();
             
@@ -448,6 +451,7 @@ namespace Mooshack_2.Controllers
               _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email});
           }
 
+          ViewBag._currentUser = User.Identity.GetUserId();
           return View(_allUsersViewModels);
         }
 
@@ -488,11 +492,23 @@ namespace Mooshack_2.Controllers
             return View(model);
         }
 
+        [Authorize(Roles ="Administrator")]
+        public async Task<ActionResult> removeUser(string userID)
+        {
+           var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+           var _user = _userManager.FindByIdAsync(userID).Result;
+           if(_user != null)
+           {
+             await _userManager.DeleteAsync(_user);
+           }
+
+            return RedirectToAction("showAllUsers");
+        }
+
         public void init()
         {
             var _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
             var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            
 
             if (!(_roleManager.RoleExists("Administrator")))
             {

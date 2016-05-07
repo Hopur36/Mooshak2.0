@@ -24,6 +24,14 @@
               <td>
                   @Html.DisplayFor(modelItem => user.Email)
               </td>
+
+              <td>
+                  @if (ViewBag._currentUser != user.Id)
+                  {
+                    @Html.ActionLink("Delete", "removeUser", new { userID = user.Id })
+                  }
+                  
+              </td>
               
           </tr>
         }
