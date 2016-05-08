@@ -1,11 +1,29 @@
-﻿@{
+﻿@model Mooshack_2.Models.ViewModels.TeacherFrontPageViewModel
+@{
     ViewBag.Title = "Kennari";
 }
 
 <p> Forsíða Kennara </p>
 
 <body>
-    <div class="boxes">Virkir Áfangar</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Virkir Áfangar
+            <div class="table-responsive">
+                <table class="table">
+                    @foreach (var _course in Model.Courses)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => _course.Name)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
     <br>
     <div class="boxes">Næstu skil</div>
 </body>
