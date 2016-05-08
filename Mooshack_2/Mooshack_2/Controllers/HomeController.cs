@@ -56,7 +56,21 @@ namespace Mooshack_2.Controllers
         public ActionResult TeacherFrontPage()
         {
             var _courses = _courseService.getAllCoursesByTeacherID(User.Identity.GetUserId());
-            var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses };
+            List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
+            foreach(CourseViewModel _course in _courses)
+            {
+                if(_assignmentService.getAssignmentByCourseID(_course.id) != null)
+                {
+                    foreach(AssignmentViewModel _assignment in _assignmentService.getAssignmentByCourseID(_course.id))
+                    {
+                        _allAssignments.Add(_assignment);
+                    }
+                }
+                
+
+                
+            }
+            var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments };
 
             return View(_teacherFrontPageViewModel);
         }
