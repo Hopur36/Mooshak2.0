@@ -1,11 +1,7 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
     @using Mooshack_2.Models
-
-
-
 
     @model LoginViewModel
     @{
@@ -23,105 +19,95 @@
 <h2>@ViewBag.Title.</h2>
 -->
 
-<body>
-    <div class="loginPage">
-        <div class="row">
-            <div class="col-md-8">
-                <section id="loginForm">
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                        @Html.AntiForgeryToken()
+<body class="bodyMargin">
 
-                       
-                       
+    <!-- Services -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    
 
-
-                        <!--
-                        <h4>Hér kemur logo</h4>
-                        -->
-
-                        <a href="@Url.Action("Index", "Home")" title="" class="links">
-                                <img class="logo centerLogo" List View" src="@Url.Content("~/content/images/mooshak2.png")">
-                        </a>
-
-
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            <!--
-                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                            -->
-
-                           
-
-
-                            <div class="col-md-10">
-
-                                @Html.TextBoxFor(m => m.Email, new { placeholder = Html.DisplayNameFor(n => n.Email), Class = "changeTextBox" })
-
-                                <!--
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                -->
-
-                            </div>
-                        </div>
-                        <div class="form-group" >
-                            <!--
-                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                            -->
-                            <div class="col-md-10">
-
-                                @Html.TextBoxFor(m => m.Password, new { placeholder = Html.DisplayNameFor(n => n.Password), Class = "changeTextBox" })
-
-                                <!--
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                                -->
-
-                            </div>
-                        </div>
-                        <!--
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <div class="checkbox">
-                                    @Html.CheckBoxFor(m => m.RememberMe)
-                                    @Html.LabelFor(m => m.RememberMe)
-                                </div>
-                            </div>
-                        </div>
-                        -->
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Login" class="btn btn-default centerButton" />
-                            </div>
-                        </div>
-
-                        <!--
-                                        <p>
-                                                r as a new user", "Register")
-                                                </p>
-                                                -->
-                        @* Enable this once you have account confirmation enabled for password reset functionality
-                            <p>
-                                @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                            </p>*@
-                    }
-                </section>
-
+    <!-- Portfolio -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <!-- /.row (nested) -->
+                    <a href="#" class="btn btn-dark"><img class="img-portfolio img-responsive logoFrontpage" src="~/Content/Images/Mooshak2.png"></a>       
+                </div>
+                <!-- /.col-lg-10 -->
             </div>
-            <!--
-            <div class="col-md-4">
-                                   </section>
-
-                               </div>
-                               <div class="col-md-4">
-                                       <section id="socialLoginForm">
-                                           @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                                       </section>
-                                   </div>
-                                   -->
+            <!-- /.row -->
         </div>
-    </div>
+        <!-- /.container -->
+    </section>
+    <!-- Call to Action -->
+    <aside class="call-to-action bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <!--Setja formið hér-->
+
+
+       @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+               @Html.AntiForgeryToken()
+
+               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <section id="services" class="services bg-primary">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <h5>@Html.TextBoxFor(m => m.Email, new { placeholder = Html.DisplayNameFor(n => n.Email), Class = "changeTextBox" })</h5>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.container -->
+        </section>
+
+        <section id="services" class="services bg-primary">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <h5>@Html.TextBoxFor(m => m.Password, new { placeholder = Html.DisplayNameFor(n => n.Password), Class = "changeTextBox" })</h5>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.container -->
+        </section>
+
+        <section id="services" class="services bg-primary">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <h2><input type="submit" value="Login" class="btn btn-default" /></h2>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.container -->
+        </section>
+
+
+                            
+
+             }
+
+
+                    <!--Enda formið hér-->
+
+                </div>
+            </div>
+        </div>
+    </aside>
 
 
 
