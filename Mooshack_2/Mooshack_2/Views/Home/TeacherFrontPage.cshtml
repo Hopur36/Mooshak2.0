@@ -28,5 +28,42 @@
         </div>
     </div>
     <br>
-    <div class="boxes">Næstu skil</div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Verkeni í gangi
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            StartDate
+                        </th>
+                        <th>
+                            EndDate
+                        </th>
+                    </tr>
+                    @foreach (var _assignment in Model.Assignments)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.Title )
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.StartDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.EndDateTime)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <br>
+   
 </body>
