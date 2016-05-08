@@ -54,6 +54,37 @@ namespace Mooshack_2.Services
         }
 
         /// <summary>
+        /// This function returns a list of CourseViewModel with the courses that
+        /// the student specified in "studentID" is enrolled in
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <returns>List<CourseViewModel></returns>
+        public List<CourseViewModel> getAllCoursesByStudentID(string studentID)
+        {
+            //list of all entries in CourseStudents that match the studentID
+            List<CourseStudent> _allCourseStudents = (from coursestudent in _dbContext.CourseStudent
+                                                      where coursestudent.StudentID == studentID
+                                                      select coursestudent).ToList();
+
+            //Create a new list of courseviewmodel and only add courses that the student is enrolled in
+            List<CourseViewModel> _allCoursesWithStudentViewModel = new List<CourseViewModel>();
+            foreach (CourseStudent cs in _allCourseStudents)
+            {
+                foreach (Course c in _dbContext.Courses)
+                {
+                    if (c.id == cs.CourseID)
+                    {
+                        _allCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                    }
+                }
+            }
+
+
+            return _allCoursesWithStudentViewModel;
+
+        }
+
+        /// <summary>
         /// this function returns a single course with the id that matches "CourseID"
         /// </summary>
         /// <param name="CourseID"></param>
