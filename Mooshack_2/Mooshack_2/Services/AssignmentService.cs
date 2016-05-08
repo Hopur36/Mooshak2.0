@@ -12,34 +12,46 @@ namespace Mooshack_2.Services
     {
         private ApplicationDbContext _dbContext;
 
-
-        public List<AssignmentViewModel>getAssignmentByCourseID(int cid)
-        {
-            IEnumerable<Assignment> _assignments = (from item in _dbContext.Assignments
-                                                  where item.CourseID == cid
-                                                  select item).ToList();
-
-            var _assignmentViewModels = new List<AssignmentViewModel>();
-            foreach (var _assignment in _assignments)
-            {
-                _assignmentViewModels.Add(new AssignmentViewModel
-                {
-                    id = _assignment.id,
-                    CourseID = _assignment.CourseID,
-                    Description = _assignment.Description,
-                    EndDateTime = _assignment.EndDateTime,
-                    StartDateTime = _assignment.StartDateTime,
-                    Title = _assignment.Title
-                });
-            }
-
-                return _assignmentViewModels;
-        }
-
         public AssignmentService()
         {
             _dbContext = new ApplicationDbContext();
         }
+
+
+        public List<AssignmentViewModel> getAssignmentByCourseID(int? cid)
+        {
+            if (cid == null)
+            {
+                return null;
+            }
+
+            else
+            {
+                IEnumerable<Assignment> _assignments = (from item in _dbContext.Assignments
+                                                        where item.CourseID == cid
+                                                        select item).ToList();
+
+                var _assignmentViewModels = new List<AssignmentViewModel>();
+                foreach (var _assignment in _assignments)
+                {
+                    _assignmentViewModels.Add(new AssignmentViewModel
+                    {
+                        id = _assignment.id,
+                        CourseID = _assignment.CourseID,
+                        Description = _assignment.Description,
+                        EndDateTime = _assignment.EndDateTime,
+                        StartDateTime = _assignment.StartDateTime,
+                        Title = _assignment.Title
+                    });
+                }
+
+                return _assignmentViewModels;
+
+            }
+
+        }
+
+
 
         public List<Assignment> getAllAssignments()
         {

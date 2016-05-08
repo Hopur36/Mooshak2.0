@@ -17,6 +17,9 @@
                             <td>
                                 @Html.DisplayFor(x => _course.Name)
                             </td>
+                            <td>
+                                @Html.ActionLink("Details", "TeacherAssingmentPage", "Assignment", new { courseID = _course.id }, null)
+                            </td>
                         </tr>
                     }
                 </table>
