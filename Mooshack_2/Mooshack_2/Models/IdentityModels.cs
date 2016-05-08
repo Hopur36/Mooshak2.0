@@ -25,8 +25,8 @@ namespace Mooshack_2.Models
 
         public DbSet<Course>        Courses         { get; set; }
         public DbSet<Assignment>    Assignments     { get; set; }
-        public DbSet<CourseStudent> CourseStudents  { get; set; }
-        public DbSet<CourseTeacher> CourseTeachers  { get; set; }
+        public DbSet<CourseStudent> CourseStudent  { get; set; }
+        public DbSet<CourseTeacher> CourseTeacher  { get; set; }
         public DbSet<Milestone>     Milestones      { get; set; }
         public DbSet<Submission>    Submissions     { get; set; }
 
