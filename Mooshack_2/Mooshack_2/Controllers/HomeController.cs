@@ -3,24 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Mooshack_2.Models;
+using Mooshack_2.Services;
+using Microsoft.AspNet.Identity;
+using Mooshack_2.Models.ViewModels;
 
 namespace Mooshack_2.Controllers
 {
     public class HomeController : Controller
     {
+        CourseService _courseService;
+        AssignmentService _assignmentService;
+
+        public HomeController()
+        {
+            _courseService = new CourseService();
+            _assignmentService = new AssignmentService();
+        }
         public ActionResult Index()
         {
-           if(User.IsInRole("Administrator"))
+            if (User.IsInRole("Administrator"))
             {
-                return View("AdminFrontPage");
+                return RedirectToAction("AdminFrontPage");
             }
-           else if (User.IsInRole("Teacher"))
+            else if (User.IsInRole("Teacher"))
             {
-                return View("TeacherFrontPage");
+                return RedirectToAction("TeacherFrontPage");
             }
-           else if (User.IsInRole("Student"))
+            else if (User.IsInRole("Student"))
             {
-                return View("StudentFrontPage");
+                return RedirectToAction("StudentFrontPage");
             }
 
             return RedirectToAction("Login", "Account");
@@ -40,16 +52,22 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public ActionResult TeacherFrontPage()
         {
-            return View();
+            var _courses = _courseService.getAllCoursesByTeacherID(User.Identity.GetUserId());
+            var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses };
+
+            return View(_teacherFrontPageViewModel);
         }
 
+        [Authorize(Roles = "Administrator")]
         public ActionResult AdminFrontPage()
         {
             return View();
         }
 
+        [Authorize(Roles = "Student")]
         public ActionResult StudentFrontPage()
         {
             return View();
