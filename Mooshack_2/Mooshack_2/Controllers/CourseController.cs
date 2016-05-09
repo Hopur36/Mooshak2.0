@@ -35,5 +35,7 @@ namespace Mooshack_2.Controllers
 
             return View(_courses);
         }
+
+ 
     }
 }

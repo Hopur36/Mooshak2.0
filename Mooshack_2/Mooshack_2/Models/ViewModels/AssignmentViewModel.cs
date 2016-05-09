@@ -13,5 +13,6 @@ namespace Mooshack_2.Models.ViewModels
         public string Description { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
+        public List<MilestoneViewModel> Milestones { get; set; }
     }
 }
