@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Mooshack_2.Models.ViewModels.AssignmentViewModel>
+﻿@model Mooshack_2.Models.ViewModels.TeacherAssignmentViewModel
 
 @{
     ViewBag.Title = "TeacherAssingmentPage";
 }
 
-<h2>TeacherAssingmentPage</h2>
+<h2>@Model.CourseName</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -14,21 +14,21 @@
     <tr>
 
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            Description
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDateTime)
+            StartDateTime
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndDateTime)
+            EndDateTime
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Assignments) {
     <tr>
 
         <td>
@@ -44,8 +44,8 @@
             @Html.DisplayFor(modelItem => item.EndDateTime)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.id })
+            @Html.ActionLink("Details", "TeacherAssignmentMilestonesPage", new { assignmentID = item.id })
             @Html.ActionLink("Delete", "Delete", new { id=item.id })
         </td>
     </tr>

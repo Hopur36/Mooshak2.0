@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Mooshack_2.Models;
+using Mooshack_2.Models.ViewModels;
 
 namespace Mooshack_2.Controllers
 {
     public class AssignmentController : Controller
     {
-        AssignmentService _assignmentService = new AssignmentService();
+        AssignmentService _assignmentService;
+        CourseService _courseService;
 
         public AssignmentController()
         {
             _assignmentService = new AssignmentService();
+            _courseService = new CourseService();
         }
 
         // GET: Assignment
@@ -28,7 +32,12 @@ namespace Mooshack_2.Controllers
             if (courseID != null)
             {
                 var _assignmentService = new AssignmentService();
-                var _assignmentModels = _assignmentService.getAssignmentByCourseID(courseID);
+                var _courseName = _courseService.getCourseViewModelByID(courseID);
+                var _assignmentModels = new TeacherAssignmentViewModel
+                    { CourseName = _courseName.Name,
+                    Assignments = _assignmentService.getAssignmentByCourseID(courseID) };
+            
+                    
                 return View(_assignmentModels);
 
             }
@@ -39,6 +48,12 @@ namespace Mooshack_2.Controllers
         public ActionResult TeacherNewAssignmentPage()
         {
             return View();
+        }
+
+        public ActionResult TeacherAssignmentMilestonesPage(int assignmentID)
+        {
+            AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            return View(_assignment);
         }
     }
 }
