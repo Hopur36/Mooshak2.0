@@ -55,7 +55,7 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles = "Teacher")]
         public ActionResult TeacherFrontPage()
         {
-            var _courses = _courseService.getAllCoursesByTeacherID(User.Identity.GetUserId());
+            var _courses = _courseService.getAllActiveCoursesByTeacherID(User.Identity.GetUserId());
             List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
             foreach(CourseViewModel _course in _courses)
             {
@@ -66,9 +66,6 @@ namespace Mooshack_2.Controllers
                         _allAssignments.Add(_assignment);
                     }
                 }
-                
-
-                
             }
             var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments };
 
