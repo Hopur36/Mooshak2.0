@@ -41,7 +41,8 @@ namespace Mooshack_2.Services
                         Description = _assignment.Description,
                         EndDateTime = _assignment.EndDateTime,
                         StartDateTime = _assignment.StartDateTime,
-                        Title = _assignment.Title
+                        Title = _assignment.Title,
+                        Milestones = getAllMilestonesByAssignmentID(_assignment.id)
                     });
                 }
 
@@ -51,7 +52,7 @@ namespace Mooshack_2.Services
 
         }
 
-
+        
 
         public List<Assignment> getAllAssignments()
         {
@@ -72,12 +73,61 @@ namespace Mooshack_2.Services
                     Description = _assignment.Description,
                     EndDateTime = _assignment.EndDateTime,
                     StartDateTime = _assignment.StartDateTime,
-                    Title = _assignment.Title
+                    Title = _assignment.Title,
+                    Milestones = getAllMilestonesByAssignmentID(_assignment.id)
+                    
+
                 });
+
+                
             }
 
             return _assignmentViewModels;
         }
+
+        public AssignmentViewModel GetAssignmentViewModelByID(int aID)
+        {
+            var _assignment = (from item in _dbContext.Assignments
+                               where item.id == aID
+                               select item).FirstOrDefault();
+
+            var _courseService = new CourseService();
+            var _course = _courseService.getCourseViewModelByID(_assignment.CourseID);
+
+            AssignmentViewModel _assignmentViewModel = new AssignmentViewModel
+            {
+                id = _assignment.id,
+                CourseID = _assignment.CourseID,
+                Description = _assignment.Description,
+                EndDateTime = _assignment.EndDateTime,
+                StartDateTime = _assignment.StartDateTime,
+                Title = _assignment.Title,
+                Milestones = getAllMilestonesByAssignmentID(_assignment.id)
+            };
+
+            return _assignmentViewModel;
+        }
+
+        public List<MilestoneViewModel> getAllMilestonesByAssignmentID(int aID)
+        {
+            var _allMilestones = (from item in _dbContext.Milestones
+                                  where item.AssignmentID == aID
+                                  select item).ToList();
+            List<MilestoneViewModel> _allMilestonesViewModel = new List<MilestoneViewModel>();
+            foreach (var item in _allMilestones)
+            {
+                _allMilestonesViewModel.Add(new MilestoneViewModel
+                {
+                    id = item.id,
+                    Title = item.Title,
+                    Description = item.Description,
+                    Weight = item.Weight
+                });
+
+            }
+            return _allMilestonesViewModel;
+        }
+
 
 
     }

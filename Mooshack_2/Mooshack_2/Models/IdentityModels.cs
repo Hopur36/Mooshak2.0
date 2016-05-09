@@ -40,5 +40,7 @@ namespace Mooshack_2.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.AssignmentViewModel> AssignmentViewModels { get; set; }
     }
 }

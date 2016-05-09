@@ -23,6 +23,15 @@ namespace Mooshack_2.Services
             return _allCourses;
         }
 
+        public CourseViewModel getCourseViewModelByID(int? cID)
+        {
+            Course _course = (from course in _dbContext.Courses
+                              where course.id == cID
+                              select course).FirstOrDefault();
+            CourseViewModel _courseViewModel = new CourseViewModel { id = _course.id, Name = _course.Name };
+            return _courseViewModel;
+        }
+
         /// <summary>
         /// This function returns a list of CourseViewModel with the courses that
         /// the teacher specified in "teacherID" teaches
