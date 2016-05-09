@@ -76,6 +76,22 @@ namespace Mooshack_2.Controllers
             _assignmentService.DeleteAssignment(assignmentID);
             return RedirectToAction("TeacherAssignmentPage", "Assignment",new { courseID = courseReturnID});
         }
+
+        public ActionResult CreateMilestone(int assignmentID)
+        {
+            CreateMilestoneViewModel _newMileStone = new CreateMilestoneViewModel();
+            _newMileStone.AssignmentID = assignmentID;
+
+            return View(_newMileStone);
+        }
+
+        [HttpPost]
+        public ActionResult CreateMilestone(CreateMilestoneViewModel model)
+        {
+            _assignmentService.CreateAssignmentMilestone(model);
+
+            return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID});
+        }
     }
 
 
