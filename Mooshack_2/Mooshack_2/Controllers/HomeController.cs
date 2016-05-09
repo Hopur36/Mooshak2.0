@@ -81,14 +81,27 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+        /// <summary>
+        /// This function gets all active courses by StudentID and Assignments for those courses
+        /// </summary>
+        /// <returns>StudentFrontPageViewModel</returns>
         [Authorize(Roles = "Student")]
         public ActionResult StudentFrontPage()
         {
-            var _courses = _courseService.getAllCoursesByStudentID(User.Identity.GetUserId());
-            var _studentFrontPageViewModel = new StudentFrontPageViewModel() { Courses = _courses };
-
+            var _courses = _courseService.getAllActiveCoursesByStudentID(User.Identity.GetUserId());
+            List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
+            foreach (CourseViewModel _course in _courses)
+            {
+                if (_assignmentService.getAssignmentByCourseID(_course.id) != null)
+                {
+                    foreach (AssignmentViewModel _assignment in _assignmentService.getAssignmentByCourseID(_course.id))
+                    {
+                        _allAssignments.Add(_assignment);
+                    }
+                }
+            }
+            var _studentFrontPageViewModel = new StudentFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments  };
             return View(_studentFrontPageViewModel);
-            //return View();
         }
     }
 }

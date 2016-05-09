@@ -10,5 +10,6 @@ namespace WebApplication1.Models.Entities
     {
         public int id { get; set; }
         public string Name { get; set; }
+        public bool Active { get; set; }
     }
 }

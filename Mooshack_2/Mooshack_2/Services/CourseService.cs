@@ -47,14 +47,14 @@ namespace Mooshack_2.Services
 
             //Create a new list of courseviewmodel and only add courses that the teacher teaches
             List<CourseViewModel> _allCoursesWithTeacherViewModel = new List<CourseViewModel>();
-            foreach(CourseTeacher ct in _allCourseTeachers)
+            foreach (CourseTeacher ct in _allCourseTeachers)
             {
-                foreach(Course c in _dbContext.Courses)
+                foreach (Course c in _dbContext.Courses)
                 {
-                    if(c.id == ct.CourseID)
+                    if (c.id == ct.CourseID)
                     {
-                       _allCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
-                   }
+                        _allCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                    }
                 }
             }
 
@@ -91,6 +91,37 @@ namespace Mooshack_2.Services
 
             return _allCoursesWithStudentViewModel;
 
+        }
+
+        /// <summary>
+        /// This function returns a list of CourseViewModel with the active courses that
+        /// the student specified in "studentID" is enrolled in
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <returns>List<CourseViewModel></returns>
+        public List<CourseViewModel> getAllActiveCoursesByStudentID(string studentID)
+        {
+            //list of all entries in CourseStudents that match the studentID
+            List<CourseStudent> _allCourseStudents = (from coursestudent in _dbContext.CourseStudent
+                                                      where coursestudent.StudentID == studentID
+                                                      select coursestudent).ToList();
+
+            //Create a new list of courseviewmodel and only add active courses that the student is enrolled in
+            List<CourseViewModel> _allActiveCoursesWithStudentViewModel = new List<CourseViewModel>();
+            foreach (CourseStudent cs in _allCourseStudents)
+            {
+                foreach (Course c in _dbContext.Courses)
+                {
+                    if (c.id == cs.CourseID)
+                    {
+                        if (c.Active == true)
+                        {
+                            _allActiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                        }
+                    }
+                }
+            }
+            return _allActiveCoursesWithStudentViewModel;
         }
 
         /// <summary>
