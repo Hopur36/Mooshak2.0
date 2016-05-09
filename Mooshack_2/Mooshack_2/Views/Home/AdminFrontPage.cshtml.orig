@@ -7,6 +7,11 @@
 
 
 <body>
+<<<<<<< HEAD
     <button class="redButton">Add Course</button>
     <a href="~/Account/CreateUser"><button class="redButton">Add User</button> </a>
+=======
+    <button class="redButton">Bæta við áfanga</button>
+    <a href="~/Account/CreateUser"><button class="redButton">Bæta við notanda</button> </a>
+>>>>>>> refs/remotes/origin/master
 </body>

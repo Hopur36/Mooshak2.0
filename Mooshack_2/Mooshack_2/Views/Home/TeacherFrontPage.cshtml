@@ -1,11 +1,69 @@
-﻿@{
+﻿@model Mooshack_2.Models.ViewModels.TeacherFrontPageViewModel
+@{
     ViewBag.Title = "Kennari";
 }
 
 <p> Forsíða Kennara </p>
 
 <body>
-    <div class="boxes">Virkir Áfangar</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Virkir Áfangar
+            <div class="table-responsive">
+                <table class="table">
+                    @foreach (var _course in Model.Courses)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => _course.Name)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "TeacherAssingmentPage", "Assignment", new { courseID = _course.id }, null)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
     <br>
-    <div class="boxes">Næstu skil</div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Verkefni í gangi
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            StartDate
+                        </th>
+                        <th>
+                            EndDate
+                        </th>
+                    </tr>
+                    @foreach (var _assignment in Model.Assignments)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.Title )
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.StartDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.EndDateTime)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <br>
+   
 </body>

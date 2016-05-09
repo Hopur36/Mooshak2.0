@@ -1,4 +1,14 @@
-﻿
+
+/*=============================================================
+    Authour URI: www.binarycart.com
+    License: Commons Attribution 3.0
+
+    http://creativecommons.org/licenses/by/3.0/
+
+    100% To use For Personal And Commercial Use.
+    IN EXCHANGE JUST GIVE US CREDITS AND TELL YOUR FRIENDS ABOUT US
+   
+    ========================================================  */
 /*==============================================
     GENERAL  STYLES    
     =============================================*/
@@ -8,7 +18,7 @@ body {
 
  #wrapper {
     width: 100%;
-    background: #4d4d4d;
+    background:#202020;
 }
 
 #page-wrapper {
@@ -197,7 +207,7 @@ max-width:170px;
 
 .navbar-cls-top .navbar-brand {
 	color: #fff;
-background: #4d4d4d;
+background: #C90000;
 width: 260px;
 text-align: center;
 height: 60px;
@@ -241,7 +251,7 @@ font-weight: 700;
 }
 .sidebar-collapse .nav > li > a {
 	color:#fff;
-	background:#4d4d4d;
+	background:#202020;
 	text-shadow:none;
 	
 }
@@ -291,23 +301,17 @@ font-weight: 700;
 }
 .navbar-side {
 	border:none;
-	background-color: #4d4d4d;
-    padding-top: 20px;
+	background-color: #202020;
 	
 }
-
-.nabar-default
-{
-    background-color: #4d4d4d;
-}
 .navbar-cls-top {
-	background: #4d4d4d;
+	background:#4D4D4D;
 	border-bottom:none;
 	
 }
 .navbar-cls-top .navbar-brand:hover {
 
-background: #4d4d4d;
+background: #C90000;
 color:#fff;
 
 }
@@ -317,10 +321,10 @@ border:0px solid black;
      
 }
 .navbar-header {
-    background: #4d4d4d;
+    background: #A70303;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-background-color: lightgray;
+background-color: #B40101;
 }
 .navbar-default .navbar-toggle {
 border-color: #fff;
@@ -364,7 +368,6 @@ line-height: 1.428571429;
         z-index: 1;
         position: absolute;
         width: 260px;
-        background-color: #4d4d4d;
     }
 
    .navbar {
@@ -374,108 +377,3 @@ line-height: 1.428571429;
 }
 
 
-/*CSS Buttons on Admin FrontPage*/
-.redButton {
-    position: relative;
-    top: 150px;
-    left: 50px;
-    background-color: #4d4d4d;
-    border: none;
-    color: lightgray;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-/*CSS Boxes on TeacherFrontPage and StudentFrontPage*/
-.boxes {
-    position: relative;
-    left: 30px;
-    top: 50px;
-    width: 300px;
-    height: 100px;
-    border: 2px solid #4d4d4d;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-
-/*Style of Login page*/
-.loginPage
-{
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%) 
-}
-
-
-/*Centering Logo at Login Page*/
-.centerLogo
-{
-    margin: 0;
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-/*Centering Button at Login Page*/
-.centerButton
-{
-    margin: 0;
-    position: relative;
-    padding: 2% 10%;
-}
-
-.changeTextBox
-{
-    -webkit-border-radius: 5px; 
-    -moz-border-radius: 5px; 
-    border-radius: 5px; 
-    border: 1px solid #848484; 
-    outline:0; 
-    height: 35px;
-    width: 275px;
-    padding-left: 15px;
- } 
-
-.logo
-{
-     height: 100px;
-     width: 130px;
-}
-
-.logoFrontpage
-{
-     height: 150px;
-     width: 200px;
-}
-
-.sizeNavbar
-{
-    min-height: 130px;
-}
-
-div > a :hover
-{
-   color: #4d4d4d !important;
-}
-
-/*FrontPage Margin*/
-.bodyMargin
-{
-    margin-top: 100px;
-}
-
-/*Color of Log off*/
-.navbar-default .navbar-nav > li > a
-{
-    color: white;
-}

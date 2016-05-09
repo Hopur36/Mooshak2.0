@@ -25,8 +25,8 @@ namespace Mooshack_2.Models
 
         public DbSet<Course>        Courses         { get; set; }
         public DbSet<Assignment>    Assignments     { get; set; }
-        public DbSet<CourseStudent> CourseStudents  { get; set; }
-        public DbSet<CourseTeacher> CourseTeachers  { get; set; }
+        public DbSet<CourseStudent> CourseStudent  { get; set; }
+        public DbSet<CourseTeacher> CourseTeacher  { get; set; }
         public DbSet<Milestone>     Milestones      { get; set; }
         public DbSet<Submission>    Submissions     { get; set; }
 
@@ -40,5 +40,9 @@ namespace Mooshack_2.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.AssignmentViewModel> AssignmentViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CreateAssignmentViewModel> CreateAssignmentViewModels { get; set; }
     }
 }

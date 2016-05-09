@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace WebApplication1.Models.Entities
+namespace Mooshack_2.Models.ViewModels
 {
-    public class Course
+    /// <summary>
+    /// a ViewModel for Course Entiti class
+    /// </summary>
+    public class CourseViewModel
     {
         public int id { get; set; }
         public string Name { get; set; }
-        public bool Active { get; set; }
     }
 }

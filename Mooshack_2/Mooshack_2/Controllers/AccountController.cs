@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using Mooshack_2.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Net.Mail;
+using System.Web.Security;
 
 namespace Mooshack_2.Controllers
 {
@@ -20,9 +22,11 @@ namespace Mooshack_2.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private List<SelectListItem> _userRoles;
+        private ApplicationDbContext _dbContext; 
 
         public AccountController()
         {
+             _dbContext = new ApplicationDbContext();
              _userRoles = new List<SelectListItem>();
 
             _userRoles.Add(new SelectListItem { Text = "Administrator", Value = "Administrator" });
@@ -84,7 +88,10 @@ namespace Mooshack_2.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            MailAddress _email = new MailAddress(model.Email);
+            string _userName = _email.User;
+
+            var result = await SignInManager.PasswordSignInAsync(_userName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -432,6 +439,22 @@ namespace Mooshack_2.Controllers
             base.Dispose(disposing);
         }
 
+        [Authorize(Roles ="Administrator")]
+        public ActionResult showAllUsers()
+        {
+          
+          var _allUsers = _dbContext.Users.OrderBy(x => x.UserName).ToList(); 
+          List<UserViewModel> _allUsersViewModels = new List<UserViewModel>();
+            
+          foreach(var user in _allUsers)
+          {
+              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email});
+          }
+
+          ViewBag._currentUser = User.Identity.GetUserId();
+          return View(_allUsersViewModels);
+        }
+
         [Authorize(Roles = "Administrator")]
         public ActionResult createUser()
         {
@@ -446,9 +469,13 @@ namespace Mooshack_2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> createUser(CreateUserViewModel model,string UserRoles)
         {
+            
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                MailAddress _email = new MailAddress(model.Email);
+                string _userName = _email.User.ToLower();
+
+                var user = new ApplicationUser { UserName = _userName, Email = model.Email.ToLower() };
                 var result = await UserManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -465,11 +492,23 @@ namespace Mooshack_2.Controllers
             return View(model);
         }
 
+        [Authorize(Roles ="Administrator")]
+        public async Task<ActionResult> removeUser(string userID)
+        {
+           var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+           var _user = _userManager.FindByIdAsync(userID).Result;
+           if(_user != null)
+           {
+             await _userManager.DeleteAsync(_user);
+           }
+
+            return RedirectToAction("showAllUsers");
+        }
+
         public void init()
         {
             var _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
             var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            
 
             if (!(_roleManager.RoleExists("Administrator")))
             {

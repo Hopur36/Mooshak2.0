@@ -6,66 +6,76 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+
 
 </head>
 
 
-
-
-
 <body>
-
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top sizeNavbar" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header hoverColor">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
-                   
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-               
-                <!--
-                @Html.ActionLink("MooshakToo", "Login", "Account", new { area = "" }, new { @class = "navbar-brand" })
-                -->
-                
+                <a class="navbar-brand" href="~/Home/index"><img src="~/Content/Images/m.png" alt="Mooshak Logo" class="logo" /></a>
             </div>
-            
-        </div>
-        <a href="@Url.Action("Index", "Home")" title="" class="links">
-            <img class="logo" List View" src="@Url.Content("~/content/images/moose-hi.png")">
-        </a>
-        @Html.Partial("_LoginPartial")
-    </div>
+            <div style="color: white;
+padding: 15px 50px 5px 50px;
+float: right;
+font-size: 16px;">@Html.Partial("_LoginPartial")</div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
 
-  
 
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="customEva">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-list-alt fa-fw"></i>Widgets</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-file-o fa-fw"></i>Pages</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-bar-chart-o fa-fw"></i>Charts</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-table fa-fw"></i>Table</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-tasks fa-fw"></i>Forms</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-calendar fa-fw"></i>Calender</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-book fa-fw"></i>Library</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-pencil fa-fw"></i>Applications</a></li>
-                        <li><a href="http://www.jquery2dotnet.com"><i class="fa fa-cogs fa-fw"></i>Settings</a></li>
-                    </ul>
+                    <li>
+                        <a href="index.html"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="ui.html"><i class="fa fa-desktop fa-3x"></i> UI Elements</a>
+                    </li>
+                    <li>
+                        <a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> Tabs & Panels</a>
+                    </li>
+                    <li>
+                        <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> Morris Charts</a>
+                    </li>
+                    <li>
+                        <a href="table.html"><i class="fa fa-table fa-3x"></i> Table Examples</a>
+                    </li>
+                    <li>
+                        <a href="form.html"><i class="fa fa-edit fa-3x"></i> Forms </a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        @RenderBody()
                     </div>
                 </div>
-            <div class="col-sm-9">
-                Main content goes here
-                @RenderBody()
+                <!-- /. ROW  -->
+                <hr />
+
             </div>
+            <!-- /. PAGE INNER  -->
         </div>
+        <!-- /. PAGE WRAPPER  -->
     </div>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

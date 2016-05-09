@@ -1,0 +1,24 @@
+﻿@model List<Mooshack_2.Models.ViewModels.CourseViewModel>
+@{
+    ViewBag.Title = "TeacherCoursePage";
+}
+
+<h2>TeacherCoursePage</h2>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+        </tr>
+        @foreach (var _course in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => _course.Name)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
