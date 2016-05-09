@@ -78,6 +78,7 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult AdminFrontPage()
         {
+
             return View();
         }
 
