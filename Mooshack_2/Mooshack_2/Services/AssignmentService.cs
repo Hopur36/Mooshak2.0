@@ -128,6 +128,15 @@ namespace Mooshack_2.Services
             return _allMilestonesViewModel;
         }
 
+        public bool CreateAssignment(CreateAssignmentViewModel model)
+        {
+            Assignment _newAssignment = new Assignment {CourseID = model.CourseID,Title = model.Title,
+            Description = model.Description, StartDateTime = model.StartDateTime, EndDateTime = model.EndDateTime};
+            _dbContext.Assignments.Add(_newAssignment);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
 
 
     }
