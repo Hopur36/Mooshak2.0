@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -33,28 +35,8 @@ font-size: 16px;">@Html.Partial("_LoginPartial")</div>
         <!-- /. NAV TOP  -->
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
 
-
-                    <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="ui.html"><i class="fa fa-desktop fa-3x"></i> UI Elements</a>
-                    </li>
-                    <li>
-                        <a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> Tabs & Panels</a>
-                    </li>
-                    <li>
-                        <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> Morris Charts</a>
-                    </li>
-                    <li>
-                        <a href="table.html"><i class="fa fa-table fa-3x"></i> Table Examples</a>
-                    </li>
-                    <li>
-                        <a href="form.html"><i class="fa fa-edit fa-3x"></i> Forms </a>
-                    </li>
-                </ul>
+                @Html.Action("_listOfCourses", "Layout", new { area = "" })
 
             </div>
 
@@ -64,6 +46,11 @@ font-size: 16px;">@Html.Partial("_LoginPartial")</div>
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
+
+
+ 
+
+
                         @RenderBody()
                     </div>
                 </div>

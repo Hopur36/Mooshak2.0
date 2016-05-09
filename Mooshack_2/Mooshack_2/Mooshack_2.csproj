@@ -199,6 +199,7 @@
     <Compile Include="Controllers\AssignmentController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -305,10 +306,12 @@
     <Content Include="Views\Course\TeacherCoursePage.cshtml" />
     <Content Include="Views\assignment\TeacherAssignmentPage.cshtml" />
     <Content Include="Views\assignment\TeacherAssignmentMilestonesPage.cshtml" />
+    <Content Include="Views\Shared\_listOfCourses.cshtml" />
     <Content Include="Views\assignment\CreateAssignment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Layout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

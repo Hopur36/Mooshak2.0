@@ -1,0 +1,22 @@
+﻿ @model List<Mooshack_2.Models.ViewModels.CourseViewModel >
+
+@{
+    ViewBag.Title = "";
+}
+
+
+
+<ul class="nav" id="main-menu">
+
+    @if (User.IsInRole("Teacher"))
+    {
+        foreach (var _course in Model)
+            {
+                <li>
+                    <a href="~/Assignment/TeacherAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>           
+                </li>
+            }
+    }
+
+</ul>
+
