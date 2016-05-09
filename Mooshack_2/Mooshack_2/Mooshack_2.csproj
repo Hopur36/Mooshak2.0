@@ -304,7 +304,7 @@
     <Content Include="Views\Account\showAllUsers.cshtml" />
     <Content Include="Views\assignment\index.cshtml" />
     <Content Include="Views\Course\TeacherCoursePage.cshtml" />
-    <Content Include="Views\assignment\TeacherAssingmentPage.cshtml" />
+    <Content Include="Views\assignment\TeacherAssignmentPage.cshtml" />
     <Content Include="Views\assignment\TeacherAssignmentMilestonesPage.cshtml" />
     <Content Include="Views\Shared\_listOfCourses.cshtml" />
     <Content Include="Views\assignment\CreateAssignment.cshtml" />

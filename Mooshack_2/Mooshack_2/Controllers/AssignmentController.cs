@@ -27,7 +27,7 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
-        public ActionResult TeacherAssingmentPage(int? courseID)
+        public ActionResult TeacherAssignmentPage(int? courseID)
         {
             if (courseID != null)
             {
@@ -69,6 +69,12 @@ namespace Mooshack_2.Controllers
             _assignmentService.CreateAssignment(model);
 
             return RedirectToAction("TeacherFrontPage", "Home", new { courseID = model.CourseID});
+        }
+
+        public ActionResult DeleteAssignment(int assignmentID,int courseReturnID)
+        {
+            _assignmentService.DeleteAssignment(assignmentID);
+            return RedirectToAction("TeacherAssignmentPage", "Assignment",new { courseID = courseReturnID});
         }
     }
 }
