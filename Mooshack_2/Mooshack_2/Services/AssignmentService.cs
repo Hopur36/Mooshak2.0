@@ -137,6 +137,17 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        public bool DeleteAssignment(int assignmentID)
+        {
+            Assignment _deletedAssignment = (from assignment in _dbContext.Assignments
+                                             where assignment.id == assignmentID
+                                             select assignment).FirstOrDefault();
+            _dbContext.Assignments.Remove(_deletedAssignment);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
 
 
     }
