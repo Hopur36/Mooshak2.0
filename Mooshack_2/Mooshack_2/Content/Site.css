@@ -479,3 +479,10 @@ div > a :hover
 {
     color: white;
 }
+
+/*Color of Sidebar text*/
+.nav
+{
+    font-size: 14px;
+    color: white;
+}

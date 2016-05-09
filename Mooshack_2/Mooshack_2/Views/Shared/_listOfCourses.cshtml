@@ -1,27 +1,22 @@
 ﻿ @model List<Mooshack_2.Models.ViewModels.CourseViewModel >
 
 @{
-    ViewBag.Title = "_listOfCourses";
+    ViewBag.Title = "";
 }
 
-<h2>_listOfCourses</h2>
 
-<!---->
-<div class="table-responsive">
-    <table class="table">
-        <tr>
-            <th>
-                Title
-            </th>
-        </tr>
 
-        @foreach (var _course in Model)
-        {
-            <tr>
-                <td>
-                   @Html.DisplayFor(modelItem => _course.Name)
-                </td>
-            </tr>
-        }
-    </table>
-</div>
+<ul class="nav" id="main-menu">
+
+    @if (User.IsInRole("Teacher"))
+    {
+        foreach (var _course in Model)
+            {
+                <li>
+                    <a href="~/Assignment/TeacherAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>           
+                </li>
+            }
+    }
+
+</ul>
+

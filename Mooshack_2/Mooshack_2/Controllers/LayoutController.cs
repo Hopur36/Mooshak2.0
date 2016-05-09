@@ -1,4 +1,5 @@
-﻿using Mooshack_2.Services;
+﻿using Microsoft.AspNet.Identity;
+using Mooshack_2.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,26 @@ namespace Mooshack_2.Controllers
         [ActionName("_listOfCourses")]
         public ActionResult _courseList()
         {
-            var _courses = _courseService.getAllCourses();
 
-            return PartialView("_listOfCourses", _courses);
-        }
+            if (User.IsInRole("Administrator"))
+            {
+                var _courses = _courseService.getAllCourses();
 
+                return PartialView("_listOfCourses", _courses);
+            }
+            else if (User.IsInRole("Teacher"))
+            {
+                var _courses = _courseService.getAllActiveCoursesByTeacherID(User.Identity.GetUserId());
 
+                return PartialView("_listOfCourses", _courses);
+            }
+            else
+            {
+                var _courses = _courseService.getAllActiveCoursesByStudentID(User.Identity.GetUserId());
+
+                return PartialView("_listOfCourses", _courses);
+            }
+        }   
     }
+
 }
