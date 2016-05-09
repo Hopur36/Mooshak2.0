@@ -7,7 +7,7 @@
 <h2>@Model.CourseName</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "CreateAssignment",  new { CourseID = Model.CourseID})
 </p>
 
 <table class="table">

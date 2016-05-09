@@ -34,7 +34,7 @@ namespace Mooshack_2.Controllers
                 var _assignmentService = new AssignmentService();
                 var _courseName = _courseService.getCourseViewModelByID(courseID);
                 var _assignmentModels = new TeacherAssignmentViewModel
-                    { CourseName = _courseName.Name,
+                    { CourseName = _courseName.Name,CourseID = Convert.ToInt32(courseID),
                     Assignments = _assignmentService.getAssignmentByCourseID(courseID) };
             
                     
@@ -54,6 +54,21 @@ namespace Mooshack_2.Controllers
         {
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
             return View(_assignment);
+        }
+
+        public ActionResult CreateAssignment(int CourseID)
+        {
+            CreateAssignmentViewModel _newAssignmentViewModel = new CreateAssignmentViewModel();
+            _newAssignmentViewModel.CourseID = CourseID;
+            return View(_newAssignmentViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CreateAssignment(CreateAssignmentViewModel model)
+        {
+            _assignmentService.CreateAssignment(model);
+
+            return RedirectToAction("TeacherFrontPage", "Home", new { courseID = model.CourseID});
         }
     }
 }

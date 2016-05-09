@@ -8,6 +8,7 @@ namespace Mooshack_2.Models.ViewModels
     public class TeacherAssignmentViewModel
     {
         public string CourseName { get; set; }
+        public int CourseID { get; set; }
         public List<AssignmentViewModel> Assignments { get; set; }
     }
 }
