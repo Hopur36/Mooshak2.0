@@ -57,9 +57,31 @@ namespace Mooshack_2.Services
                     }
                 }
             }
-
-
             return _allCoursesWithTeacherViewModel;
+        }
+        public List<CourseViewModel> getAllActiveCoursesByTeacherID(string teacherID)
+        {
+            //list of all entries in CourseTeachers that match the teacherID
+            List<CourseTeacher> _allCourseTeachers = (from courseteacher in _dbContext.CourseTeacher
+                                                      where courseteacher.TeacherID == teacherID
+                                                      select courseteacher).ToList();
+
+            //Create a new list of courseviewmodel and only add courses that the teacher teaches
+            List<CourseViewModel> _allActiveCoursesWithTeacherViewModel = new List<CourseViewModel>();
+            foreach (CourseTeacher ct in _allCourseTeachers)
+            {
+                foreach (Course c in _dbContext.Courses)
+                {
+                    if (c.id == ct.CourseID)
+                    {
+                        if(c.Active == true) 
+                        {
+                            _allActiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                        }
+                    }
+                }
+            }
+            return _allActiveCoursesWithTeacherViewModel;
         }
 
         /// <summary>
@@ -87,10 +109,7 @@ namespace Mooshack_2.Services
                     }
                 }
             }
-
-
             return _allCoursesWithStudentViewModel;
-
         }
 
         /// <summary>
