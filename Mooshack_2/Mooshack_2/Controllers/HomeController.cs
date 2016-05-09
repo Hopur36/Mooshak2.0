@@ -84,7 +84,11 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles = "Student")]
         public ActionResult StudentFrontPage()
         {
-            return View();
+            var _courses = _courseService.getAllCoursesByStudentID(User.Identity.GetUserId());
+            var _studentFrontPageViewModel = new StudentFrontPageViewModel() { Courses = _courses };
+
+            return View(_studentFrontPageViewModel);
+            //return View();
         }
     }
 }

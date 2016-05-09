@@ -1,11 +1,32 @@
-﻿@{
+﻿@model Mooshack_2.Models.ViewModels.StudentFrontPageViewModel
+@{
     ViewBag.Title = "Nemandi";
 }
 
 <p> Þetta er forsíða Nemenda </p>
 
 <body>
-    <div class="boxes">Virkir Áfangar</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Virkir Áfangar
+            <div class="table-responsive">
+                <table class="table">
+                    @foreach (var _course in Model.Courses)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(x => _course.Name)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "StudentAssingmentPage", "Assignment", new { courseID = _course.id }, null)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+        </div>
+    </div>
     <br>
     <div class="boxes">Næstu skil</div>
 </body>
