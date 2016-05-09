@@ -139,6 +139,19 @@ namespace Mooshack_2.Services
 
         public bool DeleteAssignment(int assignmentID)
         {
+            List<Milestone> _milestones = new List<Milestone>();
+
+            _milestones = (from milestone in _dbContext.Milestones
+                           where milestone.AssignmentID == assignmentID
+                           select milestone).ToList();
+
+            foreach (var milestone in _milestones)
+            {
+                _dbContext.Milestones.Remove(milestone);
+                _dbContext.SaveChanges();
+            }
+
+
             Assignment _deletedAssignment = (from assignment in _dbContext.Assignments
                                              where assignment.id == assignmentID
                                              select assignment).FirstOrDefault();
