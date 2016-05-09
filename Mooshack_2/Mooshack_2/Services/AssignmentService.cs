@@ -148,6 +148,25 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        public bool CreateAssignmentMilestone(CreateMilestoneViewModel model)
+        {
+            Milestone _newMilestone = new Milestone
+            {
+                AssignmentID = model.AssignmentID,
+                Title = model.Title,
+                Description = model.Description,
+                Weight = model.Weight,
+                Input = model.Input,
+                Output = model.Output
+            };
+
+            _dbContext.Milestones.Add(_newMilestone);
+            _dbContext.SaveChanges();
+            return true;
+
+        }
+
+
 
 
     }
