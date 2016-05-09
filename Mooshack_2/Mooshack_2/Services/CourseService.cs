@@ -17,11 +17,23 @@ namespace Mooshack_2.Services
             _dbContext = new ApplicationDbContext();
         }
 
-        public List<Course> getAllCourses()
+        public List<CourseViewModel> getAllCourses()
         {
-            var _allCourses = _dbContext.Courses.ToList();
-            return _allCourses;
+            List<Course> _allCourses = (from course in _dbContext.Courses
+                                        select course).ToList();
+
+            //Create a new list of courseviewmodel
+            List<CourseViewModel> _allCoursesViewModel = new List<CourseViewModel>();
+
+            foreach (Course c in _allCourses)
+            {
+                
+                      _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name });
+
+            }
+            return _allCoursesViewModel;
         }
+
 
         public CourseViewModel getCourseViewModelByID(int? cID)
         {
