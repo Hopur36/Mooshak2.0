@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Mooshack_2.Models.ViewModels;
 
 namespace Mooshack_2.Controllers
 {
@@ -32,9 +33,19 @@ namespace Mooshack_2.Controllers
 
             if (User.IsInRole("Administrator"))
             {
-                var _courses = _courseService.getAllCourses();
+                var _allCourses = _courseService.getAllCourses();
+                var _activeCourses = new List<CourseViewModel>();
 
-                return PartialView("_listOfCourses", _courses);
+                foreach (var course in _allCourses)
+                {
+                    if(course.Active == true)
+                    {
+                        _activeCourses.Add(course);
+                    }
+                }
+                _activeCourses.Sort((x, y) => x.Name.CompareTo(y.Name));
+
+                return PartialView("_listOfCourses", _activeCourses);
             }
             else if (User.IsInRole("Teacher"))
             {
@@ -60,6 +71,7 @@ namespace Mooshack_2.Controllers
             if (User.IsInRole("Administrator"))
             {
                 var _courses = _courseService.getAllInactiveCourses();
+                _courses.Sort((x, y) => x.Name.CompareTo(y.Name));
 
                 return PartialView("_listOfUnactiveCourses", _courses);
             }
