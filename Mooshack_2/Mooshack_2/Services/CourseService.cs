@@ -30,11 +30,8 @@ namespace Mooshack_2.Services
             List<CourseViewModel> _allCoursesViewModel = new List<CourseViewModel>();
 
             foreach (Course c in _allCourses)
-            {
-                if (c.Active == true)
-                {
-                    _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name });
-                }
+            {              
+                _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name, id = c.ID, Active = c.Active });
             }
             return _allCoursesViewModel;
         }
@@ -65,9 +62,9 @@ namespace Mooshack_2.Services
         public CourseViewModel getCourseViewModelByID(int? cID)
         {
             Course _course = (from course in _dbContext.Courses
-                              where course.id == cID
+                              where course.ID == cID
                               select course).FirstOrDefault();
-            CourseViewModel _courseViewModel = new CourseViewModel { id = _course.id, Name = _course.Name };
+            CourseViewModel _courseViewModel = new CourseViewModel { id = _course.ID, Name = _course.Name };
             return _courseViewModel;
         }
 
@@ -90,9 +87,9 @@ namespace Mooshack_2.Services
             {
                 foreach (Course c in _dbContext.Courses)
                 {
-                    if (c.id == ct.CourseID)
+                    if (c.ID == ct.CourseID)
                     {
-                        _allCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                        _allCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
                     }
                 }
             }
@@ -111,11 +108,11 @@ namespace Mooshack_2.Services
             {
                 foreach (Course c in _dbContext.Courses)
                 {
-                    if (c.id == ct.CourseID)
+                    if (c.ID == ct.CourseID)
                     {
                         if(c.Active == true) 
                         {
-                            _allActiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                            _allActiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
                         }
                     }
                 }
@@ -168,9 +165,9 @@ namespace Mooshack_2.Services
             {
                 foreach (Course c in _dbContext.Courses)
                 {
-                    if (c.id == cs.CourseID)
+                    if (c.ID == cs.CourseID)
                     {
-                        _allCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                        _allCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
                     }
                 }
             }
@@ -196,11 +193,11 @@ namespace Mooshack_2.Services
             {
                 foreach (Course c in _dbContext.Courses)
                 {
-                    if (c.id == cs.CourseID)
+                    if (c.ID == cs.CourseID)
                     {
                         if (c.Active == true)
                         {
-                            _allActiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                            _allActiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
                         }
                     }
                 }
@@ -246,8 +243,32 @@ namespace Mooshack_2.Services
         /// <returns></returns>
         public Course getCourseByID(int courseID)
         {
-            var _course = _dbContext.Courses.SingleOrDefault(x => x.id == courseID);
+            var _course = _dbContext.Courses.SingleOrDefault(x => x.ID == courseID);
             return _course;
+        }
+
+        public bool createCourse(AdminCourseViewModel model)
+        {
+            Course _newCourse = new Course
+            {
+                Name = model.Name,
+                Active = true
+            };
+
+            _dbContext.Courses.Add(_newCourse);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool deleteCourse(int courseID)
+        {
+            Course _deletedCourse = (from course in _dbContext.Courses
+                                             where course.ID == courseID
+                                             select course).FirstOrDefault();
+            _dbContext.Courses.Remove(_deletedCourse);
+            _dbContext.SaveChanges();
+
+            return true;
         }
 
 
