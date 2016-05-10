@@ -316,6 +316,7 @@
     <Content Include="Views\assignment\StudentAssignmentPage.cshtml" />
     <Content Include="Views\assignment\AdminAssignmentPage.cshtml" />
     <Content Include="Views\Shared\_listOfUnactiveCourses.cshtml" />
+    <Content Include="Views\assignment\EditAssignment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
