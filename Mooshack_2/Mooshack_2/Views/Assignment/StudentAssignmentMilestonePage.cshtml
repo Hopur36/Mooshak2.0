@@ -1,0 +1,37 @@
+﻿@model  Mooshack_2.Models.ViewModels.AssignmentViewModel
+@{
+    ViewBag.Title = "StudentAssignmentMilestonePage";
+}
+
+
+<h2>@Model.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Weight
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Milestones)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)%
+            </td>
+        </tr>
+    }
+
+</table>

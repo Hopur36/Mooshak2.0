@@ -62,6 +62,13 @@ namespace Mooshack_2.Controllers
             return View(_assignment);
         }
 
+        [Authorize(Roles = "Student")]
+        public ActionResult StudentAssignmentMilestonePage(int assignmentID)
+        {
+            AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            return View(_assignment);
+        }
+
         public ActionResult CreateAssignment(int CourseID)
         {
             CreateAssignmentViewModel _newAssignmentViewModel = new CreateAssignmentViewModel();
