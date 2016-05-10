@@ -71,7 +71,9 @@ namespace Mooshack_2.Controllers
         {
             _assignmentService.CreateAssignment(model);
 
-            return RedirectToAction("TeacherFrontPage", "Home", new { courseID = model.CourseID });
+
+            return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+
         }
 
         public ActionResult DeleteAssignment(int assignmentID, int courseReturnID)
