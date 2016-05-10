@@ -31,6 +31,11 @@ namespace Mooshack_2.Services
                                                         where item.CourseID == cid
                                                         select item).ToList();
 
+                String _coursename = (from item in _dbContext.Courses
+                                      where item.id == cid
+                                      select item.Name).FirstOrDefault();
+
+
                 var _assignmentViewModels = new List<AssignmentViewModel>();
                 foreach (var _assignment in _assignments)
                 {
@@ -38,6 +43,7 @@ namespace Mooshack_2.Services
                     {
                         id = _assignment.id,
                         CourseID = _assignment.CourseID,
+                        CourseName = _coursename,
                         Description = _assignment.Description,
                         EndDateTime = _assignment.EndDateTime,
                         StartDateTime = _assignment.StartDateTime,
@@ -190,6 +196,10 @@ namespace Mooshack_2.Services
                                                         where item.CourseID == cid
                                                         select item).ToList();
 
+                String _courseName = (from item in _dbContext.Courses
+                                      where item.id == cid
+                                      select item.Name).FirstOrDefault();
+
                 var _assignmentViewModels = new List<AssignmentViewModel>();
                 foreach (var _assignment in _assignments)
                 {
@@ -199,6 +209,7 @@ namespace Mooshack_2.Services
                             {
                                 id = _assignment.id,
                                 CourseID = _assignment.CourseID,
+                                CourseName = _courseName,
                                 Description = _assignment.Description,
                                 EndDateTime = _assignment.EndDateTime,
                                 StartDateTime = _assignment.StartDateTime,
