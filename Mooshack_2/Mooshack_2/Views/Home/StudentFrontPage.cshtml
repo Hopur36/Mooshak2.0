@@ -18,10 +18,10 @@
                 <table class="table">
                     <tr>
                         <th>
-                            Course
+                            Title
                         </th>
                         <th>
-                            Title
+                            Course
                         </th>
                         <th>
                             Description
@@ -34,11 +34,12 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => _assignment.CourseName)
+                                @Html.ActionLink(_assignment.Title, "StudentAssignmentMilestonePage", new { controller = "assignment", assignmentID = _assignment.id })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => _assignment.Title)
+                                @Html.DisplayFor(modelItem => _assignment.CourseName)
                             </td>
+
                             <td>
                                 @Html.DisplayFor(modelItem => _assignment.Description)
                             </td>
