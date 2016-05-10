@@ -27,6 +27,7 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public ActionResult TeacherAssignmentPage(int? courseID)
         {
             if (courseID != null)
@@ -48,11 +49,13 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public ActionResult TeacherNewAssignmentPage()
         {
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         public ActionResult TeacherAssignmentMilestonesPage(int assignmentID)
         {
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
@@ -66,6 +69,7 @@ namespace Mooshack_2.Controllers
             return View(_newAssignmentViewModel);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public ActionResult CreateAssignment(CreateAssignmentViewModel model)
         {
@@ -76,12 +80,14 @@ namespace Mooshack_2.Controllers
 
         }
 
+        [Authorize(Roles = "Teacher")]
         public ActionResult DeleteAssignment(int assignmentID, int courseReturnID)
         {
             _assignmentService.DeleteAssignment(assignmentID);
             return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = courseReturnID });
         }
 
+        [Authorize(Roles = "Teacher")]
         public ActionResult CreateMilestone(int assignmentID)
         {
             CreateMilestoneViewModel _newMileStone = new CreateMilestoneViewModel();
@@ -90,6 +96,7 @@ namespace Mooshack_2.Controllers
             return View(_newMileStone);
         }
 
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public ActionResult CreateMilestone(CreateMilestoneViewModel model)
         {
@@ -99,7 +106,7 @@ namespace Mooshack_2.Controllers
         }
 
 
-
+        [Authorize(Roles = "Student")]
         /*Student gets information about a single course*/
         public ActionResult studentAssignmentPage(int? courseID)
         {
