@@ -134,11 +134,11 @@ namespace Mooshack_2.Services
             {
                 foreach (Course c in _dbContext.Courses)
                 {
-                    if (c.ID == ct.CourseID)
+                    if (c.id == ct.CourseID)
                     {
                         if (c.Active != true)
                         {
-                            _allInactiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                            _allInactiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
                         }
                     }
                 }
@@ -224,11 +224,11 @@ namespace Mooshack_2.Services
             {
                 foreach (Course c in _dbContext.Courses)
                 {
-                    if (c.ID == cs.CourseID)
+                    if (c.id == cs.CourseID)
                     {
                         if (c.Active != true)
                         {
-                            _allInactiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                            _allInactiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
                         }
                     }
                 }
