@@ -67,6 +67,7 @@ namespace Mooshack_2.Controllers
                     }
                 }
             }
+            _allAssignments.Sort((x,y) => x.EndDateTime.CompareTo(y.EndDateTime));
             var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments };
 
             return View(_teacherFrontPageViewModel);
@@ -98,6 +99,7 @@ namespace Mooshack_2.Controllers
                     }
                 }
             }
+            _allAssignments.Sort((x, y) => x.EndDateTime.CompareTo(y.EndDateTime));
             var _studentFrontPageViewModel = new StudentFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments  };
             return View(_studentFrontPageViewModel);
         }
