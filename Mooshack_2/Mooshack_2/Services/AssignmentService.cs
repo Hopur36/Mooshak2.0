@@ -32,7 +32,7 @@ namespace Mooshack_2.Services
                                                         select item).ToList();
 
                 String _coursename = (from item in _dbContext.Courses
-                                      where item.id == cid
+                                      where item.ID == cid
                                       select item.Name).FirstOrDefault();
 
 
@@ -197,7 +197,7 @@ namespace Mooshack_2.Services
                                                         select item).ToList();
 
                 String _courseName = (from item in _dbContext.Courses
-                                      where item.id == cid
+                                      where item.ID == cid
                                       select item.Name).FirstOrDefault();
 
                 var _assignmentViewModels = new List<AssignmentViewModel>();
