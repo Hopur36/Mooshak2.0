@@ -492,3 +492,8 @@ h3
 {
     padding-left: 20px;    
 }
+
+.panel-default
+{
+    border: none;
+}
