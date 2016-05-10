@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mooshack_2.Models;
+using Mooshack_2.Models.ViewModels;
 
 namespace Mooshack_2.Controllers
 {
@@ -36,6 +37,33 @@ namespace Mooshack_2.Controllers
             return View(_courses);
         }
 
- 
+        [Authorize(Roles = "Administrator")]
+        [HttpGet]
+        public ActionResult AdminCoursePage()
+        {
+            AdminCourseViewModel _myCourse = new AdminCourseViewModel();
+            _myCourse.Courses = _courseService.getAllCourses();
+            _myCourse.Courses.Sort((x,y) => x.Name.CompareTo(y.Name));
+
+            return View(_myCourse);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public ActionResult AdminCoursePage(AdminCourseViewModel model)
+        {
+            var _course = _courseService.createCourse(model);
+            AdminCourseViewModel _myCourse = new AdminCourseViewModel();
+            _myCourse.Courses = _courseService.getAllCourses();
+
+            return RedirectToAction("AdminCoursePage", "Course");
+            //return View(_myCourse);
+        }
+
+        public ActionResult deleteCourse(int courseID)
+        {
+            _courseService.deleteCourse(courseID);
+            return RedirectToAction("AdminCoursePage", "Course");
+        }
     }
 }

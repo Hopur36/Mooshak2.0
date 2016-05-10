@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace WebApplication1.Models.Entities
+namespace Mooshack_2.Models.ViewModels
 {
-    public class Course
+    public class AdminCourseViewModel
     {
-        public int ID { get; set; }
+        [Required]
         public string Name { get; set; }
-        public bool Active { get; set; }
+        public List<CourseViewModel> Courses { get; set; }
     }
 }

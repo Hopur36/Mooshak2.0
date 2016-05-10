@@ -88,6 +88,22 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
+        public ActionResult EditAssignment(int assignmentID)
+        {
+            var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            return View(_assignment);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        public ActionResult EditAssignment(AssignmentViewModel model)
+        {
+            _assignmentService.EditAssignment(model);
+            return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+        }
+
+
+        [Authorize(Roles = "Teacher")]
         public ActionResult DeleteAssignment(int assignmentID, int courseReturnID)
         {
             _assignmentService.DeleteAssignment(assignmentID);
