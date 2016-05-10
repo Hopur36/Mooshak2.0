@@ -46,5 +46,7 @@ namespace Mooshack_2.Models
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CreateAssignmentViewModel> CreateAssignmentViewModels { get; set; }
 
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CreateMilestoneViewModel> CreateMilestoneViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CourseViewModel> CourseViewModels { get; set; }
     }
 }
