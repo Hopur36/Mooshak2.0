@@ -34,10 +34,13 @@ namespace Mooshack_2.Controllers
                 var _assignmentService = new AssignmentService();
                 var _courseName = _courseService.getCourseViewModelByID(courseID);
                 var _assignmentModels = new TeacherAssignmentViewModel
-                    { CourseName = _courseName.Name,CourseID = Convert.ToInt32(courseID),
-                    Assignments = _assignmentService.getAssignmentByCourseID(courseID) };
-            
-                    
+                {
+                    CourseName = _courseName.Name,
+                    CourseID = Convert.ToInt32(courseID),
+                    Assignments = _assignmentService.getAssignmentByCourseID(courseID)
+                };
+
+
                 return View(_assignmentModels);
 
             }
@@ -68,13 +71,15 @@ namespace Mooshack_2.Controllers
         {
             _assignmentService.CreateAssignment(model);
 
+
             return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+
         }
 
-        public ActionResult DeleteAssignment(int assignmentID,int courseReturnID)
+        public ActionResult DeleteAssignment(int assignmentID, int courseReturnID)
         {
             _assignmentService.DeleteAssignment(assignmentID);
-            return RedirectToAction("TeacherAssignmentPage", "Assignment",new { courseID = courseReturnID});
+            return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = courseReturnID });
         }
 
         public ActionResult CreateMilestone(int assignmentID)
@@ -90,9 +95,33 @@ namespace Mooshack_2.Controllers
         {
             _assignmentService.CreateAssignmentMilestone(model);
 
-            return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID});
+            return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID });
         }
-    }
 
+
+
+        /*Student gets information about a single course*/
+        public ActionResult studentAssignmentPage(int? courseID)
+        {
+            if (courseID != null)
+            {
+                var _assignmentService = new AssignmentService();
+                var _courseName = _courseService.getCourseViewModelByID(courseID);
+
+                var _assignmentModels = new StudentAssignmentViewModel
+                {
+                    CourseName = _courseName.Name,
+                    CourseID = Convert.ToInt32(courseID),
+                    Assignments = _assignmentService.getAssignmentByCourseID(courseID)
+                };
+
+
+                return View(_assignmentModels);
+
+            }
+
+            return View();
+        }
+    } 
 
 }

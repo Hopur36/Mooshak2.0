@@ -16,6 +16,17 @@
                     <a href="~/Assignment/TeacherAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>           
                 </li>
             }
+    }else if (User.IsInRole("Student"))
+    {
+        foreach (var _course in Model)
+        {
+                <li>
+                    <a href="~/Assignment/StudentAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>
+                </li>
+    }
+            
+
+        
     }
 
 </ul>
