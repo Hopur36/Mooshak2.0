@@ -102,6 +102,23 @@ namespace Mooshack_2.Controllers
             return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
         }
 
+        [Authorize(Roles = "Teacher")]
+        public ActionResult EditMilestone(int milestoneID)
+        {
+            var _milestone = _assignmentService.getEditMilestoneViewModelByID(milestoneID);
+            return View(_milestone);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        public ActionResult EditMilestone(EditMilestoneViewModel model)
+        {
+            _assignmentService.EditMilestone(model);
+            return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID });
+        }
+
+
+
 
         [Authorize(Roles = "Teacher")]
         public ActionResult DeleteAssignment(int assignmentID, int courseReturnID)

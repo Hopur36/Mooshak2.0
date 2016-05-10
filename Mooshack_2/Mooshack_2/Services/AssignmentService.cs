@@ -241,5 +241,42 @@ namespace Mooshack_2.Services
 
             return true;
         }
+
+        public bool EditMilestone(EditMilestoneViewModel milestone)
+        {
+            Milestone model = (from item in _dbContext.Milestones
+                                where item.id == milestone.id
+                                select item).SingleOrDefault();
+
+            model.Title = milestone.Title;
+            model.Description = milestone.Description;
+            model.Weight = milestone.Weight;
+            model.Input = milestone.Input;
+            model.Output = milestone.Output;
+
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public EditMilestoneViewModel getEditMilestoneViewModelByID(int mID)
+        {
+           var _milestone = (from item in _dbContext.Milestones
+                          where item.id == mID
+                          select item).FirstOrDefault();
+
+            var _milestoneViewModel = new EditMilestoneViewModel
+            {
+                id = _milestone.id,
+                Title = _milestone.Title,
+                AssignmentID = _milestone.AssignmentID,
+                Description = _milestone.Description,
+                Weight = _milestone.Weight,
+                Input = _milestone.Input,
+                Output = _milestone.Output
+            };
+
+            return _milestoneViewModel;
+        }
     }
 }
