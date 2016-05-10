@@ -6,18 +6,21 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
- #wrapper {
+ #wrapper 
+{
     width: 100%;
     background: #4d4d4d;
 }
 
-#page-wrapper {
+#page-wrapper
+{
     padding: 15px 15px;
     min-height: 600px;
-    background:#F3F3F3;
-   
+    background-color: white;
+  
 }
-#page-inner {
+#page-inner 
+{
     width:100%;
     margin:10px 20px 10px 0px;
     background-color:#fff!important;
@@ -25,7 +28,8 @@ body {
     min-height:1200px;
 }
 
-.text-center {
+.text-center 
+{
     text-align:center;
 }
 .no-boder {
@@ -496,4 +500,15 @@ h3
 .panel-default
 {
     border: none;
+}
+
+.SizeColorFontSidebar
+{
+    font-size: 14px;
+    padding-top: 3px;
+    margin-left: 10px;
+    margin-right: 35px;
+    padding-left: 10px;
+    font-weight: bold;
+    background-color: white;
 }

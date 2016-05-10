@@ -23,9 +23,11 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+
+        
         [ChildActionOnly]
         [ActionName("_listOfCourses")]
-        public ActionResult _courseList()
+        public ActionResult _activeCourseList()
         {
 
             if (User.IsInRole("Administrator"))
@@ -46,7 +48,37 @@ namespace Mooshack_2.Controllers
 
                 return PartialView("_listOfCourses", _courses);
             }
-        }   
+        }
+
+        
+        
+        [ChildActionOnly]
+        [ActionName("_listOfUnactiveCourses")]
+        public ActionResult _unactiveCourseList()
+        {
+
+            if (User.IsInRole("Administrator"))
+            {
+                var _courses = _courseService.getAllInactiveCourses();
+
+                return PartialView("_listOfUnactiveCourses", _courses);
+            }
+            else if (User.IsInRole("Teacher"))
+            {
+                var _courses = _courseService.getAllInactiveCoursesByTeacherID(User.Identity.GetUserId());
+
+                return PartialView("_listOfUnactiveCourses", _courses);
+            }
+            else
+            {
+                var _courses = _courseService.getAllInactiveCoursesByStudentID(User.Identity.GetUserId());
+
+                return PartialView("_listOfUnactiveCourses", _courses);
+            }
+        }
+        
+
+
     }
 
 }
