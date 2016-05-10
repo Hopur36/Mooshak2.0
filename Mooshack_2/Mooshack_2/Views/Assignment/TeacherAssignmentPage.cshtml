@@ -7,47 +7,51 @@
 <h2>@Model.CourseName</h2>
 
 <p>
-    @Html.ActionLink("Create New Assignment", "CreateAssignment",  new { CourseID = Model.CourseID})
+    @Html.ActionLink("Create New Assignment", "CreateAssignment", new { CourseID = Model.CourseID })
 </p>
 
-<table>
-    <tr>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                StartDateTime
+            </th>
+            <th>
+                EndDateTime
+            </th>
+            <th></th>
+        </tr>
 
-        <th>
-            Title
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            StartDateTime
-        </th>
-        <th>
-            EndDateTime
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model.Assignments)
+        {
+            <tr>
 
-@foreach (var item in Model.Assignments) {
-    <tr>
+                <td>
+                    @Html.ActionLink(item.Title, "TeacherAssignmentMilestonesPage", new { assignmentID = item.id })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDateTime)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id })
+                    @Html.ActionLink("Delete", "DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID })
+                </td>
+            </tr>
+        }
 
-        <td>
-            @Html.ActionLink(item.Title, "TeacherAssignmentMilestonesPage", new { assignmentID = item.id })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDateTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditAssignment", new { assignmentID = item.id })
-            @Html.ActionLink("Delete", "DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID})
-        </td>
-    </tr>
-}
+    </table>
+    </div>
 
-</table>
+

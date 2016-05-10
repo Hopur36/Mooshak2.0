@@ -5,31 +5,41 @@
 
 <h3>Active Assignments</h3>
 
-<table>
-    <tr>
+<div class="table-responsive">
+    <table class="table">
+            <tr>
+                <th>
+                    Course Name
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    EndDateTime
+                </th>
+                <th></th>
+            </tr>
 
-        <th>
-            Title
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            EndDateTime
-        </th>
-        <th></th>
-    </tr>
+            @foreach (var item in Model.Assignments)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Title, "StudentAssignmentMilestonePage", new { assignmentID = item.id })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDateTime)
+                    </td>
+                </tr>
+            }
 
-    @foreach (var item in Model.Assignments)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDateTime)
-            </td>
-        </tr>
-    }
-
-</table>
+        </table>
+    </div>
