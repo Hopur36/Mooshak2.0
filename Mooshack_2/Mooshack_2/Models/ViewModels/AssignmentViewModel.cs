@@ -9,6 +9,7 @@ namespace Mooshack_2.Models.ViewModels
     {
         public int id { get; set; }
         public int CourseID { get; set; }
+        public string CourseName { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime StartDateTime { get; set; }

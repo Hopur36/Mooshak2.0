@@ -219,6 +219,7 @@
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\MilestoneViewModel.cs" />
+    <Compile Include="Models\ViewModels\StudentAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\TeacherAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\StudentFrontPageViewModel.cs" />
     <Compile Include="Models\ViewModels\TeacherFrontPageViewModel.cs" />
@@ -312,6 +313,9 @@
     <Content Include="Views\assignment\CreateAssignment.cshtml" />
     <Content Include="Views\assignment\CreateMilestone.cshtml" />
     <Content Include="Views\Course\AdminCoursePage.cshtml" />
+    <Content Include="Views\assignment\StudentAssignmentPage.cshtml" />
+    <Content Include="Views\assignment\AdminAssignmentPage.cshtml" />
+    <Content Include="Views\Shared\_listOfUnactiveCourses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

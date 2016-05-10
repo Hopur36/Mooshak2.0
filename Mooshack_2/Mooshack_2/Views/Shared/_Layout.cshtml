@@ -36,8 +36,11 @@ font-size: 16px;">@Html.Partial("_LoginPartial")</div>
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
 
+                <p class="SizeColorFontSidebar">Active Courses</p>
                 @Html.Action("_listOfCourses", "Layout", new { area = "" })
 
+                <p class="SizeColorFontSidebar">Unactive Courses</p>
+                @Html.Action("_listOfUnactiveCourses", "Layout", new { area = "" })
             </div>
 
         </nav>

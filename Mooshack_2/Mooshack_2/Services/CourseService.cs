@@ -17,6 +17,10 @@ namespace Mooshack_2.Services
             _dbContext = new ApplicationDbContext();
         }
 
+        /// <summary>
+        /// Get all active courses from database
+        /// </summary>
+        /// <returns></returns>
         public List<CourseViewModel> getAllCourses()
         {
             List<Course> _allCourses = (from course in _dbContext.Courses
@@ -26,10 +30,30 @@ namespace Mooshack_2.Services
             List<CourseViewModel> _allCoursesViewModel = new List<CourseViewModel>();
 
             foreach (Course c in _allCourses)
-            {
-                
-                      _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name, id = c.ID, Active = c.Active });
+            {              
+                _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name, id = c.ID, Active = c.Active });
+            }
+            return _allCoursesViewModel;
+        }
 
+        /// <summary>
+        /// Get all inactive courses from database
+        /// </summary>
+        /// <returns></returns>
+        public List<CourseViewModel> getAllInactiveCourses()
+        {
+            List<Course> _allCourses = (from course in _dbContext.Courses
+                                        select course).ToList();
+
+            //Create a new list of courseviewmodel
+            List<CourseViewModel> _allCoursesViewModel = new List<CourseViewModel>();
+
+            foreach (Course c in _allCourses)
+            {
+                if (c.Active != true)
+                {
+                    _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name });
+                }
             }
             return _allCoursesViewModel;
         }
@@ -96,6 +120,32 @@ namespace Mooshack_2.Services
             return _allActiveCoursesWithTeacherViewModel;
         }
 
+        /*This function returns a list of all unactive courses linked to each teacher*/
+        public List<CourseViewModel> getAllInactiveCoursesByTeacherID(string teacherID)
+        {
+            //list of all entries in CourseTeachers that match the teacherID
+            List<CourseTeacher> _allCourseTeachers = (from courseteacher in _dbContext.CourseTeacher
+                                                      where courseteacher.TeacherID == teacherID
+                                                      select courseteacher).ToList();
+
+            //Create a new list of courseviewmodel and only add courses that the teacher teaches
+            List<CourseViewModel> _allInactiveCoursesWithTeacherViewModel = new List<CourseViewModel>();
+            foreach (CourseTeacher ct in _allCourseTeachers)
+            {
+                foreach (Course c in _dbContext.Courses)
+                {
+                    if (c.id == ct.CourseID)
+                    {
+                        if (c.Active != true)
+                        {
+                            _allInactiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                        }
+                    }
+                }
+            }
+            return _allInactiveCoursesWithTeacherViewModel;
+        }
+
         /// <summary>
         /// This function returns a list of CourseViewModel with the courses that
         /// the student specified in "studentID" is enrolled in
@@ -153,6 +203,37 @@ namespace Mooshack_2.Services
                 }
             }
             return _allActiveCoursesWithStudentViewModel;
+        }
+
+        /// <summary>
+        /// This function returns a list of CourseViewModel with the inactive courses that
+        /// the student specified in "studentID" is enrolled in
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <returns>List<CourseViewModel></returns>
+        public List<CourseViewModel> getAllInactiveCoursesByStudentID(string studentID)
+        {
+            //list of all entries in CourseStudents that match the studentID
+            List<CourseStudent> _allCourseStudents = (from coursestudent in _dbContext.CourseStudent
+                                                      where coursestudent.StudentID == studentID
+                                                      select coursestudent).ToList();
+
+            //Create a new list of courseviewmodel and only add active courses that the student is enrolled in
+            List<CourseViewModel> _allInactiveCoursesWithStudentViewModel = new List<CourseViewModel>();
+            foreach (CourseStudent cs in _allCourseStudents)
+            {
+                foreach (Course c in _dbContext.Courses)
+                {
+                    if (c.id == cs.CourseID)
+                    {
+                        if (c.Active != true)
+                        {
+                            _allInactiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.id, Name = c.Name });
+                        }
+                    }
+                }
+            }
+            return _allInactiveCoursesWithStudentViewModel;
         }
 
         /// <summary>

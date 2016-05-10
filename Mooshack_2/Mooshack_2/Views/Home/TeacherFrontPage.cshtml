@@ -3,38 +3,23 @@
     ViewBag.Title = "Kennari";
 }
 
-<p> Forsíða Kennara </p>
+<h3>
+    Active Assignments
+</h3>
 
 <body>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            Virkir Áfangar
-            <div class="table-responsive">
-                <table class="table">
-                    @foreach (var _course in Model.Courses)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(x => _course.Name)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Details", "TeacherAssignmentPage", "Assignment", new { courseID = _course.id }, null)
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-
-        </div>
-    </div>
-    <br>
 
     <div class="panel panel-default">
         <div class="panel-body">
+            <!--
             Verkefni í gangi
+                -->
             <div class="table-responsive">
                 <table class="table">
                     <tr>
+                        <th>
+                            Course Name
+                        </th>
                         <th>
                             Title
                         </th>
@@ -48,6 +33,9 @@
                     @foreach (var _assignment in Model.Assignments)
                     {
                         <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => _assignment.CourseName)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => _assignment.Title )
                             </td>

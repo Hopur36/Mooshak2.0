@@ -67,6 +67,7 @@ namespace Mooshack_2.Controllers
                     }
                 }
             }
+            _allAssignments.Sort((x,y) => x.EndDateTime.CompareTo(y.EndDateTime));
             var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments };
 
             return View(_teacherFrontPageViewModel);
@@ -90,14 +91,15 @@ namespace Mooshack_2.Controllers
             List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
             foreach (CourseViewModel _course in _courses)
             {
-                if (_assignmentService.getAssignmentByCourseID(_course.id) != null)
+                if (_assignmentService.getActiveAssignmentByCourseID(_course.id) != null)
                 {
-                    foreach (AssignmentViewModel _assignment in _assignmentService.getAssignmentByCourseID(_course.id))
+                    foreach (AssignmentViewModel _assignment in _assignmentService.getActiveAssignmentByCourseID(_course.id))
                     {
                         _allAssignments.Add(_assignment);
                     }
                 }
             }
+            _allAssignments.Sort((x, y) => x.EndDateTime.CompareTo(y.EndDateTime));
             var _studentFrontPageViewModel = new StudentFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments  };
             return View(_studentFrontPageViewModel);
         }

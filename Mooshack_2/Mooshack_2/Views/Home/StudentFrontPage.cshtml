@@ -3,42 +3,28 @@
     ViewBag.Title = "Nemandi";
 }
 
-<p> Forsíða Nemenda </p>
+<h3>
+    Active Assignments
+</h3>
 
-<body>
+<body
+
     <div class="panel panel-default">
         <div class="panel-body">
-            Virkir Áfangar
-            <div class="table-responsive">
-                <table class="table">
-                    @foreach (var _course in Model.Courses)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(x => _course.Name)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Details", "StudentAssingmentPage", "Assignment", new { courseID = _course.id }, null)
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-
-        </div>
-    </div>
-    <br>
-    <div class="panel panel-default">
-        <div class="panel-body">
+            <!--
             Verkefni í gangi
+                -->
             <div class="table-responsive">
                 <table class="table">
                     <tr>
                         <th>
+                            Course
+                        </th>
+                        <th>
                             Title
                         </th>
                         <th>
-                            StartDate
+                            Description
                         </th>
                         <th>
                             EndDate
@@ -48,16 +34,20 @@
                     {
                         <tr>
                             <td>
+                                @Html.DisplayFor(modelItem => _assignment.CourseName)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => _assignment.Title)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => _assignment.StartDateTime)
+                                @Html.DisplayFor(modelItem => _assignment.Description)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => _assignment.EndDateTime)
                             </td>
                         </tr>
                     }
+
                 </table>
             </div>
 
