@@ -223,6 +223,23 @@ namespace Mooshack_2.Services
 
             }
 
+
+        }
+
+
+        public bool EditAssignment(AssignmentViewModel assignment)
+        {
+            Assignment model = (from item in _dbContext.Assignments
+                             where item.id == assignment.id
+                             select item).SingleOrDefault();
+
+            model.Title = assignment.Title;
+            model.Description = assignment.Description;
+            model.StartDateTime = assignment.StartDateTime;
+            model.EndDateTime = assignment.EndDateTime;
+            _dbContext.SaveChanges();
+
+            return true;
         }
     }
 }
