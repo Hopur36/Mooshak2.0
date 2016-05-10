@@ -1,4 +1,4 @@
-﻿ @model List<Mooshack_2.Models.ViewModels.CourseViewModel >
+﻿@model List<Mooshack_2.Models.ViewModels.CourseViewModel>
 
 @{
     ViewBag.Title = "";
@@ -12,17 +12,18 @@
     {
         foreach (var _course in Model)
         {
-                <li>
-                    <a href="~/Assignment/TeacherAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>           
-                </li>
+            <li>
+                <a href="~/Assignment/TeacherAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>
+            </li>
         }
-    } else if (User.IsInRole("Student"))
+    }
+    else if (User.IsInRole("Student"))
     {
         foreach (var _course in Model)
         {
-                <li>
-                    <a href="~/Assignment/StudentAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>
-                </li>
+            <li>
+                <a href="~/Assignment/StudentAssignmentPage?courseID=@_course.id"><i class="fa fa-dashboard fa-3x"></i> @Html.DisplayFor(modelItem => _course.Name)</a>
+            </li>
         }
     }
     else if (User.IsInRole("Administrator"))
@@ -35,4 +36,3 @@
         }
     }
 </ul>
-
