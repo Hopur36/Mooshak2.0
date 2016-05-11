@@ -35,6 +35,9 @@
             <td>
                 @Html.ActionLink("Submit", "studentSubmitMilestone", new { milestoneID = item.id })
             </td>
+            <td>
+                @Html.ActionLink("View My Submissions", "viewStudentSubmissions", new { milestoneID = item.id})
+            </td>
         </tr>
     }
 </table>

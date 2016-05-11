@@ -233,5 +233,14 @@ namespace Mooshack_2.Controllers
 
 
         }
+
+        [Authorize(Roles = "Student")]
+        public ActionResult viewStudentSubmissions(int? milestoneID)
+        {
+            var _studentID = User.Identity.GetUserId();
+            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID);
+
+            return View(_viewSubmissions);
+        }
     }
 }
