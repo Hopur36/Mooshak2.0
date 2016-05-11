@@ -49,6 +49,8 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+     
+
         [Authorize(Roles = "Teacher")]
         public ActionResult TeacherNewAssignmentPage()
         {
@@ -169,6 +171,8 @@ namespace Mooshack_2.Controllers
 
             return View();
         }
+
+
     } 
 
 }
