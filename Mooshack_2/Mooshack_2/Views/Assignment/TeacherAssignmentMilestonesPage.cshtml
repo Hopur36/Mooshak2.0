@@ -1,10 +1,10 @@
 ﻿@model  Mooshack_2.Models.ViewModels.AssignmentViewModel
 
 @{
-    ViewBag.Title = "TeacherAssignmentMilestonesPage";
+    ViewBag.Title = "Teacher Assignment Milestones Page";
 }
 
-<h2>@Model.Title</h2>
+<h2>@Model.CourseName/@Model.Title</h2>
 
 <p>
     @Html.ActionLink("Create New Milestone", "CreateMilestone", new { assignmentID = Model.id })
@@ -37,6 +37,9 @@
         
         <td>
             @Html.ActionLink("Edit", "EditMilestone", new { milestoneID = item.id })
+        </td>
+        <td>
+            @Html.ActionLink("View All Submissions", "viewAllStudentSubmissions", new { milestoneID = item.id })
         </td>
     </tr>
 }

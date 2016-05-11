@@ -10,6 +10,7 @@ using System.Net;
 using Microsoft.AspNet.Identity;
 using System.IO;
 using Mooshack_2.Helpers;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Mooshack_2.Controllers
 {
@@ -65,6 +66,8 @@ namespace Mooshack_2.Controllers
         public ActionResult TeacherAssignmentMilestonesPage(int assignmentID)
         {
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID);
+            _assignment.CourseName = _course.Name;
             return View(_assignment);
         }
 
@@ -72,6 +75,10 @@ namespace Mooshack_2.Controllers
         public ActionResult StudentAssignmentMilestonePage(int assignmentID)
         {
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID);
+            _assignment.CourseName = _course.Name;
+            
+
             return View(_assignment);
         }
 
@@ -159,7 +166,7 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Student")]
         /*Student gets information about a single course*/
-        public ActionResult studentAssignmentPage(int? courseID)
+        public ActionResult studentAssignmentPage(int? courseID )
         {
             if (courseID != null)
             {
@@ -243,6 +250,21 @@ namespace Mooshack_2.Controllers
         {
             var _studentID = User.Identity.GetUserId();
             ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID,milestoneID.Value);
+
+            return View(_viewSubmissions);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public ActionResult viewAllStudentSubmissions(int? milestoneID)
+        {
+            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByMilestoneID(milestoneID.Value);
+            var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            foreach (var submission in _viewSubmissions.Submissions)
+            {
+                var _student = _userManager.FindById(submission.StudentID);
+                submission.StudentName = _student.UserName;
+            }
 
             return View(_viewSubmissions);
         }

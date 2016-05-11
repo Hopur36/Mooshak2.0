@@ -10,6 +10,7 @@ namespace Mooshack_2.Models.ViewModels
     {
         public int id { get; set; }
         public string StudentID { get; set; }
+        public string StudentName { get; set; }
         public int MilestoneID { get; set; }
         public string MilestoneTitle { get; set; }
         public string MilestoneDescription { get; set; }

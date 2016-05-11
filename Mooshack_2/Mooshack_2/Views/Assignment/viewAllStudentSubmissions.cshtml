@@ -1,13 +1,16 @@
 ﻿@model Mooshack_2.Models.ViewModels.ViewSubmissions
-
 @{
-    ViewBag.Title = "viewStudentSubmissions";
+    ViewBag.Title = "View All Student Submissions";
 }
 
+<h2>viewAllStudentSubmissions</h2>
 <table class="table">
     <tr>
         <th>
-            ID
+            Submission ID
+        </th>
+        <th>
+            Student Name
         </th>
         <th>
             Date Submitted
@@ -27,6 +30,9 @@
                 @Html.DisplayFor(modelItem => item.id)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DateTimeSubmitted)
             </td>
             <td>
@@ -43,5 +49,6 @@
         </tr>
     }
 </table>
+
 
 
