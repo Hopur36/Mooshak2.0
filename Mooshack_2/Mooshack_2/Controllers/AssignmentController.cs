@@ -9,6 +9,7 @@ using Mooshack_2.Models.ViewModels;
 using System.Net;
 using Microsoft.AspNet.Identity;
 using System.IO;
+using Mooshack_2.Helpers;
 
 namespace Mooshack_2.Controllers
 {
@@ -206,8 +207,9 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model,HttpPostedFileBase file)
         {
-
             
+
+
             string _currentpath = HttpContext.Server.MapPath("~");
             if (file.ContentLength >= 0)
             {
@@ -220,6 +222,8 @@ namespace Mooshack_2.Controllers
                 model.FilePath = _path;
                 model.DateTimeSubmitted = DateTime.Now;
 
+                SubmissionEvaluator _evaluator = new SubmissionEvaluator(model, file);
+                model.Accepted = _evaluator.Evaluate();
                 _assignmentService.addSubmission(model);
             }
 
@@ -227,8 +231,8 @@ namespace Mooshack_2.Controllers
             {
                 return View("Error");
             }
-
-            return RedirectToAction("Index", "Home");
+            
+            return RedirectToAction("viewStudentSubmissions", "Assignment", new { milestoneID = model.MilestoneID });
 
 
 
@@ -238,7 +242,7 @@ namespace Mooshack_2.Controllers
         public ActionResult viewStudentSubmissions(int? milestoneID)
         {
             var _studentID = User.Identity.GetUserId();
-            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID);
+            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID,milestoneID.Value);
 
             return View(_viewSubmissions);
         }
