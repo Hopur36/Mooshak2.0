@@ -10,13 +10,27 @@ namespace Mooshack_2.Services
 {
     public class AssignmentService
     {
-        private ApplicationDbContext _dbContext;
+        /// <summary>
+        /// Variable can not be changed, unless it is in a constructor
+        /// </summary>
+        private readonly IMyDataContext _dbContext;
+
+        /// <summary>
+        /// Constructor for AssignmentService,
+        /// if argument is null then new ApplicationDbContext() is used
+        /// </summary>
+        /// <param name="context"></param>
+        public AssignmentService(IMyDataContext context)
+        {
+            _dbContext = context ?? new ApplicationDbContext();
+        }
+
+       /* private ApplicationDbContext _dbContext;
 
         public AssignmentService()
         {
             _dbContext = new ApplicationDbContext();
-        }
-
+        }*/
 
         public List<AssignmentViewModel> getAssignmentByCourseID(int? cid)
         {
@@ -24,7 +38,6 @@ namespace Mooshack_2.Services
             {
                 return null;
             }
-
             else
             {
                 IEnumerable<Assignment> _assignments = (from item in _dbContext.Assignments
@@ -35,8 +48,8 @@ namespace Mooshack_2.Services
                                       where item.ID == cid
                                       select item.Name).FirstOrDefault();
 
-
                 var _assignmentViewModels = new List<AssignmentViewModel>();
+
                 foreach (var _assignment in _assignments)
                 {
                     _assignmentViewModels.Add(new AssignmentViewModel
@@ -53,7 +66,6 @@ namespace Mooshack_2.Services
                 }
 
                 return _assignmentViewModels;
-
             }
 
         }
@@ -82,12 +94,8 @@ namespace Mooshack_2.Services
                     Title = _assignment.Title,
                     Milestones = getAllMilestonesByAssignmentID(_assignment.id)
                     
-
                 });
-
-                
             }
-
             return _assignmentViewModels;
         }
 
@@ -110,7 +118,6 @@ namespace Mooshack_2.Services
                 Title = _assignment.Title,
                 Milestones = getAllMilestonesByAssignmentID(_assignment.id)
             };
-
             return _assignmentViewModel;
         }
 
@@ -119,7 +126,9 @@ namespace Mooshack_2.Services
             var _allMilestones = (from item in _dbContext.Milestones
                                   where item.AssignmentID == aID
                                   select item).ToList();
+
             List<MilestoneViewModel> _allMilestonesViewModel = new List<MilestoneViewModel>();
+
             foreach (var item in _allMilestones)
             {
                 _allMilestonesViewModel.Add(new MilestoneViewModel
@@ -129,8 +138,8 @@ namespace Mooshack_2.Services
                     Description = item.Description,
                     Weight = item.Weight
                 });
-
             }
+
             return _allMilestonesViewModel;
         }
 
@@ -140,6 +149,7 @@ namespace Mooshack_2.Services
             Description = model.Description, StartDateTime = model.StartDateTime, EndDateTime = model.EndDateTime};
             _dbContext.Assignments.Add(_newAssignment);
             _dbContext.SaveChanges();
+
             return true;
         }
 
@@ -156,7 +166,6 @@ namespace Mooshack_2.Services
                 _dbContext.Milestones.Remove(milestone);
                 _dbContext.SaveChanges();
             }
-
 
             Assignment _deletedAssignment = (from assignment in _dbContext.Assignments
                                              where assignment.id == assignmentID
@@ -181,6 +190,7 @@ namespace Mooshack_2.Services
 
             _dbContext.Milestones.Add(_newMilestone);
             _dbContext.SaveChanges();
+
             return true;
         }
 
@@ -201,6 +211,7 @@ namespace Mooshack_2.Services
                                       select item.Name).FirstOrDefault();
 
                 var _assignmentViewModels = new List<AssignmentViewModel>();
+
                 foreach (var _assignment in _assignments)
                 {
                         if (_assignment.EndDateTime > DateTime.Now)
@@ -220,8 +231,8 @@ namespace Mooshack_2.Services
                 }
 
                 return _assignmentViewModels;
-
             }
+
 
 
         }
@@ -277,6 +288,7 @@ namespace Mooshack_2.Services
             };
 
             return _milestoneViewModel;
+
         }
 
         public MilestoneViewModel getMilestoneViewModelByID(int mID)

@@ -19,16 +19,28 @@ namespace Mooshack_2.Models
         }
     } 
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    /// <summary>
+    /// Added interface for Unit Testing, Inherits from ApplicationDbContext
+    /// </summary>
+    public interface IMyDataContext
     {
+        IDbSet<Course> Courses { get; set; }
+        IDbSet<Assignment> Assignments { get; set; }
+        IDbSet<CourseStudent> CourseStudent { get; set; }
+        IDbSet<CourseTeacher> CourseTeacher { get; set; }
+        IDbSet<Milestone> Milestones { get; set; }
+        IDbSet<Submission> Submissions { get; set; }
+        int SaveChanges();
+    }
 
-
-        public DbSet<Course>        Courses         { get; set; }
-        public DbSet<Assignment>    Assignments     { get; set; }
-        public DbSet<CourseStudent> CourseStudent  { get; set; }
-        public DbSet<CourseTeacher> CourseTeacher  { get; set; }
-        public DbSet<Milestone>     Milestones      { get; set; }
-        public DbSet<Submission>    Submissions     { get; set; }
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IMyDataContext
+    {
+        public IDbSet<Course>        Courses         { get; set; }
+        public IDbSet<Assignment>    Assignments     { get; set; }
+        public IDbSet<CourseStudent> CourseStudent  { get; set; }
+        public IDbSet<CourseTeacher> CourseTeacher  { get; set; }
+        public IDbSet<Milestone>     Milestones      { get; set; }
+        public IDbSet<Submission>    Submissions     { get; set; }
 
         
         public ApplicationDbContext()

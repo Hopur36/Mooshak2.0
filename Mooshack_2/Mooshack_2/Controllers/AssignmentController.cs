@@ -19,7 +19,7 @@ namespace Mooshack_2.Controllers
 
         public AssignmentController()
         {
-            _assignmentService = new AssignmentService();
+            _assignmentService = new AssignmentService(null);
             _courseService = new CourseService();
         }
 
@@ -35,7 +35,7 @@ namespace Mooshack_2.Controllers
         {
             if (courseID != null)
             {
-                var _assignmentService = new AssignmentService();
+                var _assignmentService = new AssignmentService(null);
                 var _courseName = _courseService.getCourseViewModelByID(courseID);
                 var _assignmentModels = new TeacherAssignmentViewModel
                 {
@@ -162,7 +162,7 @@ namespace Mooshack_2.Controllers
         {
             if (courseID != null)
             {
-                var _assignmentService = new AssignmentService();
+                var _assignmentService = new AssignmentService(null);
                 var _courseName = _courseService.getCourseViewModelByID(courseID);
 
                 var _assignmentModels = new StudentAssignmentViewModel
