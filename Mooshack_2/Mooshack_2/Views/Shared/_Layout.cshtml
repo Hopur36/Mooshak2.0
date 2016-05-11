@@ -39,8 +39,12 @@ font-size: 16px;">@Html.Partial("_LoginPartial")</div>
                 <p class="SizeColorFontSidebar">Active Courses</p>
                 @Html.Action("_listOfCourses", "Layout", new { area = "" })
 
-                <p class="SizeColorFontSidebar">Inactive Courses</p>
+                @{ if ((User.IsInRole("Teacher")) || (User.IsInRole("Student"))) {
+                   <p class="SizeColorFontSidebar">Inactive Courses</p>
+                        } }
+
                 @Html.Action("_listOfUnactiveCourses", "Layout", new { area = "" })
+                
             </div>
 
         </nav>
@@ -58,8 +62,6 @@ font-size: 16px;">@Html.Partial("_LoginPartial")</div>
                     </div>
                 </div>
                 <!-- /. ROW  -->
-                <hr />
-
             </div>
             <!-- /. PAGE INNER  -->
         </div>
