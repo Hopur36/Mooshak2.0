@@ -315,7 +315,9 @@ namespace Mooshack_2.Services
                 MilestoneID = model.MilestoneID,
                 StudentID = model.StudentID,
                 DateTimeSubmitted = model.DateTimeSubmitted,
-                ItemSubmittedPath = model.FilePath
+                ItemSubmittedPath = model.FilePath,
+                Accepted = model.Accepted
+
             };
 
             _dbContext.Submissions.Add(newSubmission);
@@ -324,7 +326,7 @@ namespace Mooshack_2.Services
             return true;
         }
 
-        public ViewSubmissions getAllSubmissionsByStudentID(string studentID)
+        public ViewSubmissions getAllSubmissionsByStudentID(string studentID, int milestoneID)
         {
             ViewSubmissions _submissonsViewModelsByStudentID = new ViewSubmissions();
             List<Submission> _allSubmissonsByStudentID = new List<Submission>();
@@ -333,6 +335,7 @@ namespace Mooshack_2.Services
             {
                 _allSubmissonsByStudentID = (from item in _dbContext.Submissions
                                              where item.StudentID == studentID
+                                             where item.MilestoneID == milestoneID
                                              select item).ToList();
             }
 
