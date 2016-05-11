@@ -1,11 +1,12 @@
 ﻿@model Mooshack_2.Models.ViewModels.StudentSubmissionViewModel
 
 @{
-    ViewBag.Title = "studentSubmitMilestone";
+    ViewBag.Title = "Submit Milestone";
 }
 
 <div class="panel panel-default">
     <div class="panel-heading">@Model.MilestoneDescription</div>
+    <div class="panel-body">
 
 
     @using (Html.BeginForm("studentSubmitMilestone", "Assignment", FormMethod.Post, new { @enctype = "multipart/form-data" }))
@@ -33,7 +34,8 @@
 
     }
 </div>
+    </div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Cancel", "StudentAssignmentMilestonePage", new { assignmentID = ViewBag.assignmentID})
 </div>

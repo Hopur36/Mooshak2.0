@@ -396,7 +396,6 @@ namespace Mooshack_2.Controllers
                 }
                 AddErrors(result);
             }
-
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }

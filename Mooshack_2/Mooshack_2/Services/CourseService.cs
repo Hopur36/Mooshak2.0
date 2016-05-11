@@ -272,6 +272,32 @@ namespace Mooshack_2.Services
         }
 
 
+        /// <summary>
+        /// Returns a CourseViewModel with a course that has the same id as the course id of assignment
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <returns>CourseViewModel</returns>
+        public CourseViewModel getCourseViewModelByAssignmentID(int assignmentID)
+        {
+            //Find the assignment with the id "assignmentID"
+            var _assignment = (from assignment in _dbContext.Assignments
+                               where assignment.id == assignmentID
+                               select assignment).FirstOrDefault();
+
+            //Find the course with the same course id as the assignment "assignmentID"
+            var _course = (from course in _dbContext.Courses
+                           where course.ID == _assignment.CourseID
+                           select course).FirstOrDefault();
+
+            //create a new CourseViewModel
+            var courseViewModel = new CourseViewModel { id = _course.ID,
+                                                        Name = _course.Name,
+                                                        Active = _course.Active};
+
+            return courseViewModel;
+        }
+
+
 
 
     }

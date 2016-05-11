@@ -25,12 +25,12 @@ namespace Mooshack_2.Services
             _dbContext = context ?? new ApplicationDbContext();
         }
 
-       /* private ApplicationDbContext _dbContext;
+        /* private ApplicationDbContext _dbContext;
 
-        public AssignmentService()
-        {
-            _dbContext = new ApplicationDbContext();
-        }*/
+         public AssignmentService()
+         {
+             _dbContext = new ApplicationDbContext();
+         }*/
 
         public List<AssignmentViewModel> getAssignmentByCourseID(int? cid)
         {
@@ -358,6 +358,39 @@ namespace Mooshack_2.Services
 
 
             return _submissonsViewModelsByStudentID;
+        }
+
+        public ViewSubmissions getAllSubmissionsByMilestoneID(int milestoneID)
+        {
+            ViewSubmissions _submissonsViewModelsByMilestoneID = new ViewSubmissions();
+            List<Submission> _allSubmissonsByMilestoneID = new List<Submission>();
+            List<StudentSubmissionViewModel> _allStudentSubmissionViewModel = new List<StudentSubmissionViewModel>();
+
+            _allSubmissonsByMilestoneID = (from item in _dbContext.Submissions
+                                             where item.MilestoneID == milestoneID
+                                             select item).ToList();
+            
+
+            foreach (var submission in _allSubmissonsByMilestoneID)
+            {
+                _allStudentSubmissionViewModel.Add(new StudentSubmissionViewModel
+                {
+                    id = submission.id,
+                    MilestoneID = submission.MilestoneID,
+                    StudentID = submission.StudentID,
+                    FilePath = submission.ItemSubmittedPath,
+                    Accepted = submission.Accepted,
+                    DateTimeSubmitted = submission.DateTimeSubmitted
+
+                });
+            }
+
+            _submissonsViewModelsByMilestoneID.Submissions = _allStudentSubmissionViewModel;
+
+
+
+            return _submissonsViewModelsByMilestoneID;
+
         }
     }
 }
