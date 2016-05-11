@@ -12,5 +12,6 @@ namespace WebApplication1.Models.Entities
         public int MilestoneID { get; set; }
         public DateTime DateTimeSubmitted { get; set; }
         public string ItemSubmittedPath { get; set; }
+        public bool Accepted { get; set; }
     }
 }

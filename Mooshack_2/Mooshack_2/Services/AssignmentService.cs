@@ -323,5 +323,38 @@ namespace Mooshack_2.Services
 
             return true;
         }
+
+        public ViewSubmissions getAllSubmissionsByStudentID(string studentID)
+        {
+            ViewSubmissions _submissonsViewModelsByStudentID = new ViewSubmissions();
+            List<Submission> _allSubmissonsByStudentID = new List<Submission>();
+            List<StudentSubmissionViewModel> _allStudentSubmissionViewModel = new List<StudentSubmissionViewModel> ();
+            if (studentID != null)
+            {
+                _allSubmissonsByStudentID = (from item in _dbContext.Submissions
+                                             where item.StudentID == studentID
+                                             select item).ToList();
+            }
+
+            foreach (var submission in _allSubmissonsByStudentID)
+            {
+                _allStudentSubmissionViewModel.Add(new StudentSubmissionViewModel
+                {
+                    id = submission.id,
+                    MilestoneID = submission.MilestoneID,
+                    StudentID = submission.StudentID,
+                    FilePath = submission.ItemSubmittedPath,
+                    Accepted = submission.Accepted,
+                    DateTimeSubmitted = submission.DateTimeSubmitted
+
+                });
+            }
+
+            _submissonsViewModelsByStudentID.Submissions = _allStudentSubmissionViewModel;
+
+
+
+            return _submissonsViewModelsByStudentID;
+        }
     }
 }

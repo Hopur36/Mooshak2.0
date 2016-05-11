@@ -1,0 +1,46 @@
+﻿@model Mooshack_2.Models.ViewModels.ViewSubmissions
+@{
+    ViewBag.Title = "viewStudentSubmissions";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Date Submitted
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Download
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Submissions)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTimeSubmitted)
+            </td>
+            <td>
+                @if (item.Accepted == true)
+                {
+                    @:Accepted
+                }
+                else
+                {
+                    @:False
+                }
+            </td>
+
+        </tr>
+    }
+</table>
+
+

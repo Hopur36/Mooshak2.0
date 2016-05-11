@@ -14,6 +14,7 @@ namespace Mooshack_2.Models.ViewModels
         public string MilestoneTitle { get; set; }
         public string MilestoneDescription { get; set; }
         public DateTime DateTimeSubmitted { get; set; }
+        public bool Accepted { get; set; }
 
         [Required]
         [Display(Name = "File")]
