@@ -22,7 +22,7 @@ namespace Mooshack_2.Controllers
         public AssignmentController()
         {
             _assignmentService = new AssignmentService(null);
-            _courseService = new CourseService();
+            _courseService = new CourseService(null);
         }
 
         // GET: Assignment

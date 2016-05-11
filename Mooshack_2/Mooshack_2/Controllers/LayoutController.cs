@@ -15,7 +15,7 @@ namespace Mooshack_2.Controllers
 
         public LayoutController()
         {
-            _courseService = new CourseService();
+            _courseService = new CourseService(null);
         }
 
         // GET: Layout

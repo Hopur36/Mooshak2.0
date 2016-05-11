@@ -10,15 +10,30 @@ namespace Mooshack_2.Services
 {
     public class CourseService
     {
-        private ApplicationDbContext _dbContext;
+        /// <summary>
+        /// Variable can not be changed, unless it is in a constructor
+        /// </summary>
+        private readonly IMyDataContext _dbContext;
+
+        /// <summary>
+        /// Constructor for CourseService,
+        /// if argument is null then new ApplicationDbContext() is used
+        /// </summary>
+        /// <param name="context"></param>
+        public CourseService(IMyDataContext context)
+        {
+            _dbContext = context ?? new ApplicationDbContext();
+        }
+
+        /*private ApplicationDbContext _dbContext;
 
         public CourseService()
         {
             _dbContext = new ApplicationDbContext();
-        }
+        }*/
 
         /// <summary>
-        /// Get all active courses from database
+        /// Get all courses from database
         /// </summary>
         /// <returns></returns>
         public List<CourseViewModel> getAllCourses()
