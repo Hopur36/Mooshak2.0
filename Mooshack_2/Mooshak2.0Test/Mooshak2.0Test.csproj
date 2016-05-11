@@ -65,6 +65,7 @@
     <Compile Include="MockDatabase.cs" />
     <Compile Include="Services\AssignmentServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CourseServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

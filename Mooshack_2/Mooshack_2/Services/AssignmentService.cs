@@ -105,7 +105,7 @@ namespace Mooshack_2.Services
                                where item.id == aID
                                select item).FirstOrDefault();
 
-            var _courseService = new CourseService();
+            var _courseService = new CourseService(null);
             var _course = _courseService.getCourseViewModelByID(_assignment.CourseID);
 
             AssignmentViewModel _assignmentViewModel = new AssignmentViewModel
@@ -243,7 +243,7 @@ namespace Mooshack_2.Services
             Assignment model = (from item in _dbContext.Assignments
                              where item.id == assignment.id
                              select item).SingleOrDefault();
-
+    
             model.Title = assignment.Title;
             model.Description = assignment.Description;
             model.StartDateTime = assignment.StartDateTime;
