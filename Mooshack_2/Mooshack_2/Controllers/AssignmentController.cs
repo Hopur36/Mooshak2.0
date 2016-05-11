@@ -6,6 +6,9 @@ using System.Web;
 using System.Web.Mvc;
 using Mooshack_2.Models;
 using Mooshack_2.Models.ViewModels;
+using System.Net;
+using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace Mooshack_2.Controllers
 {
@@ -103,9 +106,14 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
-        public ActionResult EditMilestone(int milestoneID)
+        public ActionResult EditMilestone(int? milestoneID)
         {
-            var _milestone = _assignmentService.getEditMilestoneViewModelByID(milestoneID);
+            if (milestoneID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var _milestone = _assignmentService.getEditMilestoneViewModelByID(milestoneID.Value);
             return View(_milestone);
         }
 
@@ -158,7 +166,7 @@ namespace Mooshack_2.Controllers
                 var _assignmentModels = new StudentAssignmentViewModel
                 {
                     CourseName = _courseName.Name,
-                    CourseID = Convert.ToInt32(courseID),
+                    CourseID = (courseID.Value),
                     Assignments = _assignmentService.getAssignmentByCourseID(courseID)
                 };
 
@@ -169,6 +177,58 @@ namespace Mooshack_2.Controllers
 
             return View();
         }
-    } 
 
+        [Authorize(Roles = "Student")]
+        public ActionResult studentSubmitMilestone(int? milestoneID)
+        {
+            if (milestoneID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var _studentSubmissonForm = new StudentSubmissionViewModel();
+            var _milestone = _assignmentService.getMilestoneViewModelByID(milestoneID.Value);
+
+            _studentSubmissonForm.StudentID = User.Identity.GetUserId();
+            _studentSubmissonForm.MilestoneID = milestoneID.Value;
+            _studentSubmissonForm.MilestoneTitle = _milestone.Title;
+            _studentSubmissonForm.MilestoneDescription = _milestone.Description;
+
+            return View(_studentSubmissonForm);
+
+
+        }
+
+        [Authorize(Roles = "Student")]
+        [HttpPost]
+        public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model,HttpPostedFileBase file)
+        {
+
+            
+            string _currentpath = HttpContext.Server.MapPath("~");
+            if (file.ContentLength >= 0)
+            {
+                string _dir = _currentpath + "Submissions\\" + model.MilestoneID.ToString() + "\\" + User.Identity.GetUserName();
+                Directory.CreateDirectory(_dir);
+                var _fileName = DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + Path.GetFileName(file.FileName);
+                var _path = Path.Combine(_dir, _fileName);
+                file.SaveAs(_path);
+
+                model.FilePath = _path;
+                model.DateTimeSubmitted = DateTime.Now;
+
+                _assignmentService.addSubmission(model);
+            }
+
+            else
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index", "Home");
+
+
+
+        }
+    }
 }

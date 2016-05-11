@@ -31,6 +31,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Weight)%
             </td>
+
+            <td>
+                @Html.ActionLink("Submit", "studentSubmitMilestone", new { milestoneID = item.id })
+            </td>
         </tr>
     }
 
