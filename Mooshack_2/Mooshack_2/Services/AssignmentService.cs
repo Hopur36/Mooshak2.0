@@ -278,5 +278,17 @@ namespace Mooshack_2.Services
 
             return _milestoneViewModel;
         }
+        public bool DeleteMilestone(int milestoneID)
+        {
+            Milestone _deletedMilestone = (from milestone in _dbContext.Milestones
+                                           where milestone.id == milestoneID
+                                           select milestone).FirstOrDefault();
+            _dbContext.Milestones.Remove(_deletedMilestone);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+
     }
 }
