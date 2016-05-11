@@ -278,5 +278,38 @@ namespace Mooshack_2.Services
 
             return _milestoneViewModel;
         }
+
+        public MilestoneViewModel getMilestoneViewModelByID(int mID)
+        {
+            var _milestone = (from item in _dbContext.Milestones
+                              where item.id == mID
+                              select item).FirstOrDefault();
+
+            var _milestoneViewModel = new MilestoneViewModel
+            {
+                id = _milestone.id,
+                Title = _milestone.Title,
+                Description = _milestone.Description,
+                Weight = _milestone.Weight
+            };
+
+            return _milestoneViewModel;
+        }
+
+        public bool addSubmission(StudentSubmissionViewModel model)
+        {
+            Submission newSubmission = new Submission {
+                id = model.id,
+                MilestoneID = model.MilestoneID,
+                StudentID = model.StudentID,
+                DateTimeSubmitted = model.DateTimeSubmitted,
+                ItemSubmittedPath = model.FilePath
+            };
+
+            _dbContext.Submissions.Add(newSubmission);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
     }
 }

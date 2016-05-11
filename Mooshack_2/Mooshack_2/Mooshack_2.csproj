@@ -221,6 +221,7 @@
     <Compile Include="Models\ViewModels\EditMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\MilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\StudentAssignmentViewModel.cs" />
+    <Compile Include="Models\ViewModels\StudentSubmissionViewModel.cs" />
     <Compile Include="Models\ViewModels\TeacherAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\StudentFrontPageViewModel.cs" />
     <Compile Include="Models\ViewModels\TeacherFrontPageViewModel.cs" />
@@ -319,6 +320,7 @@
     <Content Include="Views\assignment\StudentAssignmentMilestonePage.cshtml" />
     <Content Include="Views\assignment\EditAssignment.cshtml" />
     <Content Include="Views\assignment\EditMilestone.cshtml" />
+    <Content Include="Views\assignment\studentSubmitMilestone.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
