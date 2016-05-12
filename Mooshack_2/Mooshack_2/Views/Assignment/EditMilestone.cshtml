@@ -4,15 +4,14 @@
     ViewBag.Title = "Edit Milestone";
 }
 
-<h2>EditMilestone</h2>
+<h2>Edit Milestone @Model.Title</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>EditMilestoneViewModel</h4>
-        <hr />
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.id)
         @Html.HiddenFor(model => model.AssignmentID)
@@ -66,5 +65,5 @@
 }
 
 <div>
-   @Html.ActionLink("Cancel", "TeacherAssignmentMilestonePage", new { assignmentID = Model.AssignmentID })
+    @Html.ActionLink("Cancel", "TeacherAssignmentMilestonesPage", new { assignmentID = Model.AssignmentID })
 </div>
