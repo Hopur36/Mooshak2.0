@@ -1,0 +1,41 @@
+﻿@model Mooshack_2.Models.ViewModels.StudentSubmissionViewModel
+
+@{
+    ViewBag.Title = "Submit Milestone";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">@Model.MilestoneDescription</div>
+    <div class="panel-body">
+
+
+    @using (Html.BeginForm("studentSubmitMilestone", "Assignment", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+
+        <div class="form-horizontal">
+            @Html.HiddenFor(model => model.MilestoneID)
+            @Html.HiddenFor(model => model.StudentID)
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="File">File</label>
+                <div class="col-md-10">
+                    <input  htmlAttributes="{ class = form-control }" id="file" name="file" type="File" />
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Submit" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+    </div>
+
+<div>
+    @Html.ActionLink("Cancel", "StudentAssignmentMilestonePage", new { assignmentID = ViewBag.assignmentID})
+</div>

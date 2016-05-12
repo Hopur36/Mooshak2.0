@@ -15,7 +15,7 @@ namespace Mooshack_2.Controllers
 
         public LayoutController()
         {
-            _courseService = new CourseService();
+            _courseService = new CourseService(null);
         }
 
         // GET: Layout
@@ -67,7 +67,7 @@ namespace Mooshack_2.Controllers
         [ActionName("_listOfUnactiveCourses")]
         public ActionResult _unactiveCourseList()
         {
-
+            /*
             if (User.IsInRole("Administrator"))
             {
                 var _courses = _courseService.getAllInactiveCourses();
@@ -75,7 +75,7 @@ namespace Mooshack_2.Controllers
 
                 return PartialView("_listOfUnactiveCourses", _courses);
             }
-            else if (User.IsInRole("Teacher"))
+            else */if (User.IsInRole("Teacher"))
             {
                 var _courses = _courseService.getAllInactiveCoursesByTeacherID(User.Identity.GetUserId());
 

@@ -33,7 +33,7 @@
             <tr>
 
                 <td>
-                    @Html.ActionLink(item.Title, "TeacherAssignmentMilestonesPage", new { assignmentID = item.id })
+                    @Html.ActionLink(item.Title, "TeacherAssignmentMilestonesPage", new { assignmentID = item.id})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
@@ -45,13 +45,14 @@
                     @Html.DisplayFor(modelItem => item.EndDateTime)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.id })
-                    @Html.ActionLink("Delete", "DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID })
+                    @Html.ActionLink("Edit", "EditAssignment", new { assignmentID = item.id = item.id })
+                    @Html.ActionLink("Delete", "DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID}, new { onclick = "return confirm('Are you sure you want to delete this Assignment?')" })
                 </td>
             </tr>
         }
 
     </table>
     </div>
+
 
 

@@ -17,8 +17,8 @@ namespace Mooshack_2.Controllers
 
         public HomeController()
         {
-            _courseService = new CourseService();
-            _assignmentService = new AssignmentService();
+            _courseService = new CourseService(null);
+            _assignmentService = new AssignmentService(null);
         }
         public ActionResult Index()
         {

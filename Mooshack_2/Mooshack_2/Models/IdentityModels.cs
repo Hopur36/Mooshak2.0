@@ -19,18 +19,34 @@ namespace Mooshack_2.Models
         }
     } 
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    /// <summary>
+    /// Added interface for Unit Testing, Inherits from ApplicationDbContext
+    /// </summary>
+    public interface IMyDataContext
     {
+        IDbSet<Course> Courses { get; set; }
+        IDbSet<Assignment> Assignments { get; set; }
+        IDbSet<CourseStudent> CourseStudent { get; set; }
+        IDbSet<CourseTeacher> CourseTeacher { get; set; }
+        IDbSet<Milestone> Milestones { get; set; }
+        IDbSet<Submission> Submissions { get; set; }
+        IDbSet<ApplicationUser> Users { get; set; }
+        IDbSet<IdentityRole> Roles { get; set; }
+        int SaveChanges();
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IMyDataContext
+    {
+        public IDbSet<Course>        Courses         { get; set; }
+        public IDbSet<Assignment>    Assignments     { get; set; }
+        public IDbSet<CourseStudent> CourseStudent  { get; set; }
+        public IDbSet<CourseTeacher> CourseTeacher  { get; set; }
+        public IDbSet<Milestone>     Milestones      { get; set; }
+        public IDbSet<Submission>    Submissions     { get; set; }
+        override public IDbSet<ApplicationUser> Users { get; set; }
+        override public IDbSet<IdentityRole> Roles { get; set; }
 
 
-        public DbSet<Course>        Courses         { get; set; }
-        public DbSet<Assignment>    Assignments     { get; set; }
-        public DbSet<CourseStudent> CourseStudent  { get; set; }
-        public DbSet<CourseTeacher> CourseTeacher  { get; set; }
-        public DbSet<Milestone>     Milestones      { get; set; }
-        public DbSet<Submission>    Submissions     { get; set; }
-
-        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -50,5 +66,9 @@ namespace Mooshack_2.Models
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CourseViewModel> CourseViewModels { get; set; }
 
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CourseUsersViewModel> CourseUsersViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.EditMilestoneViewModel> MilestoneViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.StudentSubmissionViewModel> StudentSubmissionViewModels { get; set; }
     }
 }

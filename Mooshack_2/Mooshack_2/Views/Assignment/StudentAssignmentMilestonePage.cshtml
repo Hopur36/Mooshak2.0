@@ -4,7 +4,7 @@
 }
 
 
-<h2>@Model.Title</h2>
+<h2>@Model.CourseName/@Model.Title</h2>
 
 <table class="table">
     <tr>
@@ -31,7 +31,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Weight)%
             </td>
+
+            <td>
+                @Html.ActionLink("Submit", "studentSubmitMilestone", new { milestoneID = item.id })
+            </td>
+            <td>
+                @Html.ActionLink("View My Submissions", "viewStudentSubmissions", new { milestoneID = item.id})
+            </td>
         </tr>
     }
-
 </table>
+
