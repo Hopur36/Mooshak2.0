@@ -1,6 +1,7 @@
 ﻿using Mooshack_2.Models;
 using System.Data.Entity;
 using WebApplication1.Models.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 
 namespace Mooshak2._0Test
@@ -23,6 +24,8 @@ namespace Mooshak2._0Test
             this.CourseTeacher = new InMemoryDbSet<CourseTeacher>();
             this.Milestones = new InMemoryDbSet<Milestone>();
             this.Submissions = new InMemoryDbSet<Submission>();
+            this.Users = new InMemoryDbSet<ApplicationUser>();
+
         }
 
         public IDbSet<Course> Courses { get; set; }
@@ -31,6 +34,8 @@ namespace Mooshak2._0Test
         public IDbSet<CourseTeacher> CourseTeacher { get; set; }
         public IDbSet<Milestone> Milestones { get; set; }
         public IDbSet<Submission> Submissions { get; set; }
+        public IDbSet<ApplicationUser> Users { get; set; }
+        public IDbSet<IdentityRole> Roles { get; set; }
 
         public int SaveChanges()
         {
