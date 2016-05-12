@@ -10,6 +10,7 @@ namespace Mooshack_2.Models.ViewModels
     {
         [Required]
         public string Name { get; set; }
-        public List<CourseViewModel> Courses { get; set; }
+        public List<CourseViewModel> ActiveCourses { get; set; }
+        public List<CourseViewModel> InactiveCourses { get; set; }
     }
 }
