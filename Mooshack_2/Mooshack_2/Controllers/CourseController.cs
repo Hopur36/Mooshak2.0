@@ -79,11 +79,12 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Administrator")]
         [HttpGet]
-        public ActionResult AdminCourseUsersPage(string Name, int id)
+        public ActionResult AdminCourseUsersPage(string Name, int id, bool Active)
         {
             CourseUsersViewModel _myViewModel = new CourseUsersViewModel();
             _myViewModel.id = id;
             _myViewModel.Name = Name;
+            _myViewModel.Active = Active;
             _myViewModel.Teachers = _courseService.getCourseTeachers(id);
             _myViewModel.Students = _courseService.getCourseStudents(id);
             _myViewModel.AllTeachers = _courseService.getAllTeachers();
@@ -93,10 +94,10 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public ActionResult removeStudentFromCourse(string studentID, int courseID, string courseName)
+        public ActionResult removeStudentFromCourse(string studentID, int courseID, string courseName,bool Active)
         {
             _courseService.removeStudentFromCourse(studentID, courseID);
-            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = courseName, id = courseID });
+            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = courseName, id = courseID,Active = Active });
         }
 
         [Authorize(Roles = "Administrator")]
@@ -105,14 +106,15 @@ namespace Mooshack_2.Controllers
         {
             var studentName = form["studentSelect"].ToString();
             _courseService.addStudentToCourse(studentName, model.id);
-            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = model.Name, id = model.id });
+            model.Active = _courseService.isCourseActive(model.id);
+            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = model.Name, id = model.id, Active = model.Active });
         }
 
         [Authorize(Roles = "Administrator")]
-        public ActionResult removeTeacherFromCourse(string teacherID, int courseID, string courseName)
+        public ActionResult removeTeacherFromCourse(string teacherID, int courseID, string courseName, bool Active)
         {
             _courseService.removeTeacherFromCourse(teacherID, courseID);
-            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = courseName, id = courseID });
+            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = courseName, id = courseID, Active = Active});
         }
 
         [Authorize(Roles = "Administrator")]
@@ -121,7 +123,18 @@ namespace Mooshack_2.Controllers
         {
             var teacherName = form["teacherSelect"].ToString();
             _courseService.addTeacherToCourse(teacherName, model.id);
-            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = model.Name, id = model.id });
+            model.Active = _courseService.isCourseActive(model.id);
+            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = model.Name, id = model.id, Active = model.Active });
+        }
+
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult courseActivateOrDeactivate(string Name, int id, bool Active)
+        {
+            _courseService.changeCourseActive(id, Active);
+
+            Active = _courseService.isCourseActive(id);
+            return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = Name, id = id, Active = Active});
         }
 
     }
