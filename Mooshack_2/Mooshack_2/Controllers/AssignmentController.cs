@@ -290,7 +290,10 @@ namespace Mooshack_2.Controllers
             byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
             string contentType = MimeMapping.GetMimeMapping(currentPath);
 
-            return File(filedata, contentType, "studentSubmission.cpp");
+            int pos = currentPath.LastIndexOf("\\") + 1;
+
+
+            return File(filedata, contentType, currentPath.Substring(pos, currentPath.Length - pos));
         }
     }
 }
