@@ -148,7 +148,7 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles = "Teacher")]
         public ActionResult DeleteMilestone(int milestoneID, int assignmentReturnID)
         {
-            AssignmentService _deleteMileStone = new AssignmentService();
+            AssignmentService _deleteMileStone = new AssignmentService(null);
             _deleteMileStone.DeleteMilestone(milestoneID);
             return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = assignmentReturnID });
         }
@@ -275,6 +275,22 @@ namespace Mooshack_2.Controllers
             }
 
             return View(_viewSubmissions);
+        }
+
+        public ActionResult openSubmission(string currentPath)
+        {
+            byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
+            string contentType = MimeMapping.GetMimeMapping(currentPath);
+
+            return File(filedata, contentType);
+        }
+
+        public ActionResult downloadSubmission(string currentPath)
+        {
+            byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
+            string contentType = MimeMapping.GetMimeMapping(currentPath);
+
+            return File(filedata, contentType, "studentSubmission.cpp");
         }
     }
 }
