@@ -1,0 +1,40 @@
+﻿@model Mooshack_2.Models.ViewModels.AdminCourseViewModel
+@{
+    ViewBag.Title = "AdminUserPage";
+}
+
+<h2>AdminUserPage</h2>
+
+@using (Html.BeginForm("AdminCoursePage", "Course", FormMethod.Post, null))
+{
+    <div class="form-group">
+        <label class="sr-only" for="exampleInputAmount">Create new</label>
+        <div class="input-group col-xs-3">
+            <div class="input-group-addon">Name: </div>
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+        </div>
+        <button type="submit" class="btn btn-primary">Create course</button>
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Courses)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id })
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id })
+            </td>
+        </tr>
+    }
+
+</table>

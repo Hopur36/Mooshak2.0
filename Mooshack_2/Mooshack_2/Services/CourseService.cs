@@ -467,6 +467,20 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        public List<UserViewModel> getAllUsers()
+        {
+            var _allUsers = _dbContext.Users.ToList();
+
+            List<UserViewModel> _userViewModelList = new List<UserViewModel>();
+
+            foreach (var user in _allUsers)
+            {
+                _userViewModelList.Add(new UserViewModel { Id = user.Id, UserName = user.UserName, Email = user.Email });
+            }
+
+            _userViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+            return _userViewModelList;
+
         public bool isCourseActive(int courseID)
         {
             Course _result = getCourseByID(courseID);
@@ -480,7 +494,6 @@ namespace Mooshack_2.Services
 
             _course.Active = active;
             _dbContext.SaveChanges();
-
         }
 
     }

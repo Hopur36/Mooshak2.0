@@ -512,3 +512,16 @@ h3
     font-weight: bold;
     background-color: white;
 }
+
+
+
+h2, .h2 {
+    font-size: 30px;
+    padding-bottom: 30px;
+}
+
+ .moveButon
+ {
+     margin-left: 100px;
+     font-size:. 100px;
+ }
