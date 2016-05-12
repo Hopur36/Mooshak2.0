@@ -328,6 +328,8 @@
     <Content Include="Views\assignment\studentSubmitMilestone.cshtml" />
     <Content Include="Views\assignment\viewStudentSubmissions.cshtml" />
     <Content Include="Views\assignment\viewAllStudentSubmissions.cshtml" />
+    <Content Include="Views\Shared\AllCourses.cshtml" />
+    <Content Include="Views\Course\AdminUserPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
