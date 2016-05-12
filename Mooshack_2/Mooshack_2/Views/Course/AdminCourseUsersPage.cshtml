@@ -18,7 +18,7 @@
                 <div class="input-group col-xs-3">
                     <select id="studentSelect" name="studentSelect" class="form-control" required="required">
                         <option></option>
-                        @foreach (var item in Model.AllStudents)
+                        @foreach (var item in Model.StudentsRest)
                         {
                             <option>@Html.DisplayFor(modelItem => item.UserName)</option>
                         }
@@ -64,7 +64,7 @@
                 <div class="input-group col-xs-3">
                     <select id="teacherSelect" name="teacherSelect" class="form-control" required="required">
                         <option></option>
-                        @foreach (var item in Model.AllTeachers)
+                        @foreach (var item in Model.TeachersRest)
                         {
                             <option>@Html.DisplayFor(modelItem => item.UserName)</option>
                         }
