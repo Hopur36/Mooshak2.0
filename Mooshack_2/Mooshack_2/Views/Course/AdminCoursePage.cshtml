@@ -59,7 +59,7 @@
                 @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id, Active = item.Active })
             </td>
             <td align="left">
-                @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id })
+                @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id }, new { onclick = "return confirm('Warning deleting this course will delete all userlinks, assignments and milestones linkt to this course.(Another option is to inactivate the course)')" })
             </td>
         </tr>
     }
