@@ -40,7 +40,7 @@
               <td>
                   @if (ViewBag._currentUser != user.Id)
                   {
-                    @Html.ActionLink("Delete", "removeUser", new { userID = user.Id }, new { onclick = "return confirm('Are you sure you want to delete this User?')" })
+                    @Html.ActionLink("Delete", "removeUser", new { userID = user.Id,Role = user.Role }, new { onclick = "return confirm('Are you sure you want to delete this User?')" })
                   }
                   
               </td>
