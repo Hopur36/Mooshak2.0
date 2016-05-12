@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Net.Mail;
 using System.Web.Security;
+using Mooshack_2.Services;
 
 namespace Mooshack_2.Controllers
 {
@@ -22,12 +23,16 @@ namespace Mooshack_2.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private List<SelectListItem> _userRoles;
-        private ApplicationDbContext _dbContext; 
+        private ApplicationDbContext _dbContext;
+        private AssignmentService _assignmentService;
+        private CourseService _courseService;
 
         public AccountController()
         {
              _dbContext = new ApplicationDbContext();
              _userRoles = new List<SelectListItem>();
+            _assignmentService = new AssignmentService(null);
+            _courseService = new CourseService(null);
 
             _userRoles.Add(new SelectListItem { Text = "Administrator", Value = "Administrator" });
             _userRoles.Add(new SelectListItem { Text = "Teacher", Value = "Teacher" });
@@ -444,14 +449,31 @@ namespace Mooshack_2.Controllers
           
           var _allUsers = _dbContext.Users.OrderBy(x => x.UserName).ToList(); 
           List<UserViewModel> _allUsersViewModels = new List<UserViewModel>();
-            
-          foreach(var user in _allUsers)
+          var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            foreach (var user in _allUsers)
           {
-              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email});
+               string _userRole = getUserRole(_userManager,user.Id);
+              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email,Role = _userRole});
           }
 
           ViewBag._currentUser = User.Identity.GetUserId();
           return View(_allUsersViewModels);
+        }
+
+        public string getUserRole(UserManager<ApplicationUser> usermanager,string userID)
+        {
+            
+            if (usermanager.IsInRole(userID, "Student"))
+            {
+                return "Student";
+            }
+            else if (usermanager.IsInRole(userID, "Teacher"))
+            {
+                return "Teacher";
+            }
+
+            return "Administrator";
         }
 
         [Authorize(Roles = "Administrator")]
@@ -492,10 +514,34 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles ="Administrator")]
-        public async Task<ActionResult> removeUser(string userID)
+        public async Task<ActionResult> removeUser(string userID,string Role)
         {
            var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
            var _user = _userManager.FindByIdAsync(userID).Result;
+           _assignmentService.deleteSubmissionsByStudentID(userID);
+           
+            if(Role == "Teacher")
+            {
+                var _allCoursesWithTeacher = (from teacher in _dbContext.CourseTeacher
+                                           where teacher.TeacherID == userID
+                                           select teacher).ToList();
+                foreach (var teacher in _allCoursesWithTeacher)
+                {
+                    _courseService.removeTeacherFromCourse(teacher.TeacherID, teacher.CourseID);
+                }
+            }
+            else if(Role == "Student")
+            {
+                var _allCoursesWithStudent = (from student in _dbContext.CourseStudent
+                                              where student.StudentID == userID
+                                              select student).ToList();
+                foreach (var student in _allCoursesWithStudent)
+                {
+                    _courseService.removeStudentFromCourse(student.StudentID, student.CourseID);
+                }
+
+            }
+           
            if(_user != null)
            {
              await _userManager.DeleteAsync(_user);

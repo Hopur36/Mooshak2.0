@@ -403,6 +403,18 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        public void deleteSubmissionsByStudentID(string studentID)
+        {
+            List<Submission> _allSubmissions = (from submissions in _dbContext.Submissions
+                                                where submissions.StudentID == studentID
+                                                select submissions).ToList();
+            foreach (var submission in _allSubmissions)
+            {
+                _dbContext.Submissions.Remove(submission);
+                _dbContext.SaveChanges();
+            }
+        }
+
 
     }
 }

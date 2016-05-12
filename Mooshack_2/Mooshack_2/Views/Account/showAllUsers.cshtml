@@ -1,11 +1,11 @@
 ﻿@model List<Mooshack_2.Models.UserViewModel>
 @{
-    ViewBag.Title = "showAllUsers";
+    ViewBag.Title = "show All Users";
 }
 
-<h2>All users        <a href="~/Account/CreateUser"><button class="btn btn-default btn-md moveButon">Add User</button> </a></h2>
+<h2>All users</h2>
 
-
+<a href="~/Account/CreateUser"><button class="btn btn-primary btn-md moveButon">Create User</button> </a>
 
 <div class="table-responsive">
    
@@ -17,6 +17,12 @@
             <th>
                 Email
             </th>
+            <th>
+                Role
+            </th>
+            <th>
+                Delete user
+            </th>
         </tr>
         @foreach(var user in Model)
         {
@@ -27,11 +33,14 @@
               <td>
                   @Html.DisplayFor(modelItem => user.Email)
               </td>
+              <td>
+                  @Html.DisplayFor(ModelItem => user.Role)
+              </td>
 
               <td>
                   @if (ViewBag._currentUser != user.Id)
                   {
-                    @Html.ActionLink("Delete", "removeUser", new { userID = user.Id })
+                    @Html.ActionLink("Delete", "removeUser", new { userID = user.Id,Role = user.Role }, new { onclick = "return confirm('Are you sure you want to delete this User?')" })
                   }
                   
               </td>

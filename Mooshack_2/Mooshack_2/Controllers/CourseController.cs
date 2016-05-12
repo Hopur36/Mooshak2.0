@@ -47,8 +47,23 @@ namespace Mooshack_2.Controllers
         public ActionResult AdminCoursePage()
         {
             AdminCourseViewModel _myCourse = new AdminCourseViewModel();
-            _myCourse.Courses = _courseService.getAllCourses();
-            _myCourse.Courses.Sort((x,y) => x.Name.CompareTo(y.Name));
+            _myCourse.ActiveCourses = new List<CourseViewModel>();
+            _myCourse.InactiveCourses = new List<CourseViewModel>();
+            List<CourseViewModel> _allCourses = _courseService.getAllCourses();
+            foreach (var course in _allCourses)
+            {
+                if (course.Active)
+                {
+                    _myCourse.ActiveCourses.Add(course);
+                }
+                else
+                {
+                    _myCourse.InactiveCourses.Add(course);
+                }
+            }
+
+            _myCourse.ActiveCourses.Sort((x,y) => x.Name.CompareTo(y.Name));
+            _myCourse.InactiveCourses.Sort((x, y) => x.Name.CompareTo(y.Name));
 
             return View(_myCourse);
         }
@@ -65,7 +80,7 @@ namespace Mooshack_2.Controllers
         {
             var _course = _courseService.createCourse(model);
             AdminCourseViewModel _myCourse = new AdminCourseViewModel();
-            _myCourse.Courses = _courseService.getAllCourses();
+            _myCourse.ActiveCourses = _courseService.getAllCourses();
 
             return RedirectToAction("AdminCoursePage", "Course");
         }
@@ -87,8 +102,29 @@ namespace Mooshack_2.Controllers
             _myViewModel.Active = Active;
             _myViewModel.Teachers = _courseService.getCourseTeachers(id);
             _myViewModel.Students = _courseService.getCourseStudents(id);
-            _myViewModel.AllTeachers = _courseService.getAllTeachers();
-            _myViewModel.AllStudents = _courseService.getAllStudents();
+            _myViewModel.TeachersRest = new List<UserViewModel>();
+            _myViewModel.StudentsRest = new List<UserViewModel>();
+
+            List<UserViewModel> _allTeachers = _courseService.getAllTeachers();
+            List<UserViewModel> _allStudents = _courseService.getAllStudents();
+
+            foreach (var item in _allTeachers)
+            {
+                if (_myViewModel.Teachers.SingleOrDefault(x => x.UserName == item.UserName ) == null)
+                {
+                    _myViewModel.TeachersRest.Add(item);
+                }
+
+            }
+
+            foreach (var item in _allStudents)
+            {
+                if (_myViewModel.Students.SingleOrDefault(x => x.UserName == item.UserName) == null)
+                {
+                    _myViewModel.StudentsRest.Add(item);
+                }
+
+            }
 
             return View(_myViewModel);
         }

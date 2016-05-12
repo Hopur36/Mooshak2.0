@@ -12,7 +12,7 @@ namespace Mooshack_2.Models.ViewModels
         public bool Active { get; set; }
         public List<UserViewModel> Teachers { get; set; }
         public List<UserViewModel> Students { get; set; }
-        public List<UserViewModel> AllTeachers { get; set; }
-        public List<UserViewModel> AllStudents { get; set; }
+        public List<UserViewModel> TeachersRest { get; set; }
+        public List<UserViewModel> StudentsRest { get; set; }
     }
 }
