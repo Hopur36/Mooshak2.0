@@ -30,6 +30,8 @@ namespace Mooshack_2.Models
         IDbSet<CourseTeacher> CourseTeacher { get; set; }
         IDbSet<Milestone> Milestones { get; set; }
         IDbSet<Submission> Submissions { get; set; }
+        IDbSet<ApplicationUser> Users { get; set; }
+        IDbSet<IdentityRole> Roles { get; set; }
         int SaveChanges();
     }
 
@@ -41,8 +43,10 @@ namespace Mooshack_2.Models
         public IDbSet<CourseTeacher> CourseTeacher  { get; set; }
         public IDbSet<Milestone>     Milestones      { get; set; }
         public IDbSet<Submission>    Submissions     { get; set; }
+        override public IDbSet<ApplicationUser> Users { get; set; }
+        override public IDbSet<IdentityRole> Roles { get; set; }
 
-        
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -60,6 +64,8 @@ namespace Mooshack_2.Models
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CreateMilestoneViewModel> CreateMilestoneViewModels { get; set; }
 
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CourseViewModel> CourseViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.CourseUsersViewModel> CourseUsersViewModels { get; set; }
 
         public System.Data.Entity.DbSet<Mooshack_2.Models.ViewModels.EditMilestoneViewModel> MilestoneViewModels { get; set; }
 
