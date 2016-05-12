@@ -6,16 +6,23 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            <!--
-            @Html.Raw(@Html.ActionLink("[replacetext]", "ChangePassword", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" }).ToHtmlString().Replace("[replacetext]", "<img src=\"/content/images/changePassword.png\" ... />"))
-            -->
+            <li>
+                <a href="">Logged in as @User.Identity.GetUserName()</a>
+
+            </li>
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            </li>
+            <li>
+                @Html.Raw(@Html.ActionLink("[replacetext]", "ChangePassword", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" }).ToHtmlString().Replace("[replacetext]", "<img src=\"/content/images/changePassword.png\" height=30 />"))
+
             <!--
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "ChangePassword", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
             -->
 
          </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        
+
     </ul>
     }
 }

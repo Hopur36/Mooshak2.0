@@ -305,7 +305,7 @@ namespace Mooshack_2.Controllers
             byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
             string contentType = MimeMapping.GetMimeMapping(currentPath);
 
-            return File(filedata, contentType);
+            return (File(filedata, contentType));
         }
 
         public ActionResult downloadSubmission(string currentPath)

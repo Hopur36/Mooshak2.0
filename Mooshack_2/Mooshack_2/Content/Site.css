@@ -513,10 +513,22 @@ h3
     background-color: white;
 }
 
-
-
 h2, .h2 
 {
     font-size: 30px;
 }
 
+<<<<<<< HEAD
+=======
+.moveButon
+{
+    margin-left: 100px;
+    font-size: . 100px;
+}
+
+ul > li > img
+{
+    height: 10px;
+    width: 10px;
+}
+>>>>>>> 1d8b2b21cee9da4f595e02fc722da74a558ca627

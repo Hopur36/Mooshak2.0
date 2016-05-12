@@ -244,6 +244,7 @@
     <Content Include="Content\Images\moose-hi.png" />
     <Content Include="Content\Images\Mooshak.png" />
     <Content Include="Content\Images\Mooshak2.png" />
+    <Content Include="Content\Images\password.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfontba72.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
