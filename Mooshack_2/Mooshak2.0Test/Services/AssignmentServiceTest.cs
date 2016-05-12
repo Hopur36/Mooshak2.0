@@ -102,6 +102,7 @@ namespace Mooshak2._0Test.Services
 
         /// <summary>
         /// Testing getAllAssignments function in AssignmentService.cs
+        /// Returns the count of 2 given the data in MockDataBase
         /// </summary>
         [TestMethod]
         public void TestGetAllAssignments()
@@ -118,6 +119,7 @@ namespace Mooshak2._0Test.Services
 
         /// <summary>
         /// Testing getAllMilestonesByAssignmentID from AssignmentService.cs
+        /// Returns the count of 2 given the data in MockDataBase
         /// </summary>
         [TestMethod]
         public void TestGetAllMilestonesByAssignmentID()

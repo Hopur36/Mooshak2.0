@@ -76,11 +76,15 @@ namespace Mooshak2._0Test.Services
             _service = new CourseService(mockdb);
         }
 
+        /// <summary>
+        /// Testing the function getAllCourses in CourseService.
+        /// Should return count of 3 based on data in MockDataBase
+        /// </summary>
         [TestMethod]
         public void TestGetAllCourses()
         {
             //Arrange:
-            //const int ID = 6;
+            //No Arrangement needed
 
             //Act:
             var result = _service.getAllCourses();
@@ -89,11 +93,15 @@ namespace Mooshak2._0Test.Services
             Assert.AreEqual(3, result.Count);
         }
 
+        /// <summary>
+        /// Testing the function getAllInactiveCourses in CourseService.
+        /// Should return count of 1 based on data in MockDataBase
+        /// </summary>
         [TestMethod]
         public void TestGetAllInactiveCourses()
         {
             //Arrange:
-            //const int ID = 6;
+            //No Arrangement needed
 
             //Act:
             var result = _service.getAllInactiveCourses();
@@ -102,6 +110,10 @@ namespace Mooshak2._0Test.Services
             Assert.AreEqual(1, result.Count);
         }
 
+        /// <summary>
+        /// Testing the function getCoursesViewModelByID in CourseService.
+        /// Should return the name Vefforritun based on data in MockDataBase
+        /// </summary>
         [TestMethod]
         public void TestGetCourseViewModelById()
         {
@@ -115,6 +127,10 @@ namespace Mooshak2._0Test.Services
             Assert.AreEqual("Vefforritun", result.Name);
         }
 
+        /// <summary>
+        /// Testing the function getAllCoursesByTeacherID in CourseService.
+        /// Should return count of 1 based on data in MockDataBase
+        /// </summary>
         [TestMethod]
         public void TestGetAllCoursesByTeacherID()
         {
@@ -128,6 +144,11 @@ namespace Mooshak2._0Test.Services
             Assert.AreEqual(1, result.Count);
         }
 
+        /// <summary>
+        /// Testing the function getAllInactiveCoursesByTeacherID in 
+        /// CourseService.
+        /// Should return count of 1 based on data in MockDataBase
+        /// </summary>
         [TestMethod]
         public void TestGetAllInactiveCoursesByTeacherID()
         {
