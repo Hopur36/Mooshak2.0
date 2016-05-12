@@ -25,6 +25,12 @@
             <th>
                 EndDateTime
             </th>
+            <th>
+                Edit
+            </th>
+            <th>
+                Delete
+            </th>
             <th></th>
         </tr>
 
@@ -46,6 +52,8 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "EditAssignment", new { assignmentID = item.id = item.id })
+                </td>
+                <td>
                     @Html.ActionLink("Delete", "DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID}, new { onclick = "return confirm('Are you sure you want to delete this Assignment?')" })
                 </td>
             </tr>

@@ -25,7 +25,7 @@ namespace Mooshack_2.Controllers
         }
 
 
-        
+
         [ChildActionOnly]
         [ActionName("_listOfCourses")]
         public ActionResult _activeCourseList()
@@ -38,7 +38,7 @@ namespace Mooshack_2.Controllers
 
                 foreach (var course in _allCourses)
                 {
-                    if(course.Active == true)
+                    if (course.Active == true)
                     {
                         _activeCourses.Add(course);
                     }
@@ -61,8 +61,8 @@ namespace Mooshack_2.Controllers
             }
         }
 
-        
-        
+
+
         [ChildActionOnly]
         [ActionName("_listOfUnactiveCourses")]
         public ActionResult _unactiveCourseList()
@@ -75,7 +75,8 @@ namespace Mooshack_2.Controllers
 
                 return PartialView("_listOfUnactiveCourses", _courses);
             }
-            else */if (User.IsInRole("Teacher"))
+            else */
+            if (User.IsInRole("Teacher"))
             {
                 var _courses = _courseService.getAllInactiveCoursesByTeacherID(User.Identity.GetUserId());
 
@@ -88,9 +89,24 @@ namespace Mooshack_2.Controllers
                 return PartialView("_listOfUnactiveCourses", _courses);
             }
         }
-        
 
+        [ChildActionOnly]
+        [ActionName("AllCourses")]
+        public ActionResult _allCourses()
+        {
+            var _allCourses = _courseService.getAllCourses();
+
+            return PartialView("AllCourses", _allCourses);
+        }
+
+        [ChildActionOnly]
+        [ActionName("AllUsers")]
+        public ActionResult _allUsers()
+        {
+            var _allUsers = _courseService.getAllUsers();
+
+            return PartialView("AllUsers", _allUsers);
+        }
 
     }
-
 }

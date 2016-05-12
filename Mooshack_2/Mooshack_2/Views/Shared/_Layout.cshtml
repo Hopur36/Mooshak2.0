@@ -36,16 +36,28 @@ font-size: 16px;">@Html.Partial("_LoginPartial")</div>
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
 
+            @{ if ((User.IsInRole("Teacher")) || (User.IsInRole("Student")))
+                {
                 <p class="SizeColorFontSidebar">Active Courses</p>
                 @Html.Action("_listOfCourses", "Layout", new { area = "" })
 
-                @{ if ((User.IsInRole("Teacher")) || (User.IsInRole("Student"))) {
+
                    <p class="SizeColorFontSidebar">Inactive Courses</p>
-                        } }
+
+
 
                 @Html.Action("_listOfUnactiveCourses", "Layout", new { area = "" })
-                
-            </div>
+                    }
+                }
+
+            @{if (User.IsInRole("Administrator"))
+                {
+                   @Html.Action("AllCourses", "Layout", new { area = "" })
+
+                }
+            }
+
+</div>
 
         </nav>
         <!-- /. NAV SIDE  -->

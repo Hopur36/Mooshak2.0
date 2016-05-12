@@ -68,6 +68,7 @@ namespace Mooshack_2.Controllers
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
             var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID);
             _assignment.CourseName = _course.Name;
+
             return View(_assignment);
         }
 
@@ -263,7 +264,7 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
-        public ActionResult viewAllStudentSubmissions(int? milestoneID)
+        public ActionResult viewAllStudentSubmissions(int? milestoneID, string sortOrder)
         {
             ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByMilestoneID(milestoneID.Value);
             var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -273,6 +274,28 @@ namespace Mooshack_2.Controllers
                 var _student = _userManager.FindById(submission.StudentID);
                 submission.StudentName = _student.UserName;
             }
+            _viewSubmissions.MilestoneID = milestoneID.Value;
+
+            switch (sortOrder)
+            {
+                case "id":
+                    _viewSubmissions.Submissions = _viewSubmissions.Submissions.OrderBy(x => x.id).ToList();
+                    break;
+                case "name":
+                    _viewSubmissions.Submissions = _viewSubmissions.Submissions.OrderBy(x => x.StudentName).ToList();
+                    break;
+                case "date":
+                    _viewSubmissions.Submissions = _viewSubmissions.Submissions.OrderBy(x => x.DateTimeSubmitted).ToList();
+                    break;
+                case "accepted":
+                    _viewSubmissions.Submissions = _viewSubmissions.Submissions.OrderByDescending(x => x.Accepted).ToList();
+                    break;
+                default:
+                    _viewSubmissions.Submissions = _viewSubmissions.Submissions.OrderBy(x => x.id).ToList();
+                    break;
+            }
+
+           
 
             return View(_viewSubmissions);
         }
@@ -290,7 +313,10 @@ namespace Mooshack_2.Controllers
             byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
             string contentType = MimeMapping.GetMimeMapping(currentPath);
 
-            return File(filedata, contentType, "studentSubmission.cpp");
+            int pos = currentPath.LastIndexOf("\\") + 1;
+
+
+            return File(filedata, contentType, currentPath.Substring(pos, currentPath.Length - pos));
         }
     }
 }

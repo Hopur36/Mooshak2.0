@@ -24,7 +24,7 @@ namespace Mooshack_2.Controllers
         {
             if (User.IsInRole("Administrator"))
             {
-                return RedirectToAction("AdminFrontPage");
+                return RedirectToAction("showAllUsers", "Account" );
             }
             else if (User.IsInRole("Teacher"))
             {

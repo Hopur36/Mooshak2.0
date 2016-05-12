@@ -1,16 +1,14 @@
 ﻿@model Mooshack_2.Models.CreateUserViewModel
 @{
-    ViewBag.Title = "CreateUser";
+    ViewBag.Title = "Create User";
 }
 
-<h2>CreateUser</h2>
+<h2>Create User</h2>
 
 
 @using (Html.BeginForm("createUser", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
 
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -43,6 +41,10 @@
         </div>
     </div>
 }
+
+<div>
+    @Html.ActionLink("Cancel", "ShowAllUsers","Account")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

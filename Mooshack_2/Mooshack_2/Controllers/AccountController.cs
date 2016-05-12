@@ -444,14 +444,31 @@ namespace Mooshack_2.Controllers
           
           var _allUsers = _dbContext.Users.OrderBy(x => x.UserName).ToList(); 
           List<UserViewModel> _allUsersViewModels = new List<UserViewModel>();
-            
-          foreach(var user in _allUsers)
+          var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+
+            foreach (var user in _allUsers)
           {
-              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email});
+               string _userRole = getUserRole(_userManager,user.Id);
+              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email,Role = _userRole});
           }
 
           ViewBag._currentUser = User.Identity.GetUserId();
           return View(_allUsersViewModels);
+        }
+
+        public string getUserRole(UserManager<ApplicationUser> usermanager,string userID)
+        {
+            
+            if (usermanager.IsInRole(userID, "Student"))
+            {
+                return "Student";
+            }
+            else if (usermanager.IsInRole(userID, "Teacher"))
+            {
+                return "Teacher";
+            }
+
+            return "Administrator";
         }
 
         [Authorize(Roles = "Administrator")]

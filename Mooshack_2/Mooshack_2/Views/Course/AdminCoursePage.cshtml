@@ -1,7 +1,7 @@
 ﻿@model Mooshack_2.Models.ViewModels.AdminCourseViewModel
 
 @{
-    ViewBag.Title = "AdminCoursePage";
+    ViewBag.Title = "Admin Course Page";
 }
 
 <h2>Courses</h2>
@@ -11,7 +11,7 @@
     <div class="form-group">
         <label class="sr-only" for="exampleInputAmount">Create new</label>
         <div class="input-group col-xs-3">
-            <div class="input-group-addon">Name: </div>
+            <div class="input-group-addon">Course name: </div>
             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
         </div>
         <button type="submit" class="btn btn-primary">Create course</button>
@@ -32,10 +32,10 @@
 @foreach (var item in Model.ActiveCourses) {
     <tr>
         <td>
-            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id })
+            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id, Active = item.Active })
         </td>
         <td align="left">
-            @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id, })
+            @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id }, new { onclick = "return confirm('Warning deleting this course will delete all userlinks, assignments and milestones linkt to this course.(Another option is to inactivate the course)')" })        
         </td>
     </tr>
 }
