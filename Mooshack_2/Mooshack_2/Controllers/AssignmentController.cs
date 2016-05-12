@@ -276,5 +276,21 @@ namespace Mooshack_2.Controllers
 
             return View(_viewSubmissions);
         }
+
+        public ActionResult openSubmission(string currentPath)
+        {
+            byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
+            string contentType = MimeMapping.GetMimeMapping(currentPath);
+
+            return File(filedata, contentType);
+        }
+
+        public ActionResult downloadSubmission(string currentPath)
+        {
+            byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
+            string contentType = MimeMapping.GetMimeMapping(currentPath);
+
+            return File(filedata, contentType, "studentSubmission.cpp");
+        }
     }
 }
