@@ -1,4 +1,6 @@
-﻿using Mooshack_2.Models;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Mooshack_2.Models;
 using Mooshack_2.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -271,8 +273,133 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        public List<UserViewModel> getCourseStudents(int id)
+        {
+            List<CourseStudent> _studentsList = (from course in _dbContext.CourseStudent
+                                            where course.CourseID == id
+                                            select course).ToList();
 
+            List<UserViewModel> _studentViewModelList = new List<UserViewModel>();
 
+            foreach (var student in _studentsList)
+            {
+                ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault(x => x.Id == student.StudentID);
+                _studentViewModelList.Add(new UserViewModel { Id = _userInfo.Id, UserName = _userInfo.UserName, Email = _userInfo.Email });
+            }
+
+            _studentViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+
+            return _studentViewModelList;
+        }
+
+        public List<UserViewModel> getCourseTeachers(int id)
+        {
+            List<CourseTeacher> _teachersList = (from course in _dbContext.CourseTeacher
+                                                 where course.CourseID == id
+                                                 select course).ToList();
+
+            List<UserViewModel> _teacherViewModelList = new List<UserViewModel>();
+
+            foreach (var teacher in _teachersList)
+            {
+                ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault(x => x.Id == teacher.TeacherID);
+                _teacherViewModelList.Add(new UserViewModel { Id = _userInfo.Id, UserName = _userInfo.UserName, Email = _userInfo.Email });
+            }
+
+            _teacherViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+
+            return _teacherViewModelList;
+        }
+
+        public List<UserViewModel> getAllTeachers()
+        {
+            var _roleHash = _dbContext.Roles.SingleOrDefault(x => x.Name == "Teacher");
+            var _allTeachers = _dbContext.Users.Where(x => x.Roles.Select(role => role.RoleId).Contains(_roleHash.Id)).ToList();
+
+            List<UserViewModel> _teacherViewModelList = new List<UserViewModel>();
+
+            foreach (var teacher in _allTeachers)
+            {
+                _teacherViewModelList.Add(new UserViewModel { Id = teacher.Id, UserName = teacher.UserName, Email = teacher.Email });
+            }
+
+            _teacherViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+
+            return _teacherViewModelList;
+        }
+
+        public List<UserViewModel> getAllStudents()
+        {
+            var _roleHash = _dbContext.Roles.SingleOrDefault(x => x.Name == "Student");
+            var _allStudents = _dbContext.Users.Where(x => x.Roles.Select(role => role.RoleId).Contains(_roleHash.Id)).ToList();
+
+            List<UserViewModel> _studentViewModelList = new List<UserViewModel>();
+
+            foreach (var student in _allStudents)
+            {
+                _studentViewModelList.Add(new UserViewModel { Id = student.Id, UserName = student.UserName, Email = student.Email });
+            }
+
+            _studentViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+
+            return _studentViewModelList;
+        }
+
+        
+        public bool removeStudentFromCourse(string studentID, int courseID)
+        {
+            CourseStudent _deletedCourseStudent = (from course in _dbContext.CourseStudent
+                                     where course.CourseID == courseID
+                                     where course.StudentID == studentID
+                                     select course).FirstOrDefault();
+            _dbContext.CourseStudent.Remove(_deletedCourseStudent);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool addStudentToCourse(string studentName, int courseID)
+        {
+            var _student = _dbContext.Users.FirstOrDefault(x => x.UserName == studentName);
+
+            CourseStudent _addCourseStudent = new CourseStudent
+            {
+                CourseID = courseID,
+                StudentID = _student.Id
+            };
+            _dbContext.CourseStudent.Add(_addCourseStudent);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool removeTeacherFromCourse(string teacherID, int courseID)
+        {
+            CourseTeacher _deletedCourseTeacher = (from course in _dbContext.CourseTeacher
+                                                   where course.CourseID == courseID
+                                                   where course.TeacherID == teacherID
+                                                   select course).FirstOrDefault();
+            _dbContext.CourseTeacher.Remove(_deletedCourseTeacher);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool addTeacherToCourse(string teacherName, int courseID)
+        {
+            var _teacher = _dbContext.Users.FirstOrDefault(x => x.UserName == teacherName);
+
+            CourseTeacher _addCourseTeacher = new CourseTeacher
+            {
+                CourseID = courseID,
+                TeacherID = _teacher.Id
+            };
+            //var _test = _dbContext.CourseTeacher.Contains(_addCourseTeacher);
+            _dbContext.CourseTeacher.Add(_addCourseTeacher);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
 
     }
 }

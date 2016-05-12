@@ -4,7 +4,7 @@
     ViewBag.Title = "AdminCoursePage";
 }
 
-<h2>Course Page</h2>
+<h2>Courses</h2>
 
 @using (Html.BeginForm("AdminCoursePage", "Course", FormMethod.Post, null))
 {
@@ -12,7 +12,7 @@
         <label class="sr-only" for="exampleInputAmount">Create new</label>
         <div class="input-group col-xs-3">
             <div class="input-group-addon">Name: </div>
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Insert name" } })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
         </div>
         <button type="submit" class="btn btn-primary">Create course</button>
     </div>
@@ -29,11 +29,9 @@
 @foreach (var item in Model.Courses) {
     <tr>
         <td>
-            @Html.ActionLink(item.Name, "AdminAssignmentPage", new { id = item.id })
+            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id })
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
             @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id})
         </td>
     </tr>
