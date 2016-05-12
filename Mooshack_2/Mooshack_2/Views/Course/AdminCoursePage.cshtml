@@ -18,27 +18,51 @@
     </div>
 }
 
+<h3>Active courses</h3>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        <th>
-            Remove Course
+        <th class="col-md-4">
+            Delete Course
         </th>
     </tr>
 
-@foreach (var item in Model.Courses) {
+@foreach (var item in Model.ActiveCourses) {
     <tr>
         <td>
             @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id, Active = item.Active })
         </td>
-        <td>
+        <td align="left">
             @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id }, new { onclick = "return confirm('Warning deleting this course will delete all userlinks, assignments and milestones linkt to this course.(Another option is to inactivate the course)')" })        
         </td>
     </tr>
 }
+</table>
 
+<h3>Inactive courses</h3>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th class="col-md-4">
+            Delete Course
+        </th>
+    </tr>
+
+    @foreach (var item in Model.InactiveCourses)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id })
+            </td>
+            <td align="left">
+                @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id })
+            </td>
+        </tr>
+    }
 </table>
 
 <a href="javascript: history.go(-1)">Back</a>
