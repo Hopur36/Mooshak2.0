@@ -4,7 +4,7 @@
     ViewBag.Title = "Teacher Assignment Milestones Page";
 }
 
-<h2>@Model.CourseName/@Model.Title</h2>
+<h2>@Model.CourseName / @Model.Title</h2>
 
 <p>
     @Html.ActionLink("Create New Milestone", "CreateMilestone", new { assignmentID = Model.id })
@@ -21,6 +21,15 @@
         <th>
             Weight
         </th>
+        <th>
+            Edit
+        </th>
+        <th>
+            Delete
+        </th>
+        <th>
+            View all submissions
+        </th>
     </tr>
 
 @foreach (var item in Model.Milestones) {
@@ -34,13 +43,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.Weight)%
         </td>
-        
         <td>
             @Html.ActionLink("Edit", "EditMilestone", new { milestoneID = item.id })
+        </td>
+        <td>
             @Html.ActionLink("Delete", "DeleteMilestone", new { milestoneID = item.id, assignmentReturnID = Model.id }, new { onclick = "return confirm('Are you sure you want to delete this Milestone?')" })
         </td>
         <td>
-            @Html.ActionLink("View All Submissions", "viewAllStudentSubmissions", new { milestoneID = item.id })
+            @Html.ActionLink("View", "viewAllStudentSubmissions", new { milestoneID = item.id })
         </td>
     </tr>
 }
