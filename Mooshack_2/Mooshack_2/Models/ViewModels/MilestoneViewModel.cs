@@ -11,5 +11,6 @@ namespace Mooshack_2.Models.ViewModels
         public string Title { get; set; }
         public string Description { get; set; }
         public int Weight { get; set; }
+        public int AssignmentID { get; set; }
     }
 }

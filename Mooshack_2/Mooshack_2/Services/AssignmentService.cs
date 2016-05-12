@@ -105,7 +105,7 @@ namespace Mooshack_2.Services
                                where item.id == aID
                                select item).FirstOrDefault();
 
-            var _courseService = new CourseService();
+            var _courseService = new CourseService(null);
             var _course = _courseService.getCourseViewModelByID(_assignment.CourseID);
 
             AssignmentViewModel _assignmentViewModel = new AssignmentViewModel
@@ -243,7 +243,7 @@ namespace Mooshack_2.Services
             Assignment model = (from item in _dbContext.Assignments
                              where item.id == assignment.id
                              select item).SingleOrDefault();
-
+    
             model.Title = assignment.Title;
             model.Description = assignment.Description;
             model.StartDateTime = assignment.StartDateTime;
@@ -392,5 +392,17 @@ namespace Mooshack_2.Services
             return _submissonsViewModelsByMilestoneID;
 
         }
+        public bool DeleteMilestone(int milestoneID)
+        {
+            Milestone _deletedMilestone = (from milestone in _dbContext.Milestones
+                                           where milestone.id == milestoneID
+                                           select milestone).FirstOrDefault();
+            _dbContext.Milestones.Remove(_deletedMilestone);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+
     }
 }

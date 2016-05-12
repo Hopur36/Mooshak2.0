@@ -22,7 +22,7 @@ namespace Mooshack_2.Controllers
         public AssignmentController()
         {
             _assignmentService = new AssignmentService(null);
-            _courseService = new CourseService();
+            _courseService = new CourseService(null);
         }
 
         // GET: Assignment
@@ -144,7 +144,15 @@ namespace Mooshack_2.Controllers
             _assignmentService.DeleteAssignment(assignmentID);
             return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = courseReturnID });
         }
-
+        
+        [Authorize(Roles = "Teacher")]
+        public ActionResult DeleteMilestone(int milestoneID, int assignmentReturnID)
+        {
+            AssignmentService _deleteMileStone = new AssignmentService();
+            _deleteMileStone.DeleteMilestone(milestoneID);
+            return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = assignmentReturnID });
+        }
+        
         [Authorize(Roles = "Teacher")]
         public ActionResult CreateMilestone(int assignmentID)
         {

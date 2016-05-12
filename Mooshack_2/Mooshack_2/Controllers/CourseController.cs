@@ -16,7 +16,7 @@ namespace Mooshack_2.Controllers
         
         public CourseController()
         {
-            _courseService = new CourseService();
+            _courseService = new CourseService(null);
         }
 
         // GET: Course
