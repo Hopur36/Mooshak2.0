@@ -50,7 +50,7 @@
             @Html.ActionLink("Delete", "DeleteMilestone", new { milestoneID = item.id, assignmentReturnID = Model.id }, new { onclick = "return confirm('Are you sure you want to delete this Milestone?')" })
         </td>
         <td>
-            @Html.ActionLink("View", "viewAllStudentSubmissions", new { milestoneID = item.id })
+            @Html.ActionLink("View", "viewAllStudentSubmissions", new { milestoneID = item.id, sortOrder = "id" })
         </td>
     </tr>
 }

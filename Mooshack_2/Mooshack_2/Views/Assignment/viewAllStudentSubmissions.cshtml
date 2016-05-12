@@ -3,20 +3,20 @@
     ViewBag.Title = "View All Student Submissions";
 }
 
-<h2>viewAllStudentSubmissions</h2>
+<h2>Student Submissions</h2>
 <table class="table">
     <tr>
         <th>
-            Submission ID
+            @Html.ActionLink("Submission ID", "viewAllStudentSubmissions", new { MilestoneID = Model.MilestoneID, sortOrder = "id" }, new { @style = "color:black;" })
         </th>
         <th>
-            Student Name
+           @Html.ActionLink("Student Name", "viewAllStudentSubmissions", new { MilestoneID = Model.MilestoneID, sortOrder = "name" }, new { @style = "color:black;" })
         </th>
         <th>
-            Date Submitted
+            @Html.ActionLink("Date Submitted", "viewAllStudentSubmissions", new { MilestoneID = Model.MilestoneID, sortOrder = "date" }, new { @style = "color:black;" })
         </th>
         <th>
-            Status
+            @Html.ActionLink("Status", "viewAllStudentSubmissions", new { MilestoneID = Model.MilestoneID, sortOrder = "accepted" }, new { @style = "color:black;" })
         </th>
         <th>
             Download
@@ -45,6 +45,11 @@
                     @:False
                 }
             </td>
+            <td>
+                @Html.ActionLink("Open", "openSubmission", new { currentPath = item.FilePath })
+                @Html.ActionLink("Download", "downloadSubmission", new { currentPath = item.FilePath })
+            </td>
+
 
         </tr>
     }
