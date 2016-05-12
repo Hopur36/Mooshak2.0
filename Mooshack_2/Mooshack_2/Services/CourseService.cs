@@ -480,6 +480,7 @@ namespace Mooshack_2.Services
 
             _userViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
             return _userViewModelList;
+        }
 
         public bool isCourseActive(int courseID)
         {
