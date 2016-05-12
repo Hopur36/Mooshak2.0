@@ -148,7 +148,7 @@ namespace Mooshack_2.Controllers
         [Authorize(Roles = "Teacher")]
         public ActionResult DeleteMilestone(int milestoneID, int assignmentReturnID)
         {
-            AssignmentService _deleteMileStone = new AssignmentService();
+            AssignmentService _deleteMileStone = new AssignmentService(null);
             _deleteMileStone.DeleteMilestone(milestoneID);
             return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = assignmentReturnID });
         }
