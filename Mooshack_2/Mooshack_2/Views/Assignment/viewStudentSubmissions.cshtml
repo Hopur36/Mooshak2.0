@@ -40,7 +40,7 @@
                 }
             </td>
             <td>
-                @Html.ActionLink("Open", "openSubmission", new { currentPath = item.FilePath  })
+                @Html.ActionLink("Open", "openSubmission", new { currentPath = item.FilePath  }, new { target = "_blank" })
                 @Html.ActionLink("Download", "downloadSubmission", new { currentPath = item.FilePath })
             </td>
 
