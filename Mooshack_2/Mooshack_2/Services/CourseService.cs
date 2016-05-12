@@ -16,6 +16,7 @@ namespace Mooshack_2.Services
         /// Variable can not be changed, unless it is in a constructor
         /// </summary>
         private readonly IMyDataContext _dbContext;
+        AssignmentService _assignmentService;
 
         /// <summary>
         /// Constructor for CourseService,
@@ -25,6 +26,7 @@ namespace Mooshack_2.Services
         public CourseService(IMyDataContext context)
         {
             _dbContext = context ?? new ApplicationDbContext();
+            _assignmentService = new AssignmentService(null);
         }
 
         /*private ApplicationDbContext _dbContext;
@@ -279,6 +281,30 @@ namespace Mooshack_2.Services
 
         public bool deleteCourse(int courseID)
         {
+            List<Assignment> _allAssignments = (from assignment in _dbContext.Assignments
+                                                where assignment.CourseID == courseID
+                                                select assignment).ToList();
+            foreach (var item in _allAssignments)
+            {
+                _assignmentService.DeleteAssignment(item.id);
+            }
+
+            List<CourseTeacher> _allCourseTeachers = (from ct in _dbContext.CourseTeacher
+                                                where ct.CourseID == courseID
+                                                select ct).ToList();
+            foreach (var item in _allCourseTeachers)
+            {
+                removeTeacherFromCourse(item.TeacherID, courseID);
+            }
+
+            List<CourseStudent> _allCourseStudent = (from cs in _dbContext.CourseStudent
+                                                      where cs.CourseID == courseID
+                                                      select cs).ToList();
+            foreach (var item in _allCourseStudent)
+            {
+                removeStudentFromCourse(item.StudentID, courseID);
+            }
+
             Course _deletedCourse = (from course in _dbContext.Courses
                                              where course.ID == courseID
                                              select course).FirstOrDefault();
@@ -454,6 +480,20 @@ namespace Mooshack_2.Services
 
             _userViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
             return _userViewModelList;
+
+        public bool isCourseActive(int courseID)
+        {
+            Course _result = getCourseByID(courseID);
+            return _result.Active;
+
+        }
+
+        public void changeCourseActive(int courseID, bool active)
+        {
+            Course _course = getCourseByID(courseID);
+
+            _course.Active = active;
+            _dbContext.SaveChanges();
         }
 
     }

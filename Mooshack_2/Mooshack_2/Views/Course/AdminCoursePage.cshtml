@@ -23,16 +23,18 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        <th></th>
+        <th>
+            Remove Course
+        </th>
     </tr>
 
 @foreach (var item in Model.Courses) {
     <tr>
         <td>
-            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id })
+            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id, Active = item.Active })
         </td>
         <td>
-            @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id})
+            @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id }, new { onclick = "return confirm('Warning deleting this course will delete all userlinks, assignments and milestones linkt to this course.(Another option is to inactivate the course)')" })        
         </td>
     </tr>
 }
