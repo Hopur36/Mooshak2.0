@@ -37,6 +37,11 @@ namespace Mooshack_2.Controllers
             return View(_courses);
         }
 
+        /// <summary>
+        /// This is the GET action when AdminCoursePage is loaded. It gets all 
+        /// courses from the CourseService and sorts them by name and returns it to the view.
+        /// </summary>
+        /// <returns>Returns a view with a AdminCourseViewModel</returns>
         [Authorize(Roles = "Administrator")]
         [HttpGet]
         public ActionResult AdminCoursePage()
@@ -48,6 +53,12 @@ namespace Mooshack_2.Controllers
             return View(_myCourse);
         }
 
+        /// <summary>
+        /// This is the POST action when AdminCoursePage posts a form.
+        /// This 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AdminCoursePage(AdminCourseViewModel model)
