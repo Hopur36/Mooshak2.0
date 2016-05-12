@@ -441,5 +441,21 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        public bool isCourseActive(int courseID)
+        {
+            Course _result = getCourseByID(courseID);
+            return _result.Active;
+
+        }
+
+        public void changeCourseActive(int courseID, bool active)
+        {
+            Course _course = getCourseByID(courseID);
+
+            _course.Active = active;
+            _dbContext.SaveChanges();
+
+        }
+
     }
 }

@@ -6,7 +6,19 @@
 
 <h2>
     @Html.DisplayFor(modelItem => Model.Name)
-    <button type="button" class="btn btn-success">Is Active</button>
+    @if (Model.Active == true)
+    {
+        <button type="button" class="btn btn-success">
+            @Html.ActionLink("Active", "courseActivateOrDeactivate", new {Name = Model.Name, id = Model.id, Active = false,}, new { @style = "color:#FFFFFF;" })
+        </button>
+    }
+    else
+    {
+        <button type="button" class="btn btn-danger">
+            @Html.ActionLink("Not Active", "courseActivateOrDeactivate", new { Name = Model.Name, id = Model.id, Active = true }, new { @style = "color:#FFFFFF;" })
+        </button>
+    }
+
 </h2> <br/>
 
 
@@ -49,7 +61,7 @@
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
-                        @Html.ActionLink("Remove", "removeStudentFromCourse", new { studentID = item.Id, courseID = Model.id, courseName = Model.Name })
+                        @Html.ActionLink("Remove", "removeStudentFromCourse", new { studentID = item.Id, courseID = Model.id, courseName = Model.Name,Active = Model.Active })
                     </td>
                 </tr>
             }
@@ -95,7 +107,7 @@
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
-                        @Html.ActionLink("Remove", "removeTeacherFromCourse", new { teacherID = item.Id, courseID = Model.id, courseName = Model.Name })
+                        @Html.ActionLink("Remove", "removeTeacherFromCourse", new { teacherID = item.Id, courseID = Model.id, courseName = Model.Name,Active = Model.Active })
                     </td>
                 </tr>
             }

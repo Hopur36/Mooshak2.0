@@ -274,6 +274,8 @@ namespace Mooshack_2.Controllers
                 submission.StudentName = _student.UserName;
             }
 
+            _viewSubmissions.Submissions.OrderByDescending(x => x.StudentName);
+            
             return View(_viewSubmissions);
         }
 

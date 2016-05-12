@@ -29,7 +29,7 @@
 @foreach (var item in Model.Courses) {
     <tr>
         <td>
-            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id })
+            @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id, Active = item.Active })
         </td>
         <td>
             @Html.ActionLink("Delete", "deleteCourse", new { courseID = item.id})
