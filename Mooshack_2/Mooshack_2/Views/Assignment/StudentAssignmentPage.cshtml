@@ -3,7 +3,7 @@
     ViewBag.Title = "StudentAssignmentPage";
 }
 
-<h3>Active Assignments</h3>
+<h3>@Model.CourseName</h3>
 
 <div class="table-responsive">
     <table class="table">
@@ -27,7 +27,7 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(item.Title, "StudentAssignmentMilestonePage", new { assignmentID = item.id })
+                        @Html.ActionLink(item.Title, "StudentAssignmentMilestonePage", new { assignmentID = item.id})
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Title)
