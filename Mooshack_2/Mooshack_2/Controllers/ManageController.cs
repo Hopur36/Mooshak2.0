@@ -51,7 +51,7 @@ namespace Mooshack_2.Controllers
         }
 
         //
-        // GET: /Manage/Index
+        // GET: /Manage/index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
