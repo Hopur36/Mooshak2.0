@@ -245,6 +245,8 @@
     <Content Include="Content\Images\Mooshak.png" />
     <Content Include="Content\Images\Mooshak2.png" />
     <Content Include="Content\Images\password.png" />
+    <Content Include="CSS\bootstrap-datetimepicker.css" />
+    <Content Include="CSS\bootstrap-datetimepicker.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfontba72.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -263,6 +265,8 @@
     <Content Include="fonts\fontawesome-webfontd41d.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\datetimepicker\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
