@@ -335,6 +335,7 @@
     <Content Include="Views\Shared\AllCourses.cshtml" />
     <Content Include="Views\Course\AdminUserPage.cshtml" />
     <Content Include="Views\Account\adminResetPassword.cshtml" />
+    <Content Include="Views\Shared\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

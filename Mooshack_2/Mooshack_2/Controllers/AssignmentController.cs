@@ -42,7 +42,7 @@ namespace Mooshack_2.Controllers
                 var _assignmentModels = new TeacherAssignmentViewModel
                 {
                     CourseName = _courseName.Name,
-                    CourseID = Convert.ToInt32(courseID),
+                    CourseID = courseID.Value,
                     Assignments = _assignmentService.getAssignmentByCourseID(courseID)
                 };
 
@@ -50,8 +50,11 @@ namespace Mooshack_2.Controllers
                 return View(_assignmentModels);
 
             }
+            else
+            {
+                return View("Error404");
+            }
 
-            return View();
         }
 
      
