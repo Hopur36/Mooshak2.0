@@ -54,12 +54,6 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
-        public ActionResult teacherNewAssignmentPage()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Teacher")]
         public ActionResult teacherAssignmentMilestonesPage(int assignmentID)
         {
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
@@ -75,14 +69,14 @@ namespace Mooshack_2.Controllers
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
             var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID);
             _assignment.CourseName = _course.Name;
-            
+
             return View(_assignment);
         }
 
-        public ActionResult CreateAssignment(int CourseID)
+        public ActionResult CreateAssignment(int courseID)
         {
             CreateAssignmentViewModel _newAssignmentViewModel = new CreateAssignmentViewModel();
-            _newAssignmentViewModel.CourseID = CourseID;
+            _newAssignmentViewModel.CourseID = courseID;
 
             return View(_newAssignmentViewModel);
         }
@@ -136,22 +130,22 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
-        public ActionResult DeleteAssignment(int assignmentID, int courseReturnID)
+        public ActionResult deleteAssignment(int assignmentID, int courseReturnID)
         {
             _assignmentService.DeleteAssignment(assignmentID);
 
             return RedirectToAction("teacherAssignmentPage", "Assignment", new { courseID = courseReturnID });
         }
-        
+
         [Authorize(Roles = "Teacher")]
-        public ActionResult DeleteMilestone(int milestoneID, int assignmentReturnID)
+        public ActionResult deleteMilestone(int milestoneID, int assignmentReturnID)
         {
             AssignmentService _deleteMileStone = new AssignmentService(null);
             _deleteMileStone.DeleteMilestone(milestoneID);
 
             return RedirectToAction("teacherAssignmentMilestonesPage", "Assignment", new { assignmentID = assignmentReturnID });
         }
-        
+
         [Authorize(Roles = "Teacher")]
         public ActionResult CreateMilestone(int assignmentID)
         {
@@ -172,7 +166,7 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Student")]
         /*Student gets information about a single course*/
-        public ActionResult studentAssignmentPage(int? courseID )
+        public ActionResult studentAssignmentPage(int? courseID)
         {
             if (courseID != null)
             {
@@ -212,7 +206,7 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Student")]
         [HttpPost]
-        public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model,HttpPostedFileBase file)
+        public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model, HttpPostedFileBase file)
         {
             string _currentpath = HttpContext.Server.MapPath("~");
             if (file.ContentLength >= 0)
@@ -225,7 +219,7 @@ namespace Mooshack_2.Controllers
                 model.FilePath = _path;
                 model.DateTimeSubmitted = DateTime.Now;
                 var _milestone = _assignmentService.getMilestoneByID(model.MilestoneID);
-                SubmissionEvaluator _evaluator = new SubmissionEvaluator(file,_milestone.Input,_milestone.Output);
+                SubmissionEvaluator _evaluator = new SubmissionEvaluator(file, _milestone.Input, _milestone.Output);
                 model.Accepted = _evaluator.Evaluate();
                 _assignmentService.addSubmission(model);
             }
@@ -233,7 +227,7 @@ namespace Mooshack_2.Controllers
             {
                 return View("Error");
             }
-            
+
             return RedirectToAction("viewStudentSubmissions", "Assignment", new { milestoneID = model.MilestoneID });
         }
 
@@ -241,7 +235,7 @@ namespace Mooshack_2.Controllers
         public ActionResult viewStudentSubmissions(int? milestoneID)
         {
             var _studentID = User.Identity.GetUserId();
-            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID,milestoneID.Value);
+            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID, milestoneID.Value);
 
             return View(_viewSubmissions);
         }
@@ -252,10 +246,10 @@ namespace Mooshack_2.Controllers
             ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByMilestoneID(milestoneID.Value);
             var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-            foreach (var submission in _viewSubmissions.Submissions)
+            foreach (var _submission in _viewSubmissions.Submissions)
             {
-                var _student = _userManager.FindById(submission.StudentID);
-                submission.StudentName = _student.UserName;
+                var _student = _userManager.FindById(_submission.StudentID);
+                _submission.StudentName = _student.UserName;
             }
 
             _viewSubmissions.MilestoneID = milestoneID.Value;
@@ -284,19 +278,19 @@ namespace Mooshack_2.Controllers
 
         public ActionResult openSubmission(string currentPath)
         {
-            byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
-            string contentType = MimeMapping.GetMimeMapping(currentPath);
+            byte[] _filedata = System.IO.File.ReadAllBytes(currentPath);
+            string _contentType = MimeMapping.GetMimeMapping(currentPath);
 
-            return (File(filedata, contentType));
+            return (File(_filedata, _contentType));
         }
 
         public ActionResult downloadSubmission(string currentPath)
         {
-            byte[] filedata = System.IO.File.ReadAllBytes(currentPath);
-            string contentType = MimeMapping.GetMimeMapping(currentPath);
-            int pos = currentPath.LastIndexOf("\\") + 1;
+            byte[] _filedata = System.IO.File.ReadAllBytes(currentPath);
+            string _contentType = MimeMapping.GetMimeMapping(currentPath);
+            int _pos = currentPath.LastIndexOf("\\") + 1;
 
-            return File(filedata, contentType, currentPath.Substring(pos, currentPath.Length - pos));
+            return File(_filedata, _contentType, currentPath.Substring(_pos, currentPath.Length - _pos));
         }
     }
 }
