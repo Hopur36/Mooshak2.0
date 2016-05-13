@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using System.IO;
 using Mooshack_2.Helpers;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Globalization;
 
 namespace Mooshack_2.Controllers
 {
@@ -35,7 +36,6 @@ namespace Mooshack_2.Controllers
         {
             if (courseID != null)
             {
-                var _assignmentService = new AssignmentService(null);
                 var _courseName = _courseService.getCourseViewModelByID(courseID);
                 var _assignmentModels = new TeacherAssignmentViewModel
                 {
@@ -81,13 +81,53 @@ namespace Mooshack_2.Controllers
             return View(_newAssignmentViewModel);
         }
 
+        public bool dateTimeValidator(DateTime startdate,DateTime enddate)
+        {
+            DateTime _startDateTime = new DateTime();
+            DateTime _endDateTime = new DateTime();
+
+            if (startdate > enddate)
+            {
+                return false;
+            }
+
+            else if(startdate.Year < 2000|| enddate.Year < 2000)
+            {
+                return false;
+            }
+
+            else if (startdate.Year > 9000 || enddate.Year > 9000)
+            {
+                return false;
+            }
+
+            else if (DateTime.TryParse(startdate.ToString(), out _startDateTime) == false)
+            {
+                return false;
+            }
+            else if (DateTime.TryParse(enddate.ToString(), out _endDateTime) == false)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         public ActionResult CreateAssignment(CreateAssignmentViewModel model)
         {
-            _assignmentService.CreateAssignment(model);
-
-            return RedirectToAction("teacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+            if (ModelState.IsValid)
+            {
+                if(dateTimeValidator(model.StartDateTime,model.EndDateTime) == true)
+                {
+                  _assignmentService.CreateAssignment(model);
+                  return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+                }
+   
+            }
+            return View(model);
         }
 
         [Authorize(Roles = "Teacher")]

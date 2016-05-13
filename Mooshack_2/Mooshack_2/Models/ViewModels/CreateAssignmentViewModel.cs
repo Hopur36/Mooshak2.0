@@ -19,11 +19,13 @@ namespace Mooshack_2.Models.ViewModels
         public string Description { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Start Date")]
         public DateTime StartDateTime { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "End Date")]
         public DateTime EndDateTime { get; set; }
