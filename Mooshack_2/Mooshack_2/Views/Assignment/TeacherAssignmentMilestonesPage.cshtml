@@ -7,7 +7,7 @@
 <h2>@Model.CourseName / @Model.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New Milestone", "CreateMilestone", new { assignmentID = Model.id })
+    @Html.ActionLink("Create New Milestone", "CreateMilestone", new { assignmentID = Model.id }, new { @class = "btn btn-primary", @style = "color:white" })
 </p>
 
 <table class="table">
@@ -63,4 +63,4 @@
 
 </table>
 
-<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">
+<input type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary" style="color:white">

@@ -7,7 +7,7 @@
 <h2>@Model.CourseName</h2>
 
 <p>
-    @Html.ActionLink("Create New Assignment", "CreateAssignment", new { CourseID = Model.CourseID })
+    @Html.ActionLink("Create New Assignment", "CreateAssignment", new { CourseID = Model.CourseID }, new { @class = "btn btn-primary", @style = "color:white" })
 </p>
 
 <div class="table-responsive">
@@ -66,6 +66,6 @@
     </table>
     </div>
 
-<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">
+<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);" class="btn btn-primary" style="color:white">
 
 

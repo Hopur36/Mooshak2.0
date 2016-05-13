@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Mooshack_2.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Mooshack_2.Models.ViewModels;
 
@@ -15,56 +12,45 @@ namespace Mooshack_2.Controllers
 
         public LayoutController()
         {
-            _courseService = new CourseService(null);
+            _courseService = new CourseService( null );
         }
-
-        // GET: Layout
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-
 
         [ChildActionOnly]
-        [ActionName("_listOfCourses")]
+        [ActionName( "_listOfCourses" )]
         public ActionResult _activeCourseList()
         {
-
-            if (User.IsInRole("Administrator"))
+            if( User.IsInRole( "Administrator" ) )
             {
                 var _allCourses = _courseService.getAllCourses();
                 var _activeCourses = new List<CourseViewModel>();
 
-                foreach (var course in _allCourses)
+                foreach( var _course in _allCourses )
                 {
-                    if (course.Active == true)
+                    if( _course.Active == true )
                     {
-                        _activeCourses.Add(course);
+                        _activeCourses.Add( _course );
                     }
                 }
-                _activeCourses.Sort((x, y) => x.Name.CompareTo(y.Name));
+                _activeCourses.Sort( ( x, y ) => x.Name.CompareTo( y.Name ) );
 
-                return PartialView("_listOfCourses", _activeCourses);
+                return PartialView( "_listOfCourses", _activeCourses );
             }
-            else if (User.IsInRole("Teacher"))
+            else if( User.IsInRole( "Teacher" ) )
             {
-                var _courses = _courseService.getAllActiveCoursesByTeacherID(User.Identity.GetUserId());
+                var _courses = _courseService.getAllActiveCoursesByTeacherID( User.Identity.GetUserId() );
 
-                return PartialView("_listOfCourses", _courses);
+                return PartialView( "_listOfCourses", _courses );
             }
             else
             {
-                var _courses = _courseService.getAllActiveCoursesByStudentID(User.Identity.GetUserId());
+                var _courses = _courseService.getAllActiveCoursesByStudentID( User.Identity.GetUserId() );
 
-                return PartialView("_listOfCourses", _courses);
+                return PartialView( "_listOfCourses", _courses );
             }
         }
 
-
-
         [ChildActionOnly]
-        [ActionName("_listOfUnactiveCourses")]
+        [ActionName( "_listOfUnactiveCourses" )]
         public ActionResult _unactiveCourseList()
         {
             /*
@@ -76,37 +62,27 @@ namespace Mooshack_2.Controllers
                 return PartialView("_listOfUnactiveCourses", _courses);
             }
             else */
-            if (User.IsInRole("Teacher"))
+            if( User.IsInRole( "Teacher" ) )
             {
-                var _courses = _courseService.getAllInactiveCoursesByTeacherID(User.Identity.GetUserId());
+                var _courses = _courseService.getAllInactiveCoursesByTeacherID( User.Identity.GetUserId() );
 
-                return PartialView("_listOfUnactiveCourses", _courses);
+                return PartialView( "_listOfUnactiveCourses", _courses );
             }
             else
             {
-                var _courses = _courseService.getAllInactiveCoursesByStudentID(User.Identity.GetUserId());
+                var _courses = _courseService.getAllInactiveCoursesByStudentID( User.Identity.GetUserId() );
 
-                return PartialView("_listOfUnactiveCourses", _courses);
+                return PartialView( "_listOfUnactiveCourses", _courses );
             }
         }
 
         [ChildActionOnly]
-        [ActionName("AllCourses")]
+        [ActionName( "AllCourses" )]
         public ActionResult _allCourses()
         {
             var _allCourses = _courseService.getAllCourses();
 
-            return PartialView("AllCourses", _allCourses);
+            return PartialView( "AllCourses", _allCourses );
         }
-
-        [ChildActionOnly]
-        [ActionName("AllUsers")]
-        public ActionResult _allUsers()
-        {
-            var _allUsers = _courseService.getAllUsers();
-
-            return PartialView("AllUsers", _allUsers);
-        }
-
     }
 }

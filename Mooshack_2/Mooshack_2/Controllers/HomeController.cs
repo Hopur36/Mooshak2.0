@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using Mooshack_2.Models;
 using Mooshack_2.Services;
 using Microsoft.AspNet.Identity;
 using Mooshack_2.Models.ViewModels;
+using System.Linq;
 
 namespace Mooshack_2.Controllers
 {
@@ -17,35 +14,36 @@ namespace Mooshack_2.Controllers
 
         public HomeController()
         {
-            _courseService = new CourseService(null);
-            _assignmentService = new AssignmentService(null);
+            _courseService = new CourseService( null );
+            _assignmentService = new AssignmentService( null );
         }
-        public ActionResult Index()
+
+        public ActionResult index()
         {
-            if (User.IsInRole("Administrator"))
+            if( User.IsInRole( "Administrator" ) )
             {
-                return RedirectToAction("showAllUsers", "Account" );
+                return RedirectToAction( "showAllUsers", "Account" );
             }
-            else if (User.IsInRole("Teacher"))
+            else if( User.IsInRole( "Teacher" ) )
             {
-                return RedirectToAction("TeacherFrontPage");
+                return RedirectToAction( "teacherFrontPage" );
             }
-            else if (User.IsInRole("Student"))
+            else if( User.IsInRole( "Student" ) )
             {
-                return RedirectToAction("StudentFrontPage");
+                return RedirectToAction( "studentFrontPage" );
             }
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction( "Login", "Account" );
         }
 
-        public ActionResult About()
+        public ActionResult about()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult contact()
         {
             ViewBag.Message = "Your contact page.";
 
@@ -54,21 +52,27 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Teacher")]
         public ActionResult TeacherFrontPage(string sortOrder)
-        {
-            var _courses = _courseService.getAllActiveCoursesByTeacherID(User.Identity.GetUserId());
+        { 
+            var _courses = _courseService.getAllActiveCoursesByTeacherID( User.Identity.GetUserId() );
             List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
-            foreach(CourseViewModel _course in _courses)
+            foreach( CourseViewModel _course in _courses )
             {
-                if(_assignmentService.getActiveAssignmentByCourseID(_course.id) != null)
+                if( _assignmentService.getActiveAssignmentByCourseID( _course.id ) != null )
                 {
-                    foreach(AssignmentViewModel _assignment in _assignmentService.getActiveAssignmentByCourseID(_course.id))
+                    foreach(
+                        AssignmentViewModel _assignment in
+                            _assignmentService.getActiveAssignmentByCourseID( _course.id ) )
                     {
-                        _allAssignments.Add(_assignment);
+                        _allAssignments.Add( _assignment );
                     }
                 }
             }
-            _allAssignments.Sort((x,y) => x.EndDateTime.CompareTo(y.EndDateTime));
-            var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments };
+            _allAssignments.Sort( ( x, y ) => x.EndDateTime.CompareTo( y.EndDateTime ) );
+            var _teacherFrontPageViewModel = new TeacherFrontPageViewModel()
+            {
+                Courses = _courses,
+                Assignments = _allAssignments
+            };
 
             switch (sortOrder)
             {
@@ -90,12 +94,12 @@ namespace Mooshack_2.Controllers
             }
 
             return View(_teacherFrontPageViewModel);
+
         }
 
-        [Authorize(Roles = "Administrator")]
-        public ActionResult AdminFrontPage()
+        [Authorize( Roles = "Administrator" )]
+        public ActionResult adminFrontPage()
         {
-
             return View();
         }
 
@@ -103,24 +107,30 @@ namespace Mooshack_2.Controllers
         /// This function gets all active courses by StudentID and Assignments for those courses
         /// </summary>
         /// <returns>StudentFrontPageViewModel</returns>
-        [Authorize(Roles = "Student")]
-        public ActionResult StudentFrontPage()
+        [Authorize( Roles = "Student" )]
+        public ActionResult studentFrontPage()
         {
-            var _courses = _courseService.getAllActiveCoursesByStudentID(User.Identity.GetUserId());
+            var _courses = _courseService.getAllActiveCoursesByStudentID( User.Identity.GetUserId() );
             List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
-            foreach (CourseViewModel _course in _courses)
+            foreach( CourseViewModel _course in _courses )
             {
-                if (_assignmentService.getActiveAssignmentByCourseID(_course.id) != null)
+                if( _assignmentService.getActiveAssignmentByCourseID( _course.id ) != null )
                 {
-                    foreach (AssignmentViewModel _assignment in _assignmentService.getActiveAssignmentByCourseID(_course.id))
+                    foreach(
+                        AssignmentViewModel _assignment in
+                            _assignmentService.getActiveAssignmentByCourseID( _course.id ) )
                     {
-                        _allAssignments.Add(_assignment);
+                        _allAssignments.Add( _assignment );
                     }
                 }
             }
-            _allAssignments.Sort((x, y) => x.EndDateTime.CompareTo(y.EndDateTime));
-            var _studentFrontPageViewModel = new StudentFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments  };
-            return View(_studentFrontPageViewModel);
+            _allAssignments.Sort( ( x, y ) => x.EndDateTime.CompareTo( y.EndDateTime ) );
+            var _studentFrontPageViewModel = new StudentFrontPageViewModel()
+            {
+                Courses = _courses,
+                Assignments = _allAssignments
+            };
+            return View( _studentFrontPageViewModel );
         }
     }
 }
