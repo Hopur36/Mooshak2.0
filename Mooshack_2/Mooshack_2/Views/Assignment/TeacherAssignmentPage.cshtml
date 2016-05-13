@@ -51,10 +51,14 @@
                     @Html.DisplayFor(modelItem => item.EndDateTime)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditAssignment", new { assignmentID = item.id = item.id })
+                    <a href="@Url.Action("EditAssignment", new { assignmentID = item.id = item.id })">
+                        <span class="glyphicon glyphicon-pencil iconEdit"></span>
+                    </a>
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID}, new { onclick = "return confirm('Are you sure you want to delete this Assignment?')" })
+                    <a href="@Url.Action("DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID})" onclick="return confirm('Are you sure you want to delete this Assignment?')">
+                        <span class="glyphicon glyphicon-trash iconDelete centerButton"></span>
+                    </a>
                 </td>
             </tr>
         }
