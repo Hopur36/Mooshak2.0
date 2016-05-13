@@ -57,7 +57,7 @@ namespace Mooshack_2.Controllers
         {
             if (assignmentID != null)
             {
-                AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                AssignmentViewModel _assignment = _assignmentService.getAssignmentViewModelById(assignmentID.Value);
                 var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID.Value);
                 _assignment.CourseName = _course.Name;
                 return View(_assignment);
@@ -66,7 +66,6 @@ namespace Mooshack_2.Controllers
             {
                 return View("Error404");
             }
-            
         }
 
         [Authorize( Roles = "Student" )]
@@ -74,12 +73,11 @@ namespace Mooshack_2.Controllers
         {
             if(assignmentID != null)
             {
-                AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                AssignmentViewModel _assignment = _assignmentService.getAssignmentViewModelById(assignmentID.Value);
                 var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID.Value);
                 _assignment.CourseName = _course.Name;
                 return View(_assignment);
             }
-
             else
             {
                 return View("Error404");
@@ -143,7 +141,7 @@ namespace Mooshack_2.Controllers
             {
                 if (dateTimeValidator(model.StartDateTime, model.EndDateTime) == true)
                 {
-                    _assignmentService.CreateAssignment(model);
+                    _assignmentService.createAssignment(model);
                     return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
                 }
 
@@ -156,7 +154,7 @@ namespace Mooshack_2.Controllers
         {
             if(assignmentID != null)
             {
-                var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                var _assignment = _assignmentService.getAssignmentViewModelById(assignmentID.Value);
                 var _editAssignmentViewModel = new EditAssignmentViewModel
                 {
                     id = _assignment.id,
@@ -186,7 +184,7 @@ namespace Mooshack_2.Controllers
             {
                 if (dateTimeValidator(model.StartDateTime, model.EndDateTime) == true)
                 {
-                    _assignmentService.EditAssignment(model);
+                    _assignmentService.editAssignment(model);
                     return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
                 }
             }
@@ -213,7 +211,7 @@ namespace Mooshack_2.Controllers
         {
             if (ModelState.IsValid)
             {
-                _assignmentService.EditMilestone(model);
+                _assignmentService.editMilestone(model);
                 return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID });
             }
 
@@ -224,7 +222,7 @@ namespace Mooshack_2.Controllers
         [Authorize( Roles = "Teacher" )]
         public ActionResult deleteAssignment( int assignmentID, int courseReturnID )
         {
-            _assignmentService.DeleteAssignment( assignmentID );
+            _assignmentService.deleteAssignment( assignmentID );
 
             return RedirectToAction( "teacherAssignmentPage", "Assignment", new {courseID = courseReturnID} );
         }
@@ -233,7 +231,7 @@ namespace Mooshack_2.Controllers
         public ActionResult deleteMilestone( int milestoneID, int assignmentReturnID )
         {
             AssignmentService _deleteMileStone = new AssignmentService( null );
-            _deleteMileStone.DeleteMilestone( milestoneID );
+            _deleteMileStone.deleteMilestone( milestoneID );
 
             return RedirectToAction( "teacherAssignmentMilestonesPage", "Assignment",
                 new {assignmentID = assignmentReturnID} );
@@ -246,20 +244,19 @@ namespace Mooshack_2.Controllers
             {
                 CreateMilestoneViewModel _newMileStone = new CreateMilestoneViewModel();
                 _newMileStone.AssignmentID = assignmentID.Value;
-                var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                var _assignment = _assignmentService.getAssignmentViewModelById(assignmentID.Value);
                 _newMileStone.AssignmentName = _assignment.Title;
                 return View(_newMileStone);
             }
 
             return View("Error404");
-            
         }
 
         [Authorize( Roles = "Teacher" )]
         [HttpPost]
         public ActionResult CreateMilestone( CreateMilestoneViewModel model )
         {
-            _assignmentService.CreateAssignmentMilestone( model );
+            _assignmentService.createAssignmentMilestone( model );
 
             return RedirectToAction( "teacherAssignmentMilestonesPage", "Assignment",
                 new {assignmentID = model.AssignmentID} );
