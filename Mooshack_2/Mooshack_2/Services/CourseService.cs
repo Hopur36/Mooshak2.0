@@ -492,7 +492,7 @@ namespace Mooshack_2.Services
 
         /// <summary>
         /// This function removes the student link to a course from the database.
-        /// Cascading is done in the controler.
+        /// Cascading is done in the controller.
         /// </summary>
         /// <param name="studentID"></param>
         /// <param name="courseID"></param>
