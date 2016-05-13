@@ -177,7 +177,7 @@ namespace Mooshack_2.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction( "Index", "Home" );
+                    return RedirectToAction( "index", "Home" );
                 }
 
                 addErrors( _result );
@@ -479,7 +479,7 @@ namespace Mooshack_2.Controllers
         {
             authenticationManager.SignOut( DefaultAuthenticationTypes.ApplicationCookie );
 
-            return RedirectToAction( "Index", "Home" );
+            return RedirectToAction( "index", "Home" );
         }
 
         //
@@ -572,7 +572,7 @@ namespace Mooshack_2.Controllers
                 if( _result.Succeeded )
                 {
                     userManager.AddToRole( _user.Id, userRoles );
-                    return RedirectToAction( "Index", "Home" );
+                    return RedirectToAction( "index", "Home" );
                 }
 
                 addErrors( _result );
@@ -679,7 +679,7 @@ namespace Mooshack_2.Controllers
                 return Redirect( returnUrl );
             }
 
-            return RedirectToAction( "Index", "Home" );
+            return RedirectToAction( "index", "Home" );
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
