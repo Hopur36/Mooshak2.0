@@ -39,12 +39,17 @@
             </td>
 
             <td>
-                @Html.ActionLink("Submit", "studentSubmitMilestone", new { milestoneID = item.id })
+                <a href="@Url.Action("studentSubmitMilestone", new { milestoneID = item.id })">
+                    <span class="glyphicon glyphicon-plus iconSubmit centerButton"></span>
+                </a>
             </td>
             <td>
-                @Html.ActionLink("View My Submissions", "viewStudentSubmissions", new { milestoneID = item.id})
+                <a href="@Url.Action("viewStudentSubmissions", new { milestoneID = item.id })">
+                    <span class="glyphicon glyphicon-eye-open iconViewSubmit centerButton"></span>
+                </a>
             </td>
         </tr>
     }
 </table>
 
+<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">

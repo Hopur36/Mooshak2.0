@@ -16,6 +16,9 @@
             Status
         </th>
         <th>
+            Open
+        </th>
+        <th>
             Download
         </th>
     </tr>
@@ -40,12 +43,18 @@
                 }
             </td>
             <td>
-                @Html.ActionLink("Open", "openSubmission", new { currentPath = item.FilePath  })
-                @Html.ActionLink("Download", "downloadSubmission", new { currentPath = item.FilePath })
+                <a href="@Url.Action("openSubmission", new { currentPath = item.FilePath, target = "_blank" })">
+                    <span class="glyphicon glyphicon-folder-open centerButton"></span>
+                </a>
             </td>
-
+            <td>
+                <a href="@Url.Action("downloadSubmission", new { currentPath = item.FilePath })">
+                    <span class="glyphicon glyphicon-download-alt iconDownload centerButton"></span>
+                </a>
+            </td>
         </tr>
     }
 </table>
 
 
+<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">

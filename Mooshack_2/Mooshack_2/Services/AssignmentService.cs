@@ -308,6 +308,14 @@ namespace Mooshack_2.Services
             return _milestoneViewModel;
         }
 
+        public Milestone getMilestoneByID(int mID)
+        {
+            var _milestone = (from item in _dbContext.Milestones
+                              where item.id == mID
+                              select item).FirstOrDefault();
+            return _milestone;
+        }
+
         public bool addSubmission(StudentSubmissionViewModel model)
         {
             Submission newSubmission = new Submission {
@@ -401,6 +409,18 @@ namespace Mooshack_2.Services
             _dbContext.SaveChanges();
 
             return true;
+        }
+
+        public void deleteSubmissionsByStudentID(string studentID)
+        {
+            List<Submission> _allSubmissions = (from submissions in _dbContext.Submissions
+                                                where submissions.StudentID == studentID
+                                                select submissions).ToList();
+            foreach (var submission in _allSubmissions)
+            {
+                _dbContext.Submissions.Remove(submission);
+                _dbContext.SaveChanges();
+            }
         }
 
 

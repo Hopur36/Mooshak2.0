@@ -8,13 +8,15 @@ namespace Mooshack_2.Helpers
 {
     public class SubmissionEvaluator
     {
-        private StudentSubmissionViewModel _submission { get; set; }
         private HttpPostedFileBase _submittedfile { get; set; }
+        private string _input { get; set; }
+        private string _expectedOutput { get; set; }
 
-        public SubmissionEvaluator(StudentSubmissionViewModel model, HttpPostedFileBase file)
+        public SubmissionEvaluator(HttpPostedFileBase file,string input,string output)
         {
-            _submission = model;
             _submittedfile = file;
+            _input = input;
+            _expectedOutput = output;
         }
 
         public bool Evaluate()
@@ -29,6 +31,7 @@ namespace Mooshack_2.Helpers
             {
                 return false;
             }
+
         }
     }
 }

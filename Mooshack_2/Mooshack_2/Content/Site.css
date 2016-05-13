@@ -513,10 +513,31 @@ h3
     background-color: white;
 }
 
-
-
-h2, .h2 {
+h2, .h2 
+{
     font-size: 30px;
 }
 
+.iconEdit {
+    color: #009B50;
+}
 
+.iconDelete{
+    color: #ff0000;
+}
+
+.iconRemove{
+    color: #ff6a00
+}
+
+.iconSubmit{
+    color: #009B50
+}
+
+.iconViewSubmit{
+    color:#000
+}
+
+.iconDownload{
+    color:#009B50
+}
