@@ -437,7 +437,7 @@ namespace Mooshack_2.Controllers
         {
             if( User.Identity.IsAuthenticated )
             {
-                return RedirectToAction( "Index", "Manage" );
+                return RedirectToAction( "index", "Manage" );
             }
 
             if( ModelState.IsValid )
