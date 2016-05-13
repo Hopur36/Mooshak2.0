@@ -53,23 +53,38 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize( Roles = "Teacher" )]
-        public ActionResult teacherAssignmentMilestonesPage( int assignmentID )
+        public ActionResult teacherAssignmentMilestonesPage( int? assignmentID )
         {
-            AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID( assignmentID );
-            var _course = _courseService.getCourseViewModelByAssignmentID( assignmentID );
-            _assignment.CourseName = _course.Name;
-
-            return View( _assignment );
+            if (assignmentID != null)
+            {
+                AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID.Value);
+                _assignment.CourseName = _course.Name;
+                return View(_assignment);
+            }
+            else
+            {
+                return View("Error404");
+            }
+            
         }
 
         [Authorize( Roles = "Student" )]
-        public ActionResult studentAssignmentMilestonePage( int assignmentID )
+        public ActionResult studentAssignmentMilestonePage( int? assignmentID )
         {
-            AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID( assignmentID );
-            var _course = _courseService.getCourseViewModelByAssignmentID( assignmentID );
-            _assignment.CourseName = _course.Name;
+            if(assignmentID != null)
+            {
+                AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID.Value);
+                _assignment.CourseName = _course.Name;
+                return View(_assignment);
+            }
 
-            return View( _assignment );
+            else
+            {
+                return View("Error404");
+            }
+            
         }
 
         public bool dateTimeValidator(DateTime startdate, DateTime enddate)
@@ -105,12 +120,18 @@ namespace Mooshack_2.Controllers
 
         }
 
-        public ActionResult CreateAssignment(int courseID)
+        public ActionResult CreateAssignment(int? courseID)
         {
-            CreateAssignmentViewModel _newAssignmentViewModel = new CreateAssignmentViewModel();
-            _newAssignmentViewModel.CourseID = courseID;
+            if(courseID != null)
+            {
+                CreateAssignmentViewModel _newAssignmentViewModel = new CreateAssignmentViewModel();
+                _newAssignmentViewModel.CourseID = courseID.Value;
 
-            return View( _newAssignmentViewModel );
+                return View(_newAssignmentViewModel);
+            }
+
+            return View("Error404");
+
         }
 
 
@@ -131,20 +152,28 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize( Roles = "Teacher" )]
-        public ActionResult EditAssignment( int assignmentID )
+        public ActionResult EditAssignment( int? assignmentID )
         {
-            var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
-            var _editAssignmentViewModel = new EditAssignmentViewModel
+            if(assignmentID != null)
             {
-                id = _assignment.id,
-                Title = _assignment.Title,
-                CourseID = _assignment.CourseID,
-                Description = _assignment.Description,
-                EndDateTime = _assignment.EndDateTime,
-                StartDateTime = _assignment.StartDateTime
-            };
+                var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                var _editAssignmentViewModel = new EditAssignmentViewModel
+                {
+                    id = _assignment.id,
+                    Title = _assignment.Title,
+                    CourseID = _assignment.CourseID,
+                    Description = _assignment.Description,
+                    EndDateTime = _assignment.EndDateTime,
+                    StartDateTime = _assignment.StartDateTime
+                };
 
-            return View(_editAssignmentViewModel);
+                return View(_editAssignmentViewModel);
+            }
+            else
+            {
+                return View("Error404");
+            }
+            
 
         }
 
@@ -170,7 +199,7 @@ namespace Mooshack_2.Controllers
         {
             if( milestoneID == null )
             {
-                return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                return View("Error404");
             }
 
             var _milestone = _assignmentService.getEditMilestoneViewModelByID( milestoneID.Value );
@@ -211,13 +240,19 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize( Roles = "Teacher" )]
-        public ActionResult CreateMilestone( int assignmentID )
+        public ActionResult CreateMilestone( int? assignmentID )
         {
-            CreateMilestoneViewModel _newMileStone = new CreateMilestoneViewModel();
-            _newMileStone.AssignmentID = assignmentID;
-            var _assignment = _assignmentService.GetAssignmentViewModelByID( assignmentID );
-            _newMileStone.AssignmentName = _assignment.Title;
-            return View( _newMileStone );
+            if(assignmentID != null)
+            {
+                CreateMilestoneViewModel _newMileStone = new CreateMilestoneViewModel();
+                _newMileStone.AssignmentID = assignmentID.Value;
+                var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID.Value);
+                _newMileStone.AssignmentName = _assignment.Title;
+                return View(_newMileStone);
+            }
+
+            return View("Error404");
+            
         }
 
         [Authorize( Roles = "Teacher" )]
@@ -249,7 +284,7 @@ namespace Mooshack_2.Controllers
                 return View( _assignmentModels );
             }
 
-            return View();
+            return View("Error404");
         }
 
         [Authorize( Roles = "Student" )]
@@ -301,16 +336,27 @@ namespace Mooshack_2.Controllers
         [Authorize( Roles = "Student" )]
         public ActionResult viewStudentSubmissions( int? milestoneID )
         {
-            var _studentID = User.Identity.GetUserId();
-            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID( _studentID,
-                milestoneID.Value );
+            if(milestoneID != null)
+            {
+                var _studentID = User.Identity.GetUserId();
+                ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID,
+                    milestoneID.Value);
 
-            return View( _viewSubmissions );
+                return View(_viewSubmissions);
+            }
+
+            return View("Error404");
+            
         }
 
         [Authorize( Roles = "Teacher" )]
         public ActionResult viewAllStudentSubmissions( int? milestoneID, string sortOrder )
         {
+            if(milestoneID == null)
+            {
+                return View("Error404");
+            }
+
             ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByMilestoneID( milestoneID.Value );
             var _userManager =
                 new UserManager<ApplicationUser>( new UserStore<ApplicationUser>( new ApplicationDbContext() ) );
