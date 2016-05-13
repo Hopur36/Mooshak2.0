@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Web.Security;
 using Mooshack_2.Services;
+using Mooshack_2.Models.ViewModels;
 
 namespace Mooshack_2.Controllers
 {
@@ -282,6 +283,46 @@ namespace Mooshack_2.Controllers
             }
             AddErrors(result);
             return View();
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult adminResetPassword(string userID,string username)
+        {
+            AdminResetPasswordViewModel _model = new AdminResetPasswordViewModel();
+            _model.UserID = userID;
+            _model.UserName = username;
+
+            return View(_model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> adminResetPassword(AdminResetPasswordViewModel model)
+        {
+            var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByIdAsync(model.UserID);
+            if (user == null)
+            {
+                return RedirectToAction("showAllUsers", "Account");
+            }
+            var result = await _userManager.RemovePasswordAsync(user.Id);
+            if (result.Succeeded)
+            {
+                result = await _userManager.AddPasswordAsync(user.Id, model.Password);
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("showAllUsers", "Account");
+                }
+                
+            }
+
+            return View(model);
+
         }
 
         //
