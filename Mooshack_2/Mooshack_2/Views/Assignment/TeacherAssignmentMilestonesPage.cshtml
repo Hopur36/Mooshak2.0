@@ -7,7 +7,7 @@
 <h2>@Model.CourseName / @Model.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New Milestone", "CreateMilestone", new { assignmentID = Model.id })
+    @Html.ActionLink("Create New Milestone", "CreateMilestone", new { assignmentID = Model.id }, new { @class = "btn btn-primary", @style = "color:white" })
 </p>
 
 <table class="table">
@@ -49,7 +49,7 @@
             </a>
         </td>
         <td>
-            <a href="@Url.Action("DeleteMilestone", new { milestoneID = item.id, assignmentReturnID = Model.id })" onclick="return confirm('Are you sure you want to delete this milestone?')">
+            <a href="@Url.Action("deleteMilestone", new { milestoneID = item.id, assignmentReturnID = Model.id })" onclick="return confirm('Are you sure you want to delete this milestone?')">
                 <span class="glyphicon glyphicon-trash iconDelete centerButton"></span>
             </a>
         </td>
@@ -63,4 +63,4 @@
 
 </table>
 
-<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">
+<input type="button" value="Back" onclick="history.go(-1);" class="btn btn-primary" style="color:white">

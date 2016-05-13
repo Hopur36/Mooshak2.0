@@ -32,6 +32,12 @@ namespace Mooshack_2.Services
              _dbContext = new ApplicationDbContext();
          }*/
 
+
+        /// <summary>
+        /// Gets all assignments by course ID
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <returns>List of assignment Viewmodels</returns>
         public List<AssignmentViewModel> getAssignmentByCourseID(int? cid)
         {
             if (cid == null)
@@ -40,16 +46,19 @@ namespace Mooshack_2.Services
             }
             else
             {
+                //gets all assignments that have the matching course id
                 IEnumerable<Assignment> _assignments = (from item in _dbContext.Assignments
                                                         where item.CourseID == cid
                                                         select item).ToList();
 
+                //gets the name of the course
                 String _coursename = (from item in _dbContext.Courses
                                       where item.ID == cid
                                       select item.Name).FirstOrDefault();
 
                 var _assignmentViewModels = new List<AssignmentViewModel>();
 
+                //loops through the list of assignments and adds a viewmodel for each assignment to the list
                 foreach (var _assignment in _assignments)
                 {
                     _assignmentViewModels.Add(new AssignmentViewModel
@@ -70,14 +79,21 @@ namespace Mooshack_2.Services
 
         }
 
-        
 
+        /// <summary>
+        /// Gets all assignments
+        /// </summary>
+        /// <returns>List of all assignments</returns>
         public List<Assignment> getAllAssignments()
         {
             var _allAssignments = _dbContext.Assignments.ToList();
             return _allAssignments;
         }
 
+        /// <summary>
+        /// Gets all assignments and adds to a Viewmodel and adds that Viewmodel to a list
+        /// </summary>
+        /// <returns>A List of assignmentViewmodels</returns>
         public List<AssignmentViewModel> getAllAssignmentViewModels()
         {
             var _assignmentViewModels = new List<AssignmentViewModel>();
@@ -99,6 +115,12 @@ namespace Mooshack_2.Services
             return _assignmentViewModels;
         }
 
+
+        /// <summary>
+        /// Gets an assignment that matches the given id
+        /// </summary>
+        /// <param name="aID"></param>
+        /// <returns>Assignment Viewmodel</returns>
         public AssignmentViewModel GetAssignmentViewModelByID(int aID)
         {
             var _assignment = (from item in _dbContext.Assignments
@@ -121,6 +143,11 @@ namespace Mooshack_2.Services
             return _assignmentViewModel;
         }
 
+        /// <summary>
+        /// Gets all milestones that match the given id and adds it to a list of milestone Viewmodels
+        /// </summary>
+        /// <param name="aID"></param>
+        /// <returns>A list of Milestone ViewModels</returns>
         public List<MilestoneViewModel> getAllMilestonesByAssignmentID(int aID)
         {
             var _allMilestones = (from item in _dbContext.Milestones
@@ -143,16 +170,30 @@ namespace Mooshack_2.Services
             return _allMilestonesViewModel;
         }
 
-        public bool CreateAssignment(CreateAssignmentViewModel model)
+        /// <summary>
+        /// Gets a Viewmodel containing information given by the user and creates an assignment with that information
+        /// </summary>
+        /// <param name="model"></param>
+        public void CreateAssignment(CreateAssignmentViewModel model)
         {
-            Assignment _newAssignment = new Assignment {CourseID = model.CourseID,Title = model.Title,
-            Description = model.Description, StartDateTime = model.StartDateTime, EndDateTime = model.EndDateTime};
+            Assignment _newAssignment = new Assignment{
+                CourseID = model.CourseID,
+                Title = model.Title,
+                Description = model.Description,
+                StartDateTime = model.StartDateTime,
+                EndDateTime = model.EndDateTime
+            };
+
             _dbContext.Assignments.Add(_newAssignment);
             _dbContext.SaveChanges();
-
-            return true;
         }
 
+        //finnur alla milestones með gefnu assignment id og eyðir þeim og finnur að lokum assignment með gefnu id og eyðir því.
+        /// <summary>
+        /// Finds all milestones with the given assignment id, deletes them and then deletes the assignment itself
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <returns></returns>
         public bool DeleteAssignment(int assignmentID)
         {
             List<Milestone> _milestones = new List<Milestone>();
@@ -176,6 +217,11 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        /// <summary>
+        /// Creates a milestone for an assignment
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public bool CreateAssignmentMilestone(CreateMilestoneViewModel model)
         {
             Milestone _newMilestone = new Milestone
@@ -194,6 +240,11 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        /// <summary>
+        /// Gets all active assignments in a course with the given id
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <returns></returns>
         public List<AssignmentViewModel> getActiveAssignmentByCourseID(int? cid)
         {
             if (cid == null)
@@ -212,6 +263,7 @@ namespace Mooshack_2.Services
 
                 var _assignmentViewModels = new List<AssignmentViewModel>();
 
+                //adds all assignments with an enddatetime that hasn't passed, to a list of assignment viewmodels
                 foreach (var _assignment in _assignments)
                 {
                         if (_assignment.EndDateTime > DateTime.Now)
@@ -237,7 +289,12 @@ namespace Mooshack_2.Services
 
         }
 
-
+        /// <summary>
+        /// Gets an assignment model from the controller, fetches the current version of the assignment from the database and updates it with 
+        /// the new information from the assignment model
+        /// </summary>
+        /// <param name="assignment"></param>
+        /// <returns></returns>
         public bool EditAssignment(AssignmentViewModel assignment)
         {
             Assignment model = (from item in _dbContext.Assignments
@@ -253,6 +310,12 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        /// <summary>
+        /// Gets a milestone model from the controller, fetches the current version of the milestone from the database and updates it with 
+        /// the new information from the milestone model
+        /// </summary>
+        /// <param name="milestone"></param>
+        /// <returns></returns>
         public bool EditMilestone(EditMilestoneViewModel milestone)
         {
             Milestone model = (from item in _dbContext.Milestones
@@ -270,6 +333,11 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        /// <summary>
+        /// Gets a viewmodel of a milestone that is about to get edited
+        /// </summary>
+        /// <param name="mID"></param>
+        /// <returns>EditMilestoneViewmodel</returns>
         public EditMilestoneViewModel getEditMilestoneViewModelByID(int mID)
         {
            var _milestone = (from item in _dbContext.Milestones
@@ -291,6 +359,11 @@ namespace Mooshack_2.Services
 
         }
 
+        /// <summary>
+        /// gets a milestoneviewmodel by a specific id
+        /// </summary>
+        /// <param name="mID"></param>
+        /// <returns>MilestoneViewModel</returns>
         public MilestoneViewModel getMilestoneViewModelByID(int mID)
         {
             var _milestone = (from item in _dbContext.Milestones
@@ -307,7 +380,11 @@ namespace Mooshack_2.Services
 
             return _milestoneViewModel;
         }
-
+        /// <summary>
+        /// gets a milestone by a specific id
+        /// </summary>
+        /// <param name="mID"></param>
+        /// <returns></returns>
         public Milestone getMilestoneByID(int mID)
         {
             var _milestone = (from item in _dbContext.Milestones
@@ -316,6 +393,11 @@ namespace Mooshack_2.Services
             return _milestone;
         }
 
+        /// <summary>
+        /// gets a model containing information about the submission and adds a new submission to the database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public bool addSubmission(StudentSubmissionViewModel model)
         {
             Submission newSubmission = new Submission {
@@ -333,7 +415,13 @@ namespace Mooshack_2.Services
 
             return true;
         }
-
+        /// <summary>
+        /// Gets all submissions that the given student has submitted for a specific milestone,
+        /// adds it to a viewmodel and returns it
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <param name="milestoneID"></param>
+        /// <returns>List of StudentSubmissionsViewModel</returns>
         public ViewSubmissions getAllSubmissionsByStudentID(string studentID, int milestoneID)
         {
             ViewSubmissions _submissonsViewModelsByStudentID = new ViewSubmissions();
@@ -368,6 +456,11 @@ namespace Mooshack_2.Services
             return _submissonsViewModelsByStudentID;
         }
 
+        /// <summary>
+        /// Gets all submissions for a specific milestone
+        /// </summary>
+        /// <param name="milestoneID"></param>
+        /// <returns></returns>
         public ViewSubmissions getAllSubmissionsByMilestoneID(int milestoneID)
         {
             ViewSubmissions _submissonsViewModelsByMilestoneID = new ViewSubmissions();
@@ -400,6 +493,12 @@ namespace Mooshack_2.Services
             return _submissonsViewModelsByMilestoneID;
 
         }
+
+        /// <summary>
+        /// Deletes the milestone that matches the given id
+        /// </summary>
+        /// <param name="milestoneID"></param>
+        /// <returns></returns>
         public bool DeleteMilestone(int milestoneID)
         {
             Milestone _deletedMilestone = (from milestone in _dbContext.Milestones
@@ -411,6 +510,10 @@ namespace Mooshack_2.Services
             return true;
         }
 
+        /// <summary>
+        /// Finds all submissions by a student and deletes them
+        /// </summary>
+        /// <param name="studentID"></param>
         public void deleteSubmissionsByStudentID(string studentID)
         {
             List<Submission> _allSubmissions = (from submissions in _dbContext.Submissions

@@ -1,10 +1,10 @@
 ﻿@model Mooshack_2.Models.ViewModels.CreateMilestoneViewModel
 
 @{
-    ViewBag.Title = "CreateMilestone";
+    ViewBag.Title = "Create Milestone";
 }
 
-<h2>CreateMilestone</h2>
+<h2>@Model.AssignmentName / Create Milestone</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -55,13 +55,9 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-primary" style="color:white" />
+                @Html.ActionLink("Cancel", "TeacherAssignmentMilestonesPage", new { assignmentID = Model.AssignmentID }, new { @class = "btn btn-primary", @style = "color:white" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Cancel", "TeacherAssignmentMilestonesPage", new { assignmentID = Model.AssignmentID })
-</div>
-

@@ -7,7 +7,7 @@
 <h2>@Model.CourseName</h2>
 
 <p>
-    @Html.ActionLink("Create New Assignment", "CreateAssignment", new { CourseID = Model.CourseID })
+    @Html.ActionLink("Create New Assignment", "CreateAssignment", new { CourseID = Model.CourseID }, new { @class = "btn btn-primary", @style = "color:white" })
 </p>
 
 <div class="table-responsive">
@@ -39,7 +39,7 @@
             <tr>
 
                 <td>
-                    @Html.ActionLink(item.Title, "TeacherAssignmentMilestonesPage", new { assignmentID = item.id})
+                    @Html.ActionLink(item.Title, "teacherAssignmentMilestonesPage", new { assignmentID = item.id})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
@@ -56,7 +56,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="@Url.Action("DeleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID})" onclick="return confirm('Are you sure you want to delete this Assignment?')">
+                    <a href="@Url.Action("deleteAssignment", new { assignmentID = item.id, courseReturnID = item.CourseID})" onclick="return confirm('Are you sure you want to delete this Assignment?')">
                         <span class="glyphicon glyphicon-trash iconDelete centerButton"></span>
                     </a>
                 </td>
@@ -66,6 +66,6 @@
     </table>
     </div>
 
-<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">
+<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);" class="btn btn-primary" style="color:white">
 
 

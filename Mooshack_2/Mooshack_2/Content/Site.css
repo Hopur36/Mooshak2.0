@@ -539,5 +539,13 @@ h2, .h2
 }
 
 .iconDownload{
+    color:#000
+}
+
+.iconTrue{
     color:#009B50
+}
+
+.iconFalse{
+    color:#ff0000
 }

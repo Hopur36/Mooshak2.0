@@ -58,12 +58,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class ="btn btn-primary" style="color:white" />
+                @Html.ActionLink("Cancel", "TeacherAssignmentPage", new { courseID = Model.CourseID }, new { @class = "btn btn-primary", @style = "color:white" })
             </div>
         </div>
     </div>
 }
-
     
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
@@ -78,8 +78,4 @@
         minuteStep: 10
     });
 </script> 
-
-<div>
-    @Html.ActionLink("Cancel", "TeacherAssignmentPage", new { courseID = Model.CourseID })
-</div>
 
