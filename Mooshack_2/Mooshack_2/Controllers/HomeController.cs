@@ -53,7 +53,7 @@ namespace Mooshack_2.Controllers
         }
 
         [Authorize(Roles = "Teacher")]
-        public ActionResult TeacherFrontPage()
+        public ActionResult TeacherFrontPage(string sortOrder)
         {
             var _courses = _courseService.getAllActiveCoursesByTeacherID(User.Identity.GetUserId());
             List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
@@ -69,6 +69,25 @@ namespace Mooshack_2.Controllers
             }
             _allAssignments.Sort((x,y) => x.EndDateTime.CompareTo(y.EndDateTime));
             var _teacherFrontPageViewModel = new TeacherFrontPageViewModel() { Courses = _courses, Assignments = _allAssignments };
+
+            switch (sortOrder)
+            {
+                case "title":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.Title).ToList();
+                    break;
+                case "course":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.CourseName).ToList();
+                    break;
+                case "start":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.StartDateTime).ToList();
+                    break;
+                case "end":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.EndDateTime).ToList();
+                    break;
+                default:
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.EndDateTime).ToList();
+                    break;
+            }
 
             return View(_teacherFrontPageViewModel);
         }

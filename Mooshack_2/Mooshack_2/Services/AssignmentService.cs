@@ -295,7 +295,7 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="assignment"></param>
         /// <returns></returns>
-        public bool EditAssignment(AssignmentViewModel assignment)
+        public bool EditAssignment(EditAssignmentViewModel assignment)
         {
             Assignment model = (from item in _dbContext.Assignments
                              where item.id == assignment.id

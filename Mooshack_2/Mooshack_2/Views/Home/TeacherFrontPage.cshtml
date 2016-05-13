@@ -18,16 +18,16 @@
                 <table class="table">
                     <tr>
                         <th>
-                            Title
+                            @Html.ActionLink("Title", "TeacherFrontPage", new { sortOrder = "title" }, new { @style = "color:black;" })
                         </th>
                         <th>
-                            Course
+                            @Html.ActionLink("Course", "TeacherFrontPage", new { sortOrder = "course" }, new { @style = "color:black;" })
                         </th>
                         <th>
-                            StartDate
+                            @Html.ActionLink("Start Date", "TeacherFrontPage", new { sortOrder = "start" }, new { @style = "color:black;" })
                         </th>
                         <th>
-                            EndDate
+                            @Html.ActionLink("End Date", "TeacherFrontPage", new { sortOrder = "end" }, new { @style = "color:black;" })
                         </th>
                     </tr>
                     @foreach (var _assignment in Model.Assignments)

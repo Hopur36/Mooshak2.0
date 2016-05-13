@@ -73,6 +73,39 @@ namespace Mooshack_2.Controllers
             return View(_assignment);
         }
 
+        public bool dateTimeValidator(DateTime startdate, DateTime enddate)
+        {
+            DateTime _startDateTime = new DateTime();
+            DateTime _endDateTime = new DateTime();
+
+            if (startdate > enddate)
+            {
+                return false;
+            }
+
+            else if (startdate.Year < 2000 || enddate.Year < 2000)
+            {
+                return false;
+            }
+
+            else if (startdate.Year > 9000 || enddate.Year > 9000)
+            {
+                return false;
+            }
+
+            else if (DateTime.TryParse(startdate.ToString(), out _startDateTime) == false)
+            {
+                return false;
+            }
+            else if (DateTime.TryParse(enddate.ToString(), out _endDateTime) == false)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
         public ActionResult CreateAssignment(int courseID)
         {
             CreateAssignmentViewModel _newAssignmentViewModel = new CreateAssignmentViewModel();
@@ -85,26 +118,49 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         public ActionResult CreateAssignment(CreateAssignmentViewModel model)
         {
-            _assignmentService.CreateAssignment(model);
+            if (ModelState.IsValid)
+            {
+                if (dateTimeValidator(model.StartDateTime, model.EndDateTime) == true)
+                {
+                    _assignmentService.CreateAssignment(model);
+                    return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+                }
 
-            return RedirectToAction("teacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+            }
+            return View(model);
         }
 
         [Authorize(Roles = "Teacher")]
         public ActionResult EditAssignment(int assignmentID)
         {
             var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            var _editAssignmentViewModel = new EditAssignmentViewModel
+            {
+                id = _assignment.id,
+                Title = _assignment.Title,
+                CourseID = _assignment.CourseID,
+                Description = _assignment.Description,
+                EndDateTime = _assignment.EndDateTime,
+                StartDateTime = _assignment.StartDateTime
+            };
 
-            return View(_assignment);
+            return View(_editAssignmentViewModel);
         }
 
         [Authorize(Roles = "Teacher")]
         [HttpPost]
-        public ActionResult EditAssignment(AssignmentViewModel model)
+        public ActionResult EditAssignment(EditAssignmentViewModel model)
         {
-            _assignmentService.EditAssignment(model);
+            if (ModelState.IsValid)
+            {
+                if (dateTimeValidator(model.StartDateTime, model.EndDateTime) == true)
+                {
+                    _assignmentService.EditAssignment(model);
+                    return RedirectToAction("TeacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+                }
+            }
 
-            return RedirectToAction("teacherAssignmentPage", "Assignment", new { courseID = model.CourseID });
+            return View(model);
         }
 
         [Authorize(Roles = "Teacher")]
@@ -124,9 +180,13 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         public ActionResult EditMilestone(EditMilestoneViewModel model)
         {
-            _assignmentService.EditMilestone(model);
+            if (ModelState.IsValid)
+            {
+                _assignmentService.EditMilestone(model);
+                return RedirectToAction("TeacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID });
+            }
 
-            return RedirectToAction("teacherAssignmentMilestonesPage", "Assignment", new { assignmentID = model.AssignmentID });
+            return View(model);
         }
 
         [Authorize(Roles = "Teacher")]

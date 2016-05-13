@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Mooshack_2.Models.ViewModels
 {
-    public class EditMilestoneViewModel : CreateMilestoneViewModel
+    public class EditAssignmentViewModel : CreateAssignmentViewModel
     {
     }
 }
