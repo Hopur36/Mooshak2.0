@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Mooshack_2.Models;
+﻿using Mooshack_2.Models;
 using Mooshack_2.Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using WebApplication1.Models.Entities;
 
 namespace Mooshack_2.Services
@@ -16,6 +12,7 @@ namespace Mooshack_2.Services
         /// Variable can not be changed, unless it is in a constructor
         /// </summary>
         private readonly IMyDataContext _dbContext;
+
         AssignmentService _assignmentService;
 
         /// <summary>
@@ -23,10 +20,10 @@ namespace Mooshack_2.Services
         /// if argument is null then new ApplicationDbContext() is used
         /// </summary>
         /// <param name="context"></param>
-        public CourseService(IMyDataContext context)
+        public CourseService( IMyDataContext context )
         {
             _dbContext = context ?? new ApplicationDbContext();
-            _assignmentService = new AssignmentService(null);
+            _assignmentService = new AssignmentService( null );
         }
 
         /*private ApplicationDbContext _dbContext;
@@ -42,16 +39,17 @@ namespace Mooshack_2.Services
         /// <returns></returns>
         public List<CourseViewModel> getAllCourses()
         {
-            List<Course> _allCourses = (from course in _dbContext.Courses
-                                        select course).ToList();
+            List<Course> _allCourses = (from _course in _dbContext.Courses
+                                        select _course).ToList();
 
             //Create a new list of courseviewmodel
             List<CourseViewModel> _allCoursesViewModel = new List<CourseViewModel>();
 
-            foreach (Course c in _allCourses)
-            {              
-                _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name, id = c.ID, Active = c.Active });
+            foreach( Course _c in _allCourses )
+            {
+                _allCoursesViewModel.Add( new CourseViewModel {Name = _c.Name, id = _c.ID, Active = _c.Active} );
             }
+
             return _allCoursesViewModel;
         }
 
@@ -61,22 +59,22 @@ namespace Mooshack_2.Services
         /// <returns></returns>
         public List<CourseViewModel> getAllInactiveCourses()
         {
-            List<Course> _allCourses = (from course in _dbContext.Courses
-                                        select course).ToList();
+            List<Course> _allCourses = (from _course in _dbContext.Courses
+                                        select _course).ToList();
 
             //Create a new list of courseviewmodel
             List<CourseViewModel> _allCoursesViewModel = new List<CourseViewModel>();
 
-            foreach (Course c in _allCourses)
+            foreach( Course _c in _allCourses )
             {
-                if (c.Active != true)
+                if( _c.Active != true )
                 {
-                    _allCoursesViewModel.Add(new CourseViewModel { Name = c.Name });
+                    _allCoursesViewModel.Add( new CourseViewModel {Name = _c.Name} );
                 }
             }
+
             return _allCoursesViewModel;
         }
-
 
         /// <summary>
         /// This function returns a CourseViewModel for a given
@@ -84,7 +82,7 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="cID"></param>
         /// <returns>CourseViewModel</returns>
-        public CourseViewModel getCourseViewModelByID(int? cID)
+        public CourseViewModel getCourseViewModelByID( int? cID )
         {
             //Get the coures with a given ID from database.
             Course _course = (from course in _dbContext.Courses
@@ -92,11 +90,13 @@ namespace Mooshack_2.Services
                               select course).FirstOrDefault();
 
             //Make a CourseViewModel and fill in the attributes.
-            if(_course == null)
+            if ( _course == null )
             {
                 return null;
             }
-            CourseViewModel _courseViewModel = new CourseViewModel { id = _course.ID, Name = _course.Name };
+
+            CourseViewModel _courseViewModel = new CourseViewModel {id = _course.ID, Name = _course.Name};
+
             return _courseViewModel;
         }
 
@@ -106,25 +106,27 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="teacherID"></param>
         /// <returns></returns>
-        public List<CourseViewModel> getAllCoursesByTeacherID(string teacherID)
+        public List<CourseViewModel> getAllCoursesByTeacherID( string teacherID )
         {
             //list of all entries in CourseTeachers that match the teacherID
-            List<CourseTeacher> _allCourseTeachers = (from courseteacher in _dbContext.CourseTeacher
-                                                      where courseteacher.TeacherID == teacherID
-                                                      select courseteacher).ToList();
+            List<CourseTeacher> _allCourseTeachers = (from _courseteacher in _dbContext.CourseTeacher
+                                                      where _courseteacher.TeacherID == teacherID
+                                                      select _courseteacher).ToList();
 
             //Create a new list of courseviewmodel and only add courses that the teacher teaches
             List<CourseViewModel> _allCoursesWithTeacherViewModel = new List<CourseViewModel>();
-            foreach (CourseTeacher ct in _allCourseTeachers)
+
+            foreach ( CourseTeacher _ct in _allCourseTeachers )
             {
-                foreach (Course c in _dbContext.Courses)
+                foreach( Course _c in _dbContext.Courses )
                 {
-                    if (c.ID == ct.CourseID)
+                    if( _c.ID == _ct.CourseID )
                     {
-                        _allCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                        _allCoursesWithTeacherViewModel.Add( new CourseViewModel {id = _c.ID, Name = _c.Name} );
                     }
                 }
             }
+
             return _allCoursesWithTeacherViewModel;
         }
 
@@ -133,54 +135,59 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="teacherID"></param>
         /// <returns>List of CourseViewModel</returns>
-        public List<CourseViewModel> getAllActiveCoursesByTeacherID(string teacherID)
+        public List<CourseViewModel> getAllActiveCoursesByTeacherID( string teacherID )
         {
             //list of all entries in CourseTeachers that match the teacherID
-            List<CourseTeacher> _allCourseTeachers = (from courseteacher in _dbContext.CourseTeacher
-                                                      where courseteacher.TeacherID == teacherID
-                                                      select courseteacher).ToList();
+            List<CourseTeacher> _allCourseTeachers = (from _courseteacher in _dbContext.CourseTeacher
+                                                      where _courseteacher.TeacherID == teacherID
+                                                      select _courseteacher).ToList();
 
             //Create a new list of courseviewmodel and only add courses that the teacher teaches
             List<CourseViewModel> _allActiveCoursesWithTeacherViewModel = new List<CourseViewModel>();
-            foreach (CourseTeacher ct in _allCourseTeachers)
+
+            foreach ( CourseTeacher _ct in _allCourseTeachers )
             {
-                foreach (Course c in _dbContext.Courses)
+                foreach( Course _c in _dbContext.Courses )
                 {
-                    if (c.ID == ct.CourseID)
+                    if( _c.ID == _ct.CourseID )
                     {
-                        if(c.Active == true) 
+                        if( _c.Active == true )
                         {
-                            _allActiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                            _allActiveCoursesWithTeacherViewModel.Add( new CourseViewModel {id = _c.ID, Name = _c.Name} );
                         }
                     }
                 }
             }
+
             return _allActiveCoursesWithTeacherViewModel;
         }
 
         /*This function returns a list of all unactive courses linked to each teacher*/
-        public List<CourseViewModel> getAllInactiveCoursesByTeacherID(string teacherID)
+
+        public List<CourseViewModel> getAllInactiveCoursesByTeacherID( string teacherID )
         {
             //list of all entries in CourseTeachers that match the teacherID
-            List<CourseTeacher> _allCourseTeachers = (from courseteacher in _dbContext.CourseTeacher
-                                                      where courseteacher.TeacherID == teacherID
-                                                      select courseteacher).ToList();
+            List<CourseTeacher> _allCourseTeachers = (from _courseteacher in _dbContext.CourseTeacher
+                                                      where _courseteacher.TeacherID == teacherID
+                                                      select _courseteacher).ToList();
 
             //Create a new list of courseviewmodel and only add courses that the teacher teaches
             List<CourseViewModel> _allInactiveCoursesWithTeacherViewModel = new List<CourseViewModel>();
-            foreach (CourseTeacher ct in _allCourseTeachers)
+
+            foreach( CourseTeacher _ct in _allCourseTeachers )
             {
-                foreach (Course c in _dbContext.Courses)
+                foreach( Course _c in _dbContext.Courses )
                 {
-                    if (c.ID == ct.CourseID)
+                    if( _c.ID == _ct.CourseID )
                     {
-                        if (c.Active != true)
+                        if( _c.Active != true )
                         {
-                            _allInactiveCoursesWithTeacherViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                            _allInactiveCoursesWithTeacherViewModel.Add( new CourseViewModel {id = _c.ID, Name = _c.Name} );
                         }
                     }
                 }
             }
+
             return _allInactiveCoursesWithTeacherViewModel;
         }
 
@@ -190,25 +197,27 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="studentID"></param>
         /// <returns>List<CourseViewModel></returns>
-        public List<CourseViewModel> getAllCoursesByStudentID(string studentID)
+        public List<CourseViewModel> getAllCoursesByStudentID( string studentID )
         {
             //list of all entries in CourseStudents that match the studentID
-            List<CourseStudent> _allCourseStudents = (from coursestudent in _dbContext.CourseStudent
-                                                      where coursestudent.StudentID == studentID
-                                                      select coursestudent).ToList();
+            List<CourseStudent> _allCourseStudents = (from _coursestudent in _dbContext.CourseStudent
+                                                      where _coursestudent.StudentID == studentID
+                                                      select _coursestudent).ToList();
 
             //Create a new list of courseviewmodel and only add courses that the student is enrolled in
             List<CourseViewModel> _allCoursesWithStudentViewModel = new List<CourseViewModel>();
-            foreach (CourseStudent cs in _allCourseStudents)
+
+            foreach ( CourseStudent _cs in _allCourseStudents )
             {
-                foreach (Course c in _dbContext.Courses)
+                foreach( Course _c in _dbContext.Courses )
                 {
-                    if (c.ID == cs.CourseID)
+                    if( _c.ID == _cs.CourseID )
                     {
-                        _allCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                        _allCoursesWithStudentViewModel.Add( new CourseViewModel {id = _c.ID, Name = _c.Name} );
                     }
                 }
             }
+
             return _allCoursesWithStudentViewModel;
         }
 
@@ -218,28 +227,30 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="studentID"></param>
         /// <returns>List<CourseViewModel></returns>
-        public List<CourseViewModel> getAllActiveCoursesByStudentID(string studentID)
+        public List<CourseViewModel> getAllActiveCoursesByStudentID( string studentID )
         {
             //list of all entries in CourseStudents that match the studentID
-            List<CourseStudent> _allCourseStudents = (from coursestudent in _dbContext.CourseStudent
-                                                      where coursestudent.StudentID == studentID
-                                                      select coursestudent).ToList();
+            List<CourseStudent> _allCourseStudents = (from _coursestudent in _dbContext.CourseStudent
+                                                      where _coursestudent.StudentID == studentID
+                                                      select _coursestudent).ToList();
 
             //Create a new list of courseviewmodel and only add active courses that the student is enrolled in
             List<CourseViewModel> _allActiveCoursesWithStudentViewModel = new List<CourseViewModel>();
-            foreach (CourseStudent cs in _allCourseStudents)
+
+            foreach ( CourseStudent _cs in _allCourseStudents )
             {
-                foreach (Course c in _dbContext.Courses)
+                foreach( Course _c in _dbContext.Courses )
                 {
-                    if (c.ID == cs.CourseID)
+                    if( _c.ID == _cs.CourseID )
                     {
-                        if (c.Active == true)
+                        if( _c.Active == true )
                         {
-                            _allActiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                            _allActiveCoursesWithStudentViewModel.Add( new CourseViewModel {id = _c.ID, Name = _c.Name} );
                         }
                     }
                 }
             }
+
             return _allActiveCoursesWithStudentViewModel;
         }
 
@@ -249,28 +260,30 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="studentID"></param>
         /// <returns>List<CourseViewModel></returns>
-        public List<CourseViewModel> getAllInactiveCoursesByStudentID(string studentID)
+        public List<CourseViewModel> getAllInactiveCoursesByStudentID( string studentID )
         {
             //list of all entries in CourseStudents that match the studentID
-            List<CourseStudent> _allCourseStudents = (from coursestudent in _dbContext.CourseStudent
-                                                      where coursestudent.StudentID == studentID
-                                                      select coursestudent).ToList();
+            List<CourseStudent> _allCourseStudents = (from _coursestudent in _dbContext.CourseStudent
+                                                      where _coursestudent.StudentID == studentID
+                                                      select _coursestudent).ToList();
 
             //Create a new list of courseviewmodel and only add active courses that the student is enrolled in
             List<CourseViewModel> _allInactiveCoursesWithStudentViewModel = new List<CourseViewModel>();
-            foreach (CourseStudent cs in _allCourseStudents)
+
+            foreach ( CourseStudent _cs in _allCourseStudents )
             {
-                foreach (Course c in _dbContext.Courses)
+                foreach( Course _c in _dbContext.Courses )
                 {
-                    if (c.ID == cs.CourseID)
+                    if( _c.ID == _cs.CourseID )
                     {
-                        if (c.Active != true)
+                        if( _c.Active != true )
                         {
-                            _allInactiveCoursesWithStudentViewModel.Add(new CourseViewModel { id = c.ID, Name = c.Name });
+                            _allInactiveCoursesWithStudentViewModel.Add( new CourseViewModel {id = _c.ID, Name = _c.Name} );
                         }
                     }
                 }
             }
+
             return _allInactiveCoursesWithStudentViewModel;
         }
 
@@ -279,9 +292,10 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="CourseID"></param>
         /// <returns></returns>
-        public Course getCourseByID(int courseID)
+        public Course getCourseByID( int courseID )
         {
-            var _course = _dbContext.Courses.SingleOrDefault(x => x.ID == courseID);
+            var _course = _dbContext.Courses.SingleOrDefault( x => x.ID == courseID );
+
             return _course;
         }
 
@@ -290,7 +304,7 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool createCourse(AdminCourseViewModel model)
+        public bool createCourse( AdminCourseViewModel model )
         {
             // Creates the Course object and fill in the attributes.
             Course _newCourse = new Course
@@ -300,8 +314,9 @@ namespace Mooshack_2.Services
             };
 
             // Add that new Course to the database.
-            _dbContext.Courses.Add(_newCourse);
+            _dbContext.Courses.Add( _newCourse );
             _dbContext.SaveChanges();
+
             return true;
         }
 
@@ -311,44 +326,46 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="courseID"></param>
         /// <returns></returns>
-        public bool deleteCourse(int courseID)
+        public bool deleteCourse( int courseID )
         {
             // Get all the assignments linked to this coures.
-            List<Assignment> _allAssignments = (from assignment in _dbContext.Assignments
-                                                where assignment.CourseID == courseID
-                                                select assignment).ToList();
+            List<Assignment> _allAssignments = (from _assignment in _dbContext.Assignments
+                                                where _assignment.CourseID == courseID
+                                                select _assignment).ToList();
+           
             // Delete all the assignments linked to this coures.
-            foreach (var item in _allAssignments)
+            foreach ( var _item in _allAssignments )
             {
-                _assignmentService.DeleteAssignment(item.id);
+                _assignmentService.deleteAssignment( _item.id );
             }
 
             // Get all the teachers linked to this coures.
-            List<CourseTeacher> _allCourseTeachers = (from ct in _dbContext.CourseTeacher
-                                                where ct.CourseID == courseID
-                                                select ct).ToList();
+            List<CourseTeacher> _allCourseTeachers = (from _ct in _dbContext.CourseTeacher
+                                                      where _ct.CourseID == courseID
+                                                      select _ct).ToList();
             // Delete the links for all teachers linked to this coures.
-            foreach (var item in _allCourseTeachers)
+            foreach ( var _item in _allCourseTeachers )
             {
-                removeTeacherFromCourse(item.TeacherID, courseID);
+                removeTeacherFromCourse( _item.TeacherID, courseID );
             }
 
             // Get all the students linked to this coures.
-            List<CourseStudent> _allCourseStudent = (from cs in _dbContext.CourseStudent
-                                                      where cs.CourseID == courseID
-                                                      select cs).ToList();
+            List<CourseStudent> _allCourseStudent = (from _cs in _dbContext.CourseStudent
+                                                     where _cs.CourseID == courseID
+                                                     select _cs).ToList();
+
             // Delete the links for all students linked to this coures.
-            foreach (var item in _allCourseStudent)
+            foreach ( var _item in _allCourseStudent )
             {
-                removeStudentFromCourse(item.StudentID, courseID);
+                removeStudentFromCourse( _item.StudentID, courseID );
             }
 
             // Get the course from the Courses table in the database.
-            Course _deletedCourse = (from course in _dbContext.Courses
-                                             where course.ID == courseID
-                                             select course).FirstOrDefault();
+            Course _deletedCourse = (from _course in _dbContext.Courses
+                                     where _course.ID == courseID
+                                     select _course).FirstOrDefault();
             // Delete that coures from the database.
-            _dbContext.Courses.Remove(_deletedCourse);
+            _dbContext.Courses.Remove( _deletedCourse );
             _dbContext.SaveChanges();
 
             return true;
@@ -359,26 +376,31 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns>List of UserViewModels</returns>
-        public List<UserViewModel> getCourseStudents(int id)
+        public List<UserViewModel> getCourseStudents( int id )
         {
             // Get all the students from the database in a given course.
-            List<CourseStudent> _studentsList = (from course in _dbContext.CourseStudent
-                                            where course.CourseID == id
-                                            select course).ToList();
+            List<CourseStudent> _studentsList = (from _course in _dbContext.CourseStudent
+                                                 where _course.CourseID == id
+                                                 select _course).ToList();
             // The list that will be returned.
             List<UserViewModel> _studentViewModelList = new List<UserViewModel>();
 
             // For each student in the coures,
-            foreach (var student in _studentsList)
+            foreach( var _student in _studentsList )
             {
                 /// get there info,
-                ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault(x => x.Id == student.StudentID);
+                ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault( x => x.Id == _student.StudentID );
                 // build a UserViewModel with that info and add it to the return list. 
-                _studentViewModelList.Add(new UserViewModel { Id = _userInfo.Id, UserName = _userInfo.UserName, Email = _userInfo.Email });
+                _studentViewModelList.Add( new UserViewModel
+                {
+                    Id = _userInfo.Id,
+                    UserName = _userInfo.UserName,
+                    Email = _userInfo.Email
+                } );
             }
 
             // Sort the list by username.
-            _studentViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+            _studentViewModelList.Sort( ( x, y ) => x.UserName.CompareTo( y.UserName ) );
 
             return _studentViewModelList;
         }
@@ -388,26 +410,31 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<UserViewModel> getCourseTeachers(int id)
+        public List<UserViewModel> getCourseTeachers( int id )
         {
             // Get all the teachers from the database in a given course.
-            List<CourseTeacher> _teachersList = (from course in _dbContext.CourseTeacher
-                                                 where course.CourseID == id
-                                                 select course).ToList();
+            List<CourseTeacher> _teachersList = (from _course in _dbContext.CourseTeacher
+                                                 where _course.CourseID == id
+                                                 select _course).ToList();
             // The list that will be returned.
             List<UserViewModel> _teacherViewModelList = new List<UserViewModel>();
 
             // For each teacher in the coures,
-            foreach (var teacher in _teachersList)
+            foreach( var _teacher in _teachersList )
             {
                 /// get there info,
-                ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault(x => x.Id == teacher.TeacherID);
+                ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault( x => x.Id == _teacher.TeacherID );
                 // build a UserViewModel with that info and add it to the return list.
-                _teacherViewModelList.Add(new UserViewModel { Id = _userInfo.Id, UserName = _userInfo.UserName, Email = _userInfo.Email });
+                _teacherViewModelList.Add( new UserViewModel
+                {
+                    Id = _userInfo.Id,
+                    UserName = _userInfo.UserName,
+                    Email = _userInfo.Email
+                } );
             }
 
             // Sort the list by username.
-            _teacherViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+            _teacherViewModelList.Sort( ( x, y ) => x.UserName.CompareTo( y.UserName ) );
 
             return _teacherViewModelList;
         }
@@ -419,25 +446,30 @@ namespace Mooshack_2.Services
         public List<UserViewModel> getAllTeachers()
         {
             // Get all info for a Teacher tag.
-            var _roleHash = _dbContext.Roles.SingleOrDefault(x => x.Name == "Teacher");
+            var _roleHash = _dbContext.Roles.SingleOrDefault( x => x.Name == "Teacher" );
             // Get all users with the "Theacher" hash string.
-            var _allTeachers = _dbContext.Users.Where(x => x.Roles.Select(role => role.RoleId).Contains(_roleHash.Id)).ToList();
+            var _allTeachers =
+                _dbContext.Users.Where( x => x.Roles.Select( role => role.RoleId ).Contains( _roleHash.Id ) ).ToList();
 
             // The return list.
             List<UserViewModel> _teacherViewModelList = new List<UserViewModel>();
 
             // Make a UserViewModel for all the teachers and add it to the return list.
-            foreach (var teacher in _allTeachers)
+            foreach( var _teacher in _allTeachers )
             {
-                _teacherViewModelList.Add(new UserViewModel { Id = teacher.Id, UserName = teacher.UserName, Email = teacher.Email });
+                _teacherViewModelList.Add( new UserViewModel
+                {
+                    Id = _teacher.Id,
+                    UserName = _teacher.UserName,
+                    Email = _teacher.Email
+                } );
             }
 
             // Sort the list by username.
-            _teacherViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+            _teacherViewModelList.Sort( ( x, y ) => x.UserName.CompareTo( y.UserName ) );
 
             return _teacherViewModelList;
         }
-
 
         /// <summary>
         /// This function gets all the students in the database.
@@ -446,21 +478,27 @@ namespace Mooshack_2.Services
         public List<UserViewModel> getAllStudents()
         {
             // Get all info for a Student tag.
-            var _roleHash = _dbContext.Roles.SingleOrDefault(x => x.Name == "Student");
+            var _roleHash = _dbContext.Roles.SingleOrDefault( x => x.Name == "Student" );
             // Get all users with the "Student" hash string.
-            var _allStudents = _dbContext.Users.Where(x => x.Roles.Select(role => role.RoleId).Contains(_roleHash.Id)).ToList();
+            var _allStudents =
+                _dbContext.Users.Where( x => x.Roles.Select( role => role.RoleId ).Contains( _roleHash.Id ) ).ToList();
 
             // The return list.
             List<UserViewModel> _studentViewModelList = new List<UserViewModel>();
 
             // Make a UserViewModel for all the students and add it to the return list.
-            foreach (var student in _allStudents)
+            foreach( var _student in _allStudents )
             {
-                _studentViewModelList.Add(new UserViewModel { Id = student.Id, UserName = student.UserName, Email = student.Email });
+                _studentViewModelList.Add( new UserViewModel
+                {
+                    Id = _student.Id,
+                    UserName = _student.UserName,
+                    Email = _student.Email
+                } );
             }
 
             // Sort the list by username.
-            _studentViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+            _studentViewModelList.Sort( ( x, y ) => x.UserName.CompareTo( y.UserName ) );
 
             return _studentViewModelList;
         }
@@ -470,7 +508,7 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="assignmentID"></param>
         /// <returns>CourseViewModel</returns>
-        public CourseViewModel getCourseViewModelByAssignmentID(int assignmentID)
+        public CourseViewModel getCourseViewModelByAssignmentID( int assignmentID )
         {
             //Find the assignment with the id "assignmentID"
             var _assignment = (from assignment in _dbContext.Assignments
@@ -483,11 +521,14 @@ namespace Mooshack_2.Services
                            select course).FirstOrDefault();
 
             //create a new CourseViewModel
-            var courseViewModel = new CourseViewModel { id = _course.ID,
-                                                        Name = _course.Name,
-                                                        Active = _course.Active};
+            var _courseViewModel = new CourseViewModel
+            {
+                id = _course.ID,
+                Name = _course.Name,
+                Active = _course.Active
+            };
 
-            return courseViewModel;
+            return _courseViewModel;
         }
 
         /// <summary>
@@ -497,15 +538,15 @@ namespace Mooshack_2.Services
         /// <param name="studentID"></param>
         /// <param name="courseID"></param>
         /// <returns></returns>
-        public bool removeStudentFromCourse(string studentID, int courseID)
+        public bool removeStudentFromCourse( string studentID, int courseID )
         {
             // Get the row in the CourseStudent table that is the link.
-            CourseStudent _deletedCourseStudent = (from course in _dbContext.CourseStudent
-                                     where course.CourseID == courseID
-                                     where course.StudentID == studentID
-                                     select course).FirstOrDefault();
+            CourseStudent _deletedCourseStudent = (from _course in _dbContext.CourseStudent
+                                                   where _course.CourseID == courseID
+                                                   where _course.StudentID == studentID
+                                                   select _course).FirstOrDefault();
             // Delete that row.
-            _dbContext.CourseStudent.Remove(_deletedCourseStudent);
+            _dbContext.CourseStudent.Remove( _deletedCourseStudent );
             _dbContext.SaveChanges();
 
             return true;
@@ -518,10 +559,10 @@ namespace Mooshack_2.Services
         /// <param name="studentName"></param>
         /// <param name="courseID"></param>
         /// <returns></returns>
-        public bool addStudentToCourse(string studentName, int courseID)
+        public bool addStudentToCourse( string studentName, int courseID )
         {
             // Get the students info from a given username.
-            var _student = _dbContext.Users.FirstOrDefault(x => x.UserName == studentName);
+            var _student = _dbContext.Users.FirstOrDefault( x => x.UserName == studentName );
 
             // Create a CourseStudent object with that info.
             CourseStudent _addCourseStudent = new CourseStudent
@@ -531,7 +572,7 @@ namespace Mooshack_2.Services
             };
 
             // Add it to the table.
-            _dbContext.CourseStudent.Add(_addCourseStudent);
+            _dbContext.CourseStudent.Add( _addCourseStudent );
             _dbContext.SaveChanges();
 
             return true;
@@ -544,15 +585,15 @@ namespace Mooshack_2.Services
         /// <param name="teacherID"></param>
         /// <param name="courseID"></param>
         /// <returns></returns>
-        public bool removeTeacherFromCourse(string teacherID, int courseID)
+        public bool removeTeacherFromCourse( string teacherID, int courseID )
         {
             // Get the row in the CourseTeachers table that is the link.
-            CourseTeacher _deletedCourseTeacher = (from course in _dbContext.CourseTeacher
-                                                   where course.CourseID == courseID
-                                                   where course.TeacherID == teacherID
-                                                   select course).FirstOrDefault();
+            CourseTeacher _deletedCourseTeacher = (from _course in _dbContext.CourseTeacher
+                                                   where _course.CourseID == courseID
+                                                   where _course.TeacherID == teacherID
+                                                   select _course).FirstOrDefault();
             // Delete that row.
-            _dbContext.CourseTeacher.Remove(_deletedCourseTeacher);
+            _dbContext.CourseTeacher.Remove( _deletedCourseTeacher );
             _dbContext.SaveChanges();
 
             return true;
@@ -565,10 +606,10 @@ namespace Mooshack_2.Services
         /// <param name="teacherName"></param>
         /// <param name="courseID"></param>
         /// <returns></returns>
-        public bool addTeacherToCourse(string teacherName, int courseID)
+        public bool addTeacherToCourse( string teacherName, int courseID )
         {
             // Get the teachers info from a given username.
-            var _teacher = _dbContext.Users.FirstOrDefault(x => x.UserName == teacherName);
+            var _teacher = _dbContext.Users.FirstOrDefault( x => x.UserName == teacherName );
 
             // Create a CourseTeacher object with that info.
             CourseTeacher _addCourseTeacher = new CourseTeacher
@@ -578,7 +619,7 @@ namespace Mooshack_2.Services
             };
 
             // Add it to the table.
-            _dbContext.CourseTeacher.Add(_addCourseTeacher);
+            _dbContext.CourseTeacher.Add( _addCourseTeacher );
             _dbContext.SaveChanges();
 
             return true;
@@ -599,30 +640,29 @@ namespace Mooshack_2.Services
             List<UserViewModel> _userViewModelList = new List<UserViewModel>();
 
             // Make a UserViewModel for all the users and add it to the return list.
-            foreach (var user in _allUsers)
+            foreach( var _user in _allUsers )
             {
-                _userViewModelList.Add(new UserViewModel { Id = user.Id, UserName = user.UserName, Email = user.Email });
+                _userViewModelList.Add( new UserViewModel {Id = _user.Id, UserName = _user.UserName, Email = _user.Email} );
             }
 
             // Sort the list by username.
-            _userViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+            _userViewModelList.Sort( ( x, y ) => x.UserName.CompareTo( y.UserName ) );
 
             return _userViewModelList;
         }
 
-        public bool isCourseActive(int courseID)
+        public bool isCourseActive( int courseID )
         {
-            Course _result = getCourseByID(courseID);
+            Course _result = getCourseByID( courseID );
             return _result.Active;
         }
 
-        public void changeCourseActive(int courseID, bool active)
+        public void changeCourseActive( int courseID, bool active )
         {
-            Course _course = getCourseByID(courseID);
+            Course _course = getCourseByID( courseID );
 
             _course.Active = active;
             _dbContext.SaveChanges();
         }
-
     }
 }

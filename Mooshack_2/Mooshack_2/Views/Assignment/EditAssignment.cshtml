@@ -1,8 +1,14 @@
-﻿@model Mooshack_2.Models.ViewModels.AssignmentViewModel
+﻿@model Mooshack_2.Models.ViewModels.EditAssignmentViewModel
 
 @{
     ViewBag.Title = "Edit Assignment";
 }
+
+<head>
+    <title></title>
+    <link href="~/CSS/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="~/CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+</head>
 
 <h2>Edit @Model.Title</h2>
 
@@ -35,17 +41,23 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.StartDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDateTime, "", new { @class = "text-danger" })
+            <div class="col-md-2">
+                <div class="input-append date form_datetime" data-date="2015-02-21T15:25:00Z">
+                    @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @readonly = "readonly", required = "required" } })
+                    <span class="add-on"><i class="icon-remove glyphicon glyphicon-remove"></i></span>
+                    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
+                </div>
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.EndDateTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDateTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDateTime, "", new { @class = "text-danger" })
+            <div class="col-md-2">
+                <div class="input-append date form_datetime" data-date="2015-02-21T15:25:00Z">
+                    @Html.EditorFor(model => model.EndDateTime, new { htmlAttributes = new { @readonly = "readonly", required = "required" } })
+                    <span class="add-on"><i class="icon-remove glyphicon glyphicon-remove"></i></span>
+                    <span class="add-on"><i class="icon-calendar glyphicon glyphicon-calendar"></i></span>
+                </div>
             </div>
         </div>
 
@@ -60,3 +72,17 @@
 <div>
     @Html.ActionLink("Cancel", "teacherAssignmentPage", new { courseID = Model.CourseID })
 </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Scripts/datetimepicker/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "dd/MM/yyyy HH:ii P",
+        autoclose: true,
+        todayBtn: true,
+        startDate: "2016-04-14 10:00",
+        minuteStep: 10
+    });
+</script> 

@@ -3,7 +3,6 @@ using Mooshack_2.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using WebApplication1.Models.Entities;
 
 namespace Mooshack_2.Services
@@ -20,7 +19,7 @@ namespace Mooshack_2.Services
         /// if argument is null then new ApplicationDbContext() is used
         /// </summary>
         /// <param name="context"></param>
-        public AssignmentService(IMyDataContext context)
+        public AssignmentService( IMyDataContext context )
         {
             _dbContext = context ?? new ApplicationDbContext();
         }
@@ -32,36 +31,35 @@ namespace Mooshack_2.Services
              _dbContext = new ApplicationDbContext();
          }*/
 
-
         /// <summary>
         /// Gets all assignments by course ID
         /// </summary>
         /// <param name="cid"></param>
         /// <returns>List of assignment Viewmodels</returns>
-        public List<AssignmentViewModel> getAssignmentByCourseID(int? cid)
+        public List<AssignmentViewModel> getAssignmentByCourseID( int? cid )
         {
-            if (cid == null)
+            if( cid == null )
             {
                 return null;
             }
             else
             {
                 //gets all assignments that have the matching course id
-                IEnumerable<Assignment> _assignments = (from item in _dbContext.Assignments
-                                                        where item.CourseID == cid
-                                                        select item).ToList();
+                IEnumerable<Assignment> _assignments = ( from _item in _dbContext.Assignments
+                    where _item.CourseID == cid
+                    select _item ).ToList();
 
                 //gets the name of the course
-                String _coursename = (from item in _dbContext.Courses
-                                      where item.ID == cid
-                                      select item.Name).FirstOrDefault();
+                String _coursename = ( from _item in _dbContext.Courses
+                    where _item.ID == cid
+                    select _item.Name ).FirstOrDefault();
 
                 var _assignmentViewModels = new List<AssignmentViewModel>();
 
                 //loops through the list of assignments and adds a viewmodel for each assignment to the list
-                foreach (var _assignment in _assignments)
+                foreach( var _assignment in _assignments )
                 {
-                    _assignmentViewModels.Add(new AssignmentViewModel
+                    _assignmentViewModels.Add( new AssignmentViewModel
                     {
                         id = _assignment.id,
                         CourseID = _assignment.CourseID,
@@ -70,15 +68,13 @@ namespace Mooshack_2.Services
                         EndDateTime = _assignment.EndDateTime,
                         StartDateTime = _assignment.StartDateTime,
                         Title = _assignment.Title,
-                        Milestones = getAllMilestonesByAssignmentID(_assignment.id)
-                    });
+                        Milestones = getAllMilestonesByAssignmentID( _assignment.id )
+                    } );
                 }
 
                 return _assignmentViewModels;
             }
-
         }
-
 
         /// <summary>
         /// Gets all assignments
@@ -87,6 +83,7 @@ namespace Mooshack_2.Services
         public List<Assignment> getAllAssignments()
         {
             var _allAssignments = _dbContext.Assignments.ToList();
+
             return _allAssignments;
         }
 
@@ -98,9 +95,10 @@ namespace Mooshack_2.Services
         {
             var _assignmentViewModels = new List<AssignmentViewModel>();
             var _assignments = getAllAssignments();
-            foreach (var _assignment in _assignments)
+
+            foreach( var _assignment in _assignments )
             {
-                _assignmentViewModels.Add(new AssignmentViewModel
+                _assignmentViewModels.Add( new AssignmentViewModel
                 {
                     id = _assignment.id,
                     CourseID = _assignment.CourseID,
@@ -108,27 +106,26 @@ namespace Mooshack_2.Services
                     EndDateTime = _assignment.EndDateTime,
                     StartDateTime = _assignment.StartDateTime,
                     Title = _assignment.Title,
-                    Milestones = getAllMilestonesByAssignmentID(_assignment.id)
-                    
-                });
+                    Milestones = getAllMilestonesByAssignmentID( _assignment.id )
+                } );
             }
+
             return _assignmentViewModels;
         }
-
 
         /// <summary>
         /// Gets an assignment that matches the given id
         /// </summary>
         /// <param name="aID"></param>
         /// <returns>Assignment Viewmodel</returns>
-        public AssignmentViewModel GetAssignmentViewModelByID(int aID)
+        public AssignmentViewModel getAssignmentViewModelById( int aID )
         {
-            var _assignment = (from item in _dbContext.Assignments
-                               where item.id == aID
-                               select item).FirstOrDefault();
+            var _assignment = (from _item in _dbContext.Assignments
+                               where _item.id == aID
+                               select _item).FirstOrDefault();
 
-            var _courseService = new CourseService(null);
-            var _course = _courseService.getCourseViewModelByID(_assignment.CourseID);
+            var _courseService = new CourseService( null );
+            var _course = _courseService.getCourseViewModelByID( _assignment.CourseID );
 
             AssignmentViewModel _assignmentViewModel = new AssignmentViewModel
             {
@@ -138,8 +135,9 @@ namespace Mooshack_2.Services
                 EndDateTime = _assignment.EndDateTime,
                 StartDateTime = _assignment.StartDateTime,
                 Title = _assignment.Title,
-                Milestones = getAllMilestonesByAssignmentID(_assignment.id)
+                Milestones = getAllMilestonesByAssignmentID( _assignment.id )
             };
+
             return _assignmentViewModel;
         }
 
@@ -148,23 +146,23 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="aID"></param>
         /// <returns>A list of Milestone ViewModels</returns>
-        public List<MilestoneViewModel> getAllMilestonesByAssignmentID(int aID)
+        public List<MilestoneViewModel> getAllMilestonesByAssignmentID( int aID )
         {
-            var _allMilestones = (from item in _dbContext.Milestones
-                                  where item.AssignmentID == aID
-                                  select item).ToList();
+            var _allMilestones = (from _item in _dbContext.Milestones
+                                  where _item.AssignmentID == aID
+                                  select _item).ToList();
 
             List<MilestoneViewModel> _allMilestonesViewModel = new List<MilestoneViewModel>();
 
-            foreach (var item in _allMilestones)
+            foreach( var _item in _allMilestones )
             {
-                _allMilestonesViewModel.Add(new MilestoneViewModel
+                _allMilestonesViewModel.Add( new MilestoneViewModel
                 {
-                    id = item.id,
-                    Title = item.Title,
-                    Description = item.Description,
-                    Weight = item.Weight
-                });
+                    id = _item.id,
+                    Title = _item.Title,
+                    Description = _item.Description,
+                    Weight = _item.Weight
+                } );
             }
 
             return _allMilestonesViewModel;
@@ -174,9 +172,10 @@ namespace Mooshack_2.Services
         /// Gets a Viewmodel containing information given by the user and creates an assignment with that information
         /// </summary>
         /// <param name="model"></param>
-        public void CreateAssignment(CreateAssignmentViewModel model)
+        public void createAssignment( CreateAssignmentViewModel model )
         {
-            Assignment _newAssignment = new Assignment{
+            Assignment _newAssignment = new Assignment
+            {
                 CourseID = model.CourseID,
                 Title = model.Title,
                 Description = model.Description,
@@ -184,7 +183,7 @@ namespace Mooshack_2.Services
                 EndDateTime = model.EndDateTime
             };
 
-            _dbContext.Assignments.Add(_newAssignment);
+            _dbContext.Assignments.Add( _newAssignment );
             _dbContext.SaveChanges();
         }
 
@@ -194,24 +193,24 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="assignmentID"></param>
         /// <returns></returns>
-        public bool DeleteAssignment(int assignmentID)
+        public bool deleteAssignment( int assignmentID )
         {
             List<Milestone> _milestones = new List<Milestone>();
 
-            _milestones = (from milestone in _dbContext.Milestones
-                           where milestone.AssignmentID == assignmentID
-                           select milestone).ToList();
+            _milestones = (from _milestone in _dbContext.Milestones
+                           where _milestone.AssignmentID == assignmentID
+                           select _milestone).ToList();
 
-            foreach (var milestone in _milestones)
+            foreach ( var _milestone in _milestones )
             {
-                _dbContext.Milestones.Remove(milestone);
+                _dbContext.Milestones.Remove( _milestone );
                 _dbContext.SaveChanges();
             }
 
-            Assignment _deletedAssignment = (from assignment in _dbContext.Assignments
-                                             where assignment.id == assignmentID
-                                             select assignment).FirstOrDefault();
-            _dbContext.Assignments.Remove(_deletedAssignment);
+            Assignment _deletedAssignment = (from _assignment in _dbContext.Assignments
+                                             where _assignment.id == assignmentID
+                                             select _assignment).FirstOrDefault();
+            _dbContext.Assignments.Remove( _deletedAssignment );
             _dbContext.SaveChanges();
 
             return true;
@@ -222,7 +221,7 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool CreateAssignmentMilestone(CreateMilestoneViewModel model)
+        public bool createAssignmentMilestone( CreateMilestoneViewModel model )
         {
             Milestone _newMilestone = new Milestone
             {
@@ -234,7 +233,7 @@ namespace Mooshack_2.Services
                 Output = model.Output
             };
 
-            _dbContext.Milestones.Add(_newMilestone);
+            _dbContext.Milestones.Add( _newMilestone );
             _dbContext.SaveChanges();
 
             return true;
@@ -245,48 +244,45 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="cid"></param>
         /// <returns></returns>
-        public List<AssignmentViewModel> getActiveAssignmentByCourseID(int? cid)
+        public List<AssignmentViewModel> getActiveAssignmentByCourseID( int? cid )
         {
-            if (cid == null)
+            if( cid == null )
             {
                 return null;
             }
             else
             {
-                IEnumerable<Assignment> _assignments = (from item in _dbContext.Assignments
-                                                        where item.CourseID == cid
-                                                        select item).ToList();
+                IEnumerable<Assignment> _assignments = (from _item in _dbContext.Assignments
+                                                        where _item.CourseID == cid
+                                                        select _item).ToList();
 
-                String _courseName = (from item in _dbContext.Courses
-                                      where item.ID == cid
-                                      select item.Name).FirstOrDefault();
+                String _courseName = (from _item in _dbContext.Courses
+                                      where _item.ID == cid
+                                      select _item.Name).FirstOrDefault();
 
                 var _assignmentViewModels = new List<AssignmentViewModel>();
 
                 //adds all assignments with an enddatetime that hasn't passed, to a list of assignment viewmodels
-                foreach (var _assignment in _assignments)
+                foreach( var _assignment in _assignments )
                 {
-                        if (_assignment.EndDateTime > DateTime.Now)
+                    if( _assignment.EndDateTime > DateTime.Now )
+                    {
+                        _assignmentViewModels.Add( new AssignmentViewModel
                         {
-                            _assignmentViewModels.Add(new AssignmentViewModel
-                            {
-                                id = _assignment.id,
-                                CourseID = _assignment.CourseID,
-                                CourseName = _courseName,
-                                Description = _assignment.Description,
-                                EndDateTime = _assignment.EndDateTime,
-                                StartDateTime = _assignment.StartDateTime,
-                                Title = _assignment.Title,
-                                Milestones = getAllMilestonesByAssignmentID(_assignment.id)
-                            });
-                        }
+                            id = _assignment.id,
+                            CourseID = _assignment.CourseID,
+                            CourseName = _courseName,
+                            Description = _assignment.Description,
+                            EndDateTime = _assignment.EndDateTime,
+                            StartDateTime = _assignment.StartDateTime,
+                            Title = _assignment.Title,
+                            Milestones = getAllMilestonesByAssignmentID( _assignment.id )
+                        } );
+                    }
                 }
 
                 return _assignmentViewModels;
             }
-
-
-
         }
 
         /// <summary>
@@ -295,16 +291,16 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="assignment"></param>
         /// <returns></returns>
-        public bool EditAssignment(AssignmentViewModel assignment)
+        public bool editAssignment( EditAssignmentViewModel assignment )
         {
-            Assignment model = (from item in _dbContext.Assignments
-                             where item.id == assignment.id
-                             select item).SingleOrDefault();
-    
-            model.Title = assignment.Title;
-            model.Description = assignment.Description;
-            model.StartDateTime = assignment.StartDateTime;
-            model.EndDateTime = assignment.EndDateTime;
+            Assignment _model = (from _item in _dbContext.Assignments
+                                 where _item.id == assignment.id
+                                 select _item).SingleOrDefault();
+
+            _model.Title = assignment.Title;
+            _model.Description = assignment.Description;
+            _model.StartDateTime = assignment.StartDateTime;
+            _model.EndDateTime = assignment.EndDateTime;
             _dbContext.SaveChanges();
 
             return true;
@@ -316,17 +312,17 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="milestone"></param>
         /// <returns></returns>
-        public bool EditMilestone(EditMilestoneViewModel milestone)
+        public bool editMilestone( EditMilestoneViewModel milestone )
         {
-            Milestone model = (from item in _dbContext.Milestones
-                                where item.id == milestone.id
-                                select item).SingleOrDefault();
+            Milestone _model = (from _item in _dbContext.Milestones
+                                where _item.id == milestone.id
+                                select _item).SingleOrDefault();
 
-            model.Title = milestone.Title;
-            model.Description = milestone.Description;
-            model.Weight = milestone.Weight;
-            model.Input = milestone.Input;
-            model.Output = milestone.Output;
+            _model.Title = milestone.Title;
+            _model.Description = milestone.Description;
+            _model.Weight = milestone.Weight;
+            _model.Input = milestone.Input;
+            _model.Output = milestone.Output;
 
             _dbContext.SaveChanges();
 
@@ -338,11 +334,11 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="mID"></param>
         /// <returns>EditMilestoneViewmodel</returns>
-        public EditMilestoneViewModel getEditMilestoneViewModelByID(int mID)
+        public EditMilestoneViewModel getEditMilestoneViewModelByID( int mID )
         {
-           var _milestone = (from item in _dbContext.Milestones
-                          where item.id == mID
-                          select item).FirstOrDefault();
+            var _milestone = (from _item in _dbContext.Milestones
+                              where _item.id == mID
+                              select _item).FirstOrDefault();
 
             var _milestoneViewModel = new EditMilestoneViewModel
             {
@@ -356,7 +352,6 @@ namespace Mooshack_2.Services
             };
 
             return _milestoneViewModel;
-
         }
 
         /// <summary>
@@ -364,11 +359,11 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="mID"></param>
         /// <returns>MilestoneViewModel</returns>
-        public MilestoneViewModel getMilestoneViewModelByID(int mID)
+        public MilestoneViewModel getMilestoneViewModelByID( int mID )
         {
-            var _milestone = (from item in _dbContext.Milestones
-                              where item.id == mID
-                              select item).FirstOrDefault();
+            var _milestone = (from _item in _dbContext.Milestones
+                              where _item.id == mID
+                              select _item).FirstOrDefault();
 
             var _milestoneViewModel = new MilestoneViewModel
             {
@@ -380,16 +375,17 @@ namespace Mooshack_2.Services
 
             return _milestoneViewModel;
         }
+
         /// <summary>
         /// gets a milestone by a specific id
         /// </summary>
         /// <param name="mID"></param>
         /// <returns></returns>
-        public Milestone getMilestoneByID(int mID)
+        public Milestone getMilestoneByID( int mID )
         {
-            var _milestone = (from item in _dbContext.Milestones
-                              where item.id == mID
-                              select item).FirstOrDefault();
+            var _milestone = (from _item in _dbContext.Milestones
+                              where _item.id == mID
+                              select _item).FirstOrDefault();
             return _milestone;
         }
 
@@ -398,23 +394,24 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool addSubmission(StudentSubmissionViewModel model)
+        public bool addSubmission( StudentSubmissionViewModel model )
         {
-            Submission newSubmission = new Submission {
+            Submission _newSubmission = new Submission
+            {
                 id = model.id,
                 MilestoneID = model.MilestoneID,
                 StudentID = model.StudentID,
                 DateTimeSubmitted = model.DateTimeSubmitted,
                 ItemSubmittedPath = model.FilePath,
                 Accepted = model.Accepted
-
             };
 
-            _dbContext.Submissions.Add(newSubmission);
+            _dbContext.Submissions.Add( _newSubmission );
             _dbContext.SaveChanges();
 
             return true;
         }
+
         /// <summary>
         /// Gets all submissions that the given student has submitted for a specific milestone,
         /// adds it to a viewmodel and returns it
@@ -422,36 +419,33 @@ namespace Mooshack_2.Services
         /// <param name="studentID"></param>
         /// <param name="milestoneID"></param>
         /// <returns>List of StudentSubmissionsViewModel</returns>
-        public ViewSubmissions getAllSubmissionsByStudentID(string studentID, int milestoneID)
+        public ViewSubmissions getAllSubmissionsByStudentID( string studentID, int milestoneID )
         {
             ViewSubmissions _submissonsViewModelsByStudentID = new ViewSubmissions();
             List<Submission> _allSubmissonsByStudentID = new List<Submission>();
-            List<StudentSubmissionViewModel> _allStudentSubmissionViewModel = new List<StudentSubmissionViewModel> ();
-            if (studentID != null)
+            List<StudentSubmissionViewModel> _allStudentSubmissionViewModel = new List<StudentSubmissionViewModel>();
+            if( studentID != null )
             {
-                _allSubmissonsByStudentID = (from item in _dbContext.Submissions
-                                             where item.StudentID == studentID
-                                             where item.MilestoneID == milestoneID
-                                             select item).ToList();
+                _allSubmissonsByStudentID = (from _item in _dbContext.Submissions
+                                             where _item.StudentID == studentID
+                                             where _item.MilestoneID == milestoneID
+                                             select _item).ToList();
             }
 
-            foreach (var submission in _allSubmissonsByStudentID)
+            foreach( var _submission in _allSubmissonsByStudentID )
             {
-                _allStudentSubmissionViewModel.Add(new StudentSubmissionViewModel
+                _allStudentSubmissionViewModel.Add( new StudentSubmissionViewModel
                 {
-                    id = submission.id,
-                    MilestoneID = submission.MilestoneID,
-                    StudentID = submission.StudentID,
-                    FilePath = submission.ItemSubmittedPath,
-                    Accepted = submission.Accepted,
-                    DateTimeSubmitted = submission.DateTimeSubmitted
-
-                });
+                    id = _submission.id,
+                    MilestoneID = _submission.MilestoneID,
+                    StudentID = _submission.StudentID,
+                    FilePath = _submission.ItemSubmittedPath,
+                    Accepted = _submission.Accepted,
+                    DateTimeSubmitted = _submission.DateTimeSubmitted
+                } );
             }
 
             _submissonsViewModelsByStudentID.Submissions = _allStudentSubmissionViewModel;
-
-
 
             return _submissonsViewModelsByStudentID;
         }
@@ -461,37 +455,32 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="milestoneID"></param>
         /// <returns></returns>
-        public ViewSubmissions getAllSubmissionsByMilestoneID(int milestoneID)
+        public ViewSubmissions getAllSubmissionsByMilestoneID( int milestoneID )
         {
             ViewSubmissions _submissonsViewModelsByMilestoneID = new ViewSubmissions();
             List<Submission> _allSubmissonsByMilestoneID = new List<Submission>();
             List<StudentSubmissionViewModel> _allStudentSubmissionViewModel = new List<StudentSubmissionViewModel>();
 
-            _allSubmissonsByMilestoneID = (from item in _dbContext.Submissions
-                                             where item.MilestoneID == milestoneID
-                                             select item).ToList();
-            
+            _allSubmissonsByMilestoneID = (from _item in _dbContext.Submissions
+                                           where _item.MilestoneID == milestoneID
+                                           select _item).ToList();
 
-            foreach (var submission in _allSubmissonsByMilestoneID)
+            foreach ( var _submission in _allSubmissonsByMilestoneID )
             {
-                _allStudentSubmissionViewModel.Add(new StudentSubmissionViewModel
+                _allStudentSubmissionViewModel.Add( new StudentSubmissionViewModel
                 {
-                    id = submission.id,
-                    MilestoneID = submission.MilestoneID,
-                    StudentID = submission.StudentID,
-                    FilePath = submission.ItemSubmittedPath,
-                    Accepted = submission.Accepted,
-                    DateTimeSubmitted = submission.DateTimeSubmitted
-
-                });
+                    id = _submission.id,
+                    MilestoneID = _submission.MilestoneID,
+                    StudentID = _submission.StudentID,
+                    FilePath = _submission.ItemSubmittedPath,
+                    Accepted = _submission.Accepted,
+                    DateTimeSubmitted = _submission.DateTimeSubmitted
+                } );
             }
 
             _submissonsViewModelsByMilestoneID.Submissions = _allStudentSubmissionViewModel;
 
-
-
             return _submissonsViewModelsByMilestoneID;
-
         }
 
         /// <summary>
@@ -499,12 +488,12 @@ namespace Mooshack_2.Services
         /// </summary>
         /// <param name="milestoneID"></param>
         /// <returns></returns>
-        public bool DeleteMilestone(int milestoneID)
+        public bool deleteMilestone( int milestoneID )
         {
-            Milestone _deletedMilestone = (from milestone in _dbContext.Milestones
-                                           where milestone.id == milestoneID
-                                           select milestone).FirstOrDefault();
-            _dbContext.Milestones.Remove(_deletedMilestone);
+            Milestone _deletedMilestone = (from _milestone in _dbContext.Milestones
+                                           where _milestone.id == milestoneID
+                                           select _milestone).FirstOrDefault();
+            _dbContext.Milestones.Remove( _deletedMilestone );
             _dbContext.SaveChanges();
 
             return true;
@@ -514,18 +503,16 @@ namespace Mooshack_2.Services
         /// Finds all submissions by a student and deletes them
         /// </summary>
         /// <param name="studentID"></param>
-        public void deleteSubmissionsByStudentID(string studentID)
+        public void deleteSubmissionsByStudentID( string studentID )
         {
-            List<Submission> _allSubmissions = (from submissions in _dbContext.Submissions
-                                                where submissions.StudentID == studentID
-                                                select submissions).ToList();
-            foreach (var submission in _allSubmissions)
+            List<Submission> _allSubmissions = (from _submissions in _dbContext.Submissions
+                                                where _submissions.StudentID == studentID
+                                                select _submissions).ToList();
+            foreach ( var _submission in _allSubmissions )
             {
-                _dbContext.Submissions.Remove(submission);
+                _dbContext.Submissions.Remove( _submission );
                 _dbContext.SaveChanges();
             }
         }
-
-
     }
 }

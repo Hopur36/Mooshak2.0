@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,7 +9,6 @@ using Mooshack_2.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Net.Mail;
-using System.Web.Security;
 using Mooshack_2.Services;
 using Mooshack_2.Models.ViewModels;
 
@@ -30,50 +26,37 @@ namespace Mooshack_2.Controllers
 
         public AccountController()
         {
-             _dbContext = new ApplicationDbContext();
-             _userRoles = new List<SelectListItem>();
-            _assignmentService = new AssignmentService(null);
-            _courseService = new CourseService(null);
-
-            _userRoles.Add(new SelectListItem { Text = "Administrator", Value = "Administrator" });
-            _userRoles.Add(new SelectListItem { Text = "Teacher", Value = "Teacher" });
-            _userRoles.Add(new SelectListItem { Text = "Student", Value = "Student", Selected = true });
+            _dbContext = new ApplicationDbContext();
+            _userRoles = new List<SelectListItem>();
+            _assignmentService = new AssignmentService( null );
+            _courseService = new CourseService( null );
+            _userRoles.Add( new SelectListItem {Text = "Administrator", Value = "Administrator"} );
+            _userRoles.Add( new SelectListItem {Text = "Teacher", Value = "Teacher"} );
+            _userRoles.Add( new SelectListItem {Text = "Student", Value = "Student", Selected = true} );
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController( ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public ApplicationSignInManager signInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
         }
 
-        public ApplicationUserManager UserManager
+        public ApplicationUserManager userManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login( string returnUrl )
         {
             init();
             ViewBag.ReturnUrl = returnUrl;
@@ -85,45 +68,49 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login( LoginViewModel model, string returnUrl )
         {
-            if (!ModelState.IsValid)
+            if( !ModelState.IsValid )
             {
-                return View(model);
+                return View( model );
             }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            MailAddress _email = new MailAddress(model.Email);
-            string _userName = _email.User;
+            var _email = new MailAddress( model.Email );
+            var _userName = _email.User;
+            var _result =
+                await
+                    signInManager.PasswordSignInAsync( _userName, model.Password, model.RememberMe, false );
 
-            var result = await SignInManager.PasswordSignInAsync(_userName, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            switch ( _result )
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return redirectToLocal( returnUrl );
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View( "Lockout" );
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction( "SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe} );
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    ModelState.AddModelError( "", "Invalid login attempt." );
+
+                    return View( model );
             }
         }
 
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
-        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
+        public async Task<ActionResult> VerifyCode( string provider, string returnUrl, bool rememberMe )
         {
             // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
+            if( !await signInManager.HasBeenVerifiedAsync() )
             {
-                return View("Error");
+                return View( "Error" );
             }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+
+            return View( new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe} );
         }
 
         //
@@ -131,28 +118,32 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
+        public async Task<ActionResult> VerifyCode( VerifyCodeViewModel model )
         {
-            if (!ModelState.IsValid)
+            if( !ModelState.IsValid )
             {
-                return View(model);
+                return View( model );
             }
 
             // The following code protects for brute force attacks against the two factor codes. 
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
-            switch (result)
+            var _result =
+                await
+                    signInManager.TwoFactorSignInAsync( model.Provider, model.Code, model.RememberMe,
+                        model.RememberBrowser );
+
+            switch( _result )
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
+                    return redirectToLocal( model.ReturnUrl );
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View( "Lockout" );
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
-                    return View(model);
+                    ModelState.AddModelError( "", "Invalid code." );
+                    return View( model );
             }
         }
 
@@ -169,42 +160,46 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register( RegisterViewModel model )
         {
-            if (ModelState.IsValid)
+            if( ModelState.IsValid )
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var _user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                var _result = await userManager.CreateAsync( _user, model.Password );
+
+                if( _result.Succeeded )
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await signInManager.SignInAsync( _user, false, false );
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction( "index", "Home" );
                 }
-                AddErrors(result);
+
+                addErrors( _result );
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View( model );
         }
 
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail( string userId, string code )
         {
-            if (userId == null || code == null)
+            if( userId == null || code == null )
             {
-                return View("Error");
+                return View( "Error" );
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+
+            var _result = await userManager.ConfirmEmailAsync( userId, code );
+
+            return View( _result.Succeeded ? "ConfirmEmail" : "Error" );
         }
 
         //
@@ -220,15 +215,16 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<ActionResult> ForgotPassword( ForgotPasswordViewModel model )
         {
-            if (ModelState.IsValid)
+            if( ModelState.IsValid )
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var _user = await userManager.FindByNameAsync( model.Email );
+
+                if( _user == null || !await userManager.IsEmailConfirmedAsync( _user.Id ) )
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    return View( "ForgotPasswordConfirmation" );
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -240,7 +236,7 @@ namespace Mooshack_2.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View( model );
         }
 
         //
@@ -254,9 +250,9 @@ namespace Mooshack_2.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword( string code )
         {
-            return code == null ? View("Error") : View();
+            return code == null ? View( "Error" ) : View();
         }
 
         //
@@ -264,65 +260,76 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<ActionResult> ResetPassword( ResetPasswordViewModel model )
         {
-            if (!ModelState.IsValid)
+            if( !ModelState.IsValid )
             {
-                return View(model);
+                return View( model );
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
+
+            var _user = await userManager.FindByNameAsync( model.Email );
+
+            if( _user == null )
             {
                 // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                return RedirectToAction( "ResetPasswordConfirmation", "Account" );
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
+
+            var _result = await userManager.ResetPasswordAsync( _user.Id, model.Code, model.Password );
+
+            if( _result.Succeeded )
             {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                return RedirectToAction( "ResetPasswordConfirmation", "Account" );
             }
-            AddErrors(result);
+
+            addErrors( _result );
+
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
-        public ActionResult adminResetPassword(string userID,string username)
+        [Authorize( Roles = "Administrator" )]
+        public ActionResult adminResetPassword( string userID, string username )
         {
-            AdminResetPasswordViewModel _model = new AdminResetPasswordViewModel();
+            var _model = new AdminResetPasswordViewModel();
             _model.UserID = userID;
             _model.UserName = username;
 
-            return View(_model);
+            return View( _model );
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> adminResetPassword(AdminResetPasswordViewModel model)
+        public async Task<ActionResult> adminResetPassword( AdminResetPasswordViewModel model )
         {
-            var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            if (!ModelState.IsValid)
+            var _userManager =
+                new UserManager<ApplicationUser>( new UserStore<ApplicationUser>( new ApplicationDbContext() ) );
+
+            if( !ModelState.IsValid )
             {
-                return View(model);
+                return View( model );
             }
-            var user = await _userManager.FindByIdAsync(model.UserID);
-            if (user == null)
+
+            var _user = await _userManager.FindByIdAsync( model.UserID );
+
+            if( _user == null )
             {
-                return RedirectToAction("showAllUsers", "Account");
+                return RedirectToAction( "showAllUsers", "Account" );
             }
-            var result = await _userManager.RemovePasswordAsync(user.Id);
-            if (result.Succeeded)
+
+            var _result = await _userManager.RemovePasswordAsync( _user.Id );
+
+            if( _result.Succeeded )
             {
-                result = await _userManager.AddPasswordAsync(user.Id, model.Password);
-                if(result.Succeeded)
+                _result = await _userManager.AddPasswordAsync( _user.Id, model.Password );
+
+                if( _result.Succeeded )
                 {
-                    return RedirectToAction("showAllUsers", "Account");
+                    return RedirectToAction( "showAllUsers", "Account" );
                 }
-                
             }
 
-            return View(model);
-
+            return View( model );
         }
 
         //
@@ -338,25 +345,30 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult ExternalLogin(string provider, string returnUrl)
+        public ActionResult ExternalLogin( string provider, string returnUrl )
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult( provider,
+                Url.Action( "ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl} ) );
         }
 
         //
         // GET: /Account/SendCode
         [AllowAnonymous]
-        public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
+        public async Task<ActionResult> SendCode( string returnUrl, bool rememberMe )
         {
-            var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
+            var _userId = await signInManager.GetVerifiedUserIdAsync();
+
+            if( _userId == null )
             {
-                return View("Error");
+                return View( "Error" );
             }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+
+            var _userFactors = await userManager.GetValidTwoFactorProvidersAsync( _userId );
+            var _factorOptions =
+                _userFactors.Select( purpose => new SelectListItem {Text = purpose, Value = purpose} ).ToList();
+
+            return View( new SendCodeViewModel {Providers = _factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe} );
         }
 
         //
@@ -364,48 +376,54 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SendCode(SendCodeViewModel model)
+        public async Task<ActionResult> SendCode( SendCodeViewModel model )
         {
-            if (!ModelState.IsValid)
+            if( !ModelState.IsValid )
             {
                 return View();
             }
 
             // Generate the token and send it
-            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
+            if( !await signInManager.SendTwoFactorCodeAsync( model.SelectedProvider ) )
             {
-                return View("Error");
+                return View( "Error" );
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+
+            return RedirectToAction( "VerifyCode",
+                new {Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe} );
         }
 
         //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        public async Task<ActionResult> ExternalLoginCallback( string returnUrl )
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+            var _loginInfo = await authenticationManager.GetExternalLoginInfoAsync();
+
+            if( _loginInfo == null )
             {
-                return RedirectToAction("Login");
+                return RedirectToAction( "Login" );
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            switch (result)
+            var _result = await signInManager.ExternalSignInAsync( _loginInfo, false );
+
+            switch( _result )
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return redirectToLocal( returnUrl );
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View( "Lockout" );
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                    return RedirectToAction( "SendCode", new {ReturnUrl = returnUrl, RememberMe = false} );
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    ViewBag.LoginProvider = _loginInfo.Login.LoginProvider;
+
+                    return View( "ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel {Email = _loginInfo.Email} );
             }
         }
 
@@ -414,36 +432,43 @@ namespace Mooshack_2.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation( ExternalLoginConfirmationViewModel model,
+            string returnUrl )
         {
-            if (User.Identity.IsAuthenticated)
+            if( User.Identity.IsAuthenticated )
             {
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction( "index", "Manage" );
             }
 
-            if (ModelState.IsValid)
+            if( ModelState.IsValid )
             {
                 // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                var _info = await authenticationManager.GetExternalLoginInfoAsync();
+
+                if( _info == null )
                 {
-                    return View("ExternalLoginFailure");
+                    return View( "ExternalLoginFailure" );
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
+
+                var _user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                var _result = await userManager.CreateAsync( _user );
+
+                if( _result.Succeeded )
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
+                    _result = await userManager.AddLoginAsync( _user.Id, _info.Login );
+
+                    if( _result.Succeeded )
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        await signInManager.SignInAsync( _user, false, false );
+
+                        return redirectToLocal( returnUrl );
                     }
                 }
-                AddErrors(result);
+                addErrors( _result );
             }
             ViewBag.ReturnUrl = returnUrl;
-            return View(model);
+
+            return View( model );
         }
 
         //
@@ -452,8 +477,9 @@ namespace Mooshack_2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            authenticationManager.SignOut( DefaultAuthenticationTypes.ApplicationCookie );
+
+            return RedirectToAction( "index", "Home" );
         }
 
         //
@@ -464,52 +490,58 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
-            if (disposing)
+            if( disposing )
             {
-                if (_userManager != null)
+                if( _userManager != null )
                 {
                     _userManager.Dispose();
                     _userManager = null;
                 }
 
-                if (_signInManager != null)
+                if( _signInManager != null )
                 {
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
             }
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
-        [Authorize(Roles ="Administrator")]
+        [Authorize( Roles = "Administrator" )]
         public ActionResult showAllUsers()
         {
-          
-          var _allUsers = _dbContext.Users.OrderBy(x => x.UserName).ToList(); 
-          List<UserViewModel> _allUsersViewModels = new List<UserViewModel>();
-          var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var _allUsers = _dbContext.Users.OrderBy( x => x.UserName ).ToList();
+            var _allUsersViewModels = new List<UserViewModel>();
+            var _userManager =
+                new UserManager<ApplicationUser>( new UserStore<ApplicationUser>( new ApplicationDbContext() ) );
 
-            foreach (var user in _allUsers)
-          {
-               string _userRole = getUserRole(_userManager,user.Id);
-              _allUsersViewModels.Add(new UserViewModel {Id = user.Id, UserName = user.UserName,Email = user.Email,Role = _userRole});
-          }
+            foreach( var _user in _allUsers )
+            {
+                var _userRole = getUserRole( _userManager, _user.Id );
+                _allUsersViewModels.Add( new UserViewModel
+                {
+                    Id = _user.Id,
+                    UserName = _user.UserName,
+                    Email = _user.Email,
+                    Role = _userRole
+                } );
+            }
 
-          ViewBag._currentUser = User.Identity.GetUserId();
-          return View(_allUsersViewModels);
+            ViewBag._currentUser = User.Identity.GetUserId();
+
+            return View( _allUsersViewModels );
         }
 
-        public string getUserRole(UserManager<ApplicationUser> usermanager,string userID)
+        public string getUserRole( UserManager<ApplicationUser> usermanager, string userID )
         {
-            
-            if (usermanager.IsInRole(userID, "Student"))
+            if( usermanager.IsInRole( userID, "Student" ) )
             {
                 return "Student";
             }
-            else if (usermanager.IsInRole(userID, "Teacher"))
+            else if( usermanager.IsInRole( userID, "Teacher" ) )
             {
                 return "Teacher";
             }
@@ -517,166 +549,166 @@ namespace Mooshack_2.Controllers
             return "Administrator";
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize( Roles = "Administrator" )]
         public ActionResult createUser()
         {
-            
             ViewBag.UserRoles = _userRoles;
 
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [Authorize( Roles = "Administrator" )]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> createUser(CreateUserViewModel model,string UserRoles)
+        public async Task<ActionResult> createUser( CreateUserViewModel model, string userRoles )
         {
-            
-            if (ModelState.IsValid)
+            if( ModelState.IsValid )
             {
-                MailAddress _email = new MailAddress(model.Email);
-                string _userName = _email.User.ToLower();
+                var _email = new MailAddress( model.Email );
+                var _userName = _email.User.ToLower();
+                var _user = new ApplicationUser {UserName = _userName, Email = model.Email.ToLower()};
+                var _result = await userManager.CreateAsync( _user, model.Password );
 
-                var user = new ApplicationUser { UserName = _userName, Email = model.Email.ToLower() };
-                var result = await UserManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
+                if( _result.Succeeded )
                 {
-                    UserManager.AddToRole(user.Id, UserRoles);
-                    return RedirectToAction("Index", "Home");
+                    userManager.AddToRole( _user.Id, userRoles );
+                    return RedirectToAction( "index", "Home" );
                 }
-                AddErrors(result);
 
-                
+                addErrors( _result );
             }
 
             ViewBag.UserRoles = _userRoles;
-            return View(model);
+
+            return View( model );
         }
 
-        [Authorize(Roles ="Administrator")]
-        public async Task<ActionResult> removeUser(string userID,string Role)
+        [Authorize( Roles = "Administrator" )]
+        public async Task<ActionResult> removeUser( string userID, string role )
         {
-           var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-           var _user = _userManager.FindByIdAsync(userID).Result;
-           _assignmentService.deleteSubmissionsByStudentID(userID);
-           
-            if(Role == "Teacher")
+            var _userManager =
+                new UserManager<ApplicationUser>( new UserStore<ApplicationUser>( new ApplicationDbContext() ) );
+            var _user = _userManager.FindByIdAsync( userID ).Result;
+            _assignmentService.deleteSubmissionsByStudentID( userID );
+
+            if( role == "Teacher" )
             {
-                var _allCoursesWithTeacher = (from teacher in _dbContext.CourseTeacher
-                                           where teacher.TeacherID == userID
-                                           select teacher).ToList();
-                foreach (var teacher in _allCoursesWithTeacher)
+                var _allCoursesWithTeacher = (from _teacher in _dbContext.CourseTeacher
+                                              where _teacher.TeacherID == userID
+                                              select _teacher).ToList();
+
+                foreach ( var _teacher in _allCoursesWithTeacher )
                 {
-                    _courseService.removeTeacherFromCourse(teacher.TeacherID, teacher.CourseID);
+                    _courseService.removeTeacherFromCourse( _teacher.TeacherID, _teacher.CourseID );
                 }
             }
-            else if(Role == "Student")
+            else if( role == "Student" )
             {
-                var _allCoursesWithStudent = (from student in _dbContext.CourseStudent
-                                              where student.StudentID == userID
-                                              select student).ToList();
-                foreach (var student in _allCoursesWithStudent)
+                var _allCoursesWithStudent = (from _student in _dbContext.CourseStudent
+                                              where _student.StudentID == userID
+                                              select _student).ToList();
+
+                foreach ( var _student in _allCoursesWithStudent )
                 {
-                    _courseService.removeStudentFromCourse(student.StudentID, student.CourseID);
+                    _courseService.removeStudentFromCourse( _student.StudentID, _student.CourseID );
                 }
-
             }
-           
-           if(_user != null)
-           {
-             await _userManager.DeleteAsync(_user);
-           }
 
-            return RedirectToAction("showAllUsers");
+            if( _user != null )
+            {
+                await _userManager.DeleteAsync( _user );
+            }
+
+            return RedirectToAction( "showAllUsers" );
         }
 
         public void init()
         {
-            var _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-            var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var _roleManager = new RoleManager<IdentityRole>( new RoleStore<IdentityRole>( new ApplicationDbContext() ) );
+            var _userManager =
+                new UserManager<ApplicationUser>( new UserStore<ApplicationUser>( new ApplicationDbContext() ) );
 
-            if (!(_roleManager.RoleExists("Administrator")))
+            if( !_roleManager.RoleExists( "Administrator" ) )
             {
-                _roleManager.Create(new IdentityRole("Administrator"));
+                _roleManager.Create( new IdentityRole( "Administrator" ) );
             }
 
-            if (!(_roleManager.RoleExists("Teacher")))
+            if( !_roleManager.RoleExists( "Teacher" ) )
             {
-                _roleManager.Create(new IdentityRole("Teacher"));
+                _roleManager.Create( new IdentityRole( "Teacher" ) );
             }
 
-            if (!(_roleManager.RoleExists("Student")))
+            if( !_roleManager.RoleExists( "Student" ) )
             {
-                _roleManager.Create(new IdentityRole("Student"));
+                _roleManager.Create( new IdentityRole( "Student" ) );
             }
 
-            var _userID = _userManager.FindByEmail("admin@admin.is");
+            var _userID = _userManager.FindByEmail( "admin@admin.is" );
 
-            if (_userID != null)
+            if( _userID != null )
             {
-                if(!(_userManager.IsInRole(_userID.Id, "Administrator")))
+                if( !_userManager.IsInRole( _userID.Id, "Administrator" ) )
                 {
-                    _userManager.AddToRole(_userID.Id, "Administrator");
+                    _userManager.AddToRole( _userID.Id, "Administrator" );
                 }
             }
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
+        private IAuthenticationManager authenticationManager
         {
-            get
+            get { return HttpContext.GetOwinContext().Authentication; }
+        }
+
+        private void addErrors( IdentityResult result )
+        {
+            foreach( var _error in result.Errors )
             {
-                return HttpContext.GetOwinContext().Authentication;
+                ModelState.AddModelError( "", _error );
             }
         }
 
-        private void AddErrors(IdentityResult result)
+        private ActionResult redirectToLocal( string returnUrl )
         {
-            foreach (var error in result.Errors)
+            if( Url.IsLocalUrl( returnUrl ) )
             {
-                ModelState.AddModelError("", error);
+                return Redirect( returnUrl );
             }
-        }
 
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction( "index", "Home" );
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
+            public ChallengeResult( string provider, string redirectUri )
+                : this( provider, redirectUri, null )
             {
             }
 
-            public ChallengeResult(string provider, string redirectUri, string userId)
+            public ChallengeResult( string provider, string redirectUri, string userId )
             {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
+                loginProvider = provider;
+                this.redirectUri = redirectUri;
+                this.userID = userId;
             }
 
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
+            public string loginProvider { get; set; }
+            public string redirectUri { get; set; }
+            public string userID { get; set; }
 
-            public override void ExecuteResult(ControllerContext context)
+            public override void ExecuteResult( ControllerContext context )
             {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
+                var _properties = new AuthenticationProperties {RedirectUri = redirectUri};
+
+                if( userID != null )
                 {
-                    properties.Dictionary[XsrfKey] = UserId;
+                    _properties.Dictionary[XsrfKey] = userID;
                 }
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+                context.HttpContext.GetOwinContext().Authentication.Challenge( _properties, loginProvider );
             }
         }
         #endregion
