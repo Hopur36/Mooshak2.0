@@ -21,6 +21,9 @@
                 Role
             </th>
             <th>
+                Reset Password
+            </th>
+            <th>
                 Delete user
             </th>
         </tr>
@@ -35,6 +38,13 @@
               </td>
               <td>
                   @Html.DisplayFor(ModelItem => user.Role)
+              </td>
+              <td>
+                  @if (ViewBag._currentUser != user.Id)
+                  {
+                      @Html.ActionLink("Reset Password", "adminResetPassword", new { userID = user.Id, username= user.UserName })
+                  }
+
               </td>
 
               <td>

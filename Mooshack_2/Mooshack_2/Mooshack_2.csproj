@@ -215,12 +215,14 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\AdminCourseViewModel.cs" />
+    <Compile Include="Models\ViewModels\AdminResetPasswordViewModel.cs" />
     <Compile Include="Models\ViewModels\AssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\CourseUsersViewModel.cs" />
     <Compile Include="Models\ViewModels\CourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\EditMilestoneViewModel.cs" />
+    <Compile Include="Models\ViewModels\keyAttribute.cs" />
     <Compile Include="Models\ViewModels\MilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\StudentAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\StudentSubmissionViewModel.cs" />
@@ -332,6 +334,7 @@
     <Content Include="Views\assignment\viewAllStudentSubmissions.cshtml" />
     <Content Include="Views\Shared\AllCourses.cshtml" />
     <Content Include="Views\Course\AdminUserPage.cshtml" />
+    <Content Include="Views\Account\adminResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
