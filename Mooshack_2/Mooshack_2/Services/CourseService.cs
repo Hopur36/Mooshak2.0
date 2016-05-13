@@ -92,6 +92,10 @@ namespace Mooshack_2.Services
                               select course).FirstOrDefault();
 
             //Make a CourseViewModel and fill in the attributes.
+            if(_course == null)
+            {
+                return null;
+            }
             CourseViewModel _courseViewModel = new CourseViewModel { id = _course.ID, Name = _course.Name };
             return _courseViewModel;
         }
@@ -488,7 +492,7 @@ namespace Mooshack_2.Services
 
         /// <summary>
         /// This function removes the student link to a course from the database.
-        /// Cascading is done in the controler.
+        /// Cascading is done in the controller.
         /// </summary>
         /// <param name="studentID"></param>
         /// <param name="courseID"></param>

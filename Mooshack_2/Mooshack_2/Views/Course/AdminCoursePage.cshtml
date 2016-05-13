@@ -35,7 +35,7 @@
             @Html.ActionLink(item.Name, "AdminCourseUsersPage", new { Name = item.Name, id = item.id, Active = item.Active })
         </td>
         <td align="left">
-            <a href="@Url.Action("deleteCourse", new { courseID = item.id })" onclick=" return confirm('Warning deleting this course will delete all user, assignments and milestones linkt to this course.(Another option is to inactivate the course)')">
+            <a href="@Url.Action("deleteCourse", new { courseID = item.id })" onclick=" return confirm('Warning \nDeleting this course will delete all users, assignments and milestones linked to this course. \n(Another option is to inactivate the course)')">
                 <span class="glyphicon glyphicon-trash iconDelete centerButton"></span>
             </a>       
         </td>

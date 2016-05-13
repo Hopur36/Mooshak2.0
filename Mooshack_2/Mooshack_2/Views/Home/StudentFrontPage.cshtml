@@ -7,7 +7,7 @@
     Active Assignments
 </h3>
 
-<body
+<body>
 
     <div class="panel panel-default">
         <div class="panel-body">
@@ -34,7 +34,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink(_assignment.Title, "StudentAssignmentMilestonePage", new { controller = "assignment", assignmentID = _assignment.id })
+                                @Html.ActionLink(_assignment.Title, "studentAssignmentMilestonePage", new { controller = "assignment", assignmentID = _assignment.id })
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => _assignment.CourseName)
