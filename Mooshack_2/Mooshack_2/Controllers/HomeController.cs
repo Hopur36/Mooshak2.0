@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Mooshack_2.Services;
 using Microsoft.AspNet.Identity;
 using Mooshack_2.Models.ViewModels;
+using System.Linq;
 
 namespace Mooshack_2.Controllers
 {
@@ -49,9 +50,9 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
-        [Authorize( Roles = "Teacher" )]
-        public ActionResult teacherFrontPage()
-        {
+        [Authorize(Roles = "Teacher")]
+        public ActionResult TeacherFrontPage(string sortOrder)
+        { 
             var _courses = _courseService.getAllActiveCoursesByTeacherID( User.Identity.GetUserId() );
             List<AssignmentViewModel> _allAssignments = new List<AssignmentViewModel>();
             foreach( CourseViewModel _course in _courses )
@@ -73,7 +74,27 @@ namespace Mooshack_2.Controllers
                 Assignments = _allAssignments
             };
 
-            return View( _teacherFrontPageViewModel );
+            switch (sortOrder)
+            {
+                case "title":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.Title).ToList();
+                    break;
+                case "course":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.CourseName).ToList();
+                    break;
+                case "start":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.StartDateTime).ToList();
+                    break;
+                case "end":
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.EndDateTime).ToList();
+                    break;
+                default:
+                    _teacherFrontPageViewModel.Assignments = _teacherFrontPageViewModel.Assignments.OrderBy(x => x.EndDateTime).ToList();
+                    break;
+            }
+
+            return View(_teacherFrontPageViewModel);
+
         }
 
         [Authorize( Roles = "Administrator" )]
