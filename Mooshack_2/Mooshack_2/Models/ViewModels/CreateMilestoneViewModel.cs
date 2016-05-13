@@ -10,6 +10,7 @@ namespace Mooshack_2.Models.ViewModels
     {
         public int id { get; set; }
         public int AssignmentID { get; set; }
+        public string AssignmentName { get; set; }
 
         [Required]
         [Display(Name = "Title")]
