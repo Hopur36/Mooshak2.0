@@ -78,11 +78,20 @@ namespace Mooshack_2.Services
         }
 
 
+        /// <summary>
+        /// This function returns a CourseViewModel for a given
+        /// course ID.
+        /// </summary>
+        /// <param name="cID"></param>
+        /// <returns>CourseViewModel</returns>
         public CourseViewModel getCourseViewModelByID(int? cID)
         {
+            //Get the coures with a given ID from database.
             Course _course = (from course in _dbContext.Courses
                               where course.ID == cID
                               select course).FirstOrDefault();
+
+            //Make a CourseViewModel and fill in the attributes.
             CourseViewModel _courseViewModel = new CourseViewModel { id = _course.ID, Name = _course.Name };
             return _courseViewModel;
         }
@@ -114,6 +123,12 @@ namespace Mooshack_2.Services
             }
             return _allCoursesWithTeacherViewModel;
         }
+
+        /// <summary>
+        /// This function gets all active courses for a given teacher id.
+        /// </summary>
+        /// <param name="teacherID"></param>
+        /// <returns>List of CourseViewModel</returns>
         public List<CourseViewModel> getAllActiveCoursesByTeacherID(string teacherID)
         {
             //list of all entries in CourseTeachers that match the teacherID
@@ -266,122 +281,183 @@ namespace Mooshack_2.Services
             return _course;
         }
 
+        /// <summary>
+        /// This function creates a new course in the database.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public bool createCourse(AdminCourseViewModel model)
         {
+            // Creates the Course object and fill in the attributes.
             Course _newCourse = new Course
             {
                 Name = model.Name,
                 Active = true
             };
 
+            // Add that new Course to the database.
             _dbContext.Courses.Add(_newCourse);
             _dbContext.SaveChanges();
             return true;
         }
 
+        /// <summary>
+        /// This function deletes a coures and all it's teacherlinks, 
+        /// studentlinks, assignments and milestones.
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
         public bool deleteCourse(int courseID)
         {
+            // Get all the assignments linked to this coures.
             List<Assignment> _allAssignments = (from assignment in _dbContext.Assignments
                                                 where assignment.CourseID == courseID
                                                 select assignment).ToList();
+            // Delete all the assignments linked to this coures.
             foreach (var item in _allAssignments)
             {
                 _assignmentService.DeleteAssignment(item.id);
             }
 
+            // Get all the teachers linked to this coures.
             List<CourseTeacher> _allCourseTeachers = (from ct in _dbContext.CourseTeacher
                                                 where ct.CourseID == courseID
                                                 select ct).ToList();
+            // Delete the links for all teachers linked to this coures.
             foreach (var item in _allCourseTeachers)
             {
                 removeTeacherFromCourse(item.TeacherID, courseID);
             }
 
+            // Get all the students linked to this coures.
             List<CourseStudent> _allCourseStudent = (from cs in _dbContext.CourseStudent
                                                       where cs.CourseID == courseID
                                                       select cs).ToList();
+            // Delete the links for all students linked to this coures.
             foreach (var item in _allCourseStudent)
             {
                 removeStudentFromCourse(item.StudentID, courseID);
             }
 
+            // Get the course from the Courses table in the database.
             Course _deletedCourse = (from course in _dbContext.Courses
                                              where course.ID == courseID
                                              select course).FirstOrDefault();
+            // Delete that coures from the database.
             _dbContext.Courses.Remove(_deletedCourse);
             _dbContext.SaveChanges();
 
             return true;
         }
 
+        /// <summary>
+        /// This function gets all the students in a given coures.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List of UserViewModels</returns>
         public List<UserViewModel> getCourseStudents(int id)
         {
+            // Get all the students from the database in a given course.
             List<CourseStudent> _studentsList = (from course in _dbContext.CourseStudent
                                             where course.CourseID == id
                                             select course).ToList();
-
+            // The list that will be returned.
             List<UserViewModel> _studentViewModelList = new List<UserViewModel>();
 
+            // For each student in the coures,
             foreach (var student in _studentsList)
             {
+                /// get there info,
                 ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault(x => x.Id == student.StudentID);
+                // build a UserViewModel with that info and add it to the return list. 
                 _studentViewModelList.Add(new UserViewModel { Id = _userInfo.Id, UserName = _userInfo.UserName, Email = _userInfo.Email });
             }
 
+            // Sort the list by username.
             _studentViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
 
             return _studentViewModelList;
         }
 
+        /// <summary>
+        /// This function gets all the teachers in a given coures.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public List<UserViewModel> getCourseTeachers(int id)
         {
+            // Get all the teachers from the database in a given course.
             List<CourseTeacher> _teachersList = (from course in _dbContext.CourseTeacher
                                                  where course.CourseID == id
                                                  select course).ToList();
-
+            // The list that will be returned.
             List<UserViewModel> _teacherViewModelList = new List<UserViewModel>();
 
+            // For each teacher in the coures,
             foreach (var teacher in _teachersList)
             {
+                /// get there info,
                 ApplicationUser _userInfo = _dbContext.Users.SingleOrDefault(x => x.Id == teacher.TeacherID);
+                // build a UserViewModel with that info and add it to the return list.
                 _teacherViewModelList.Add(new UserViewModel { Id = _userInfo.Id, UserName = _userInfo.UserName, Email = _userInfo.Email });
             }
 
+            // Sort the list by username.
             _teacherViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
 
             return _teacherViewModelList;
         }
 
+        /// <summary>
+        /// This function gets all the teachers in the database.
+        /// </summary>
+        /// <returns>List of UserViewModels</returns>
         public List<UserViewModel> getAllTeachers()
         {
+            // Get all info for a Teacher tag.
             var _roleHash = _dbContext.Roles.SingleOrDefault(x => x.Name == "Teacher");
+            // Get all users with the "Theacher" hash string.
             var _allTeachers = _dbContext.Users.Where(x => x.Roles.Select(role => role.RoleId).Contains(_roleHash.Id)).ToList();
 
+            // The return list.
             List<UserViewModel> _teacherViewModelList = new List<UserViewModel>();
 
+            // Make a UserViewModel for all the teachers and add it to the return list.
             foreach (var teacher in _allTeachers)
             {
                 _teacherViewModelList.Add(new UserViewModel { Id = teacher.Id, UserName = teacher.UserName, Email = teacher.Email });
             }
 
+            // Sort the list by username.
             _teacherViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
 
             return _teacherViewModelList;
         }
 
+
+        /// <summary>
+        /// This function gets all the students in the database.
+        /// </summary>
+        /// <returns></returns>
         public List<UserViewModel> getAllStudents()
         {
+            // Get all info for a Student tag.
             var _roleHash = _dbContext.Roles.SingleOrDefault(x => x.Name == "Student");
+            // Get all users with the "Student" hash string.
             var _allStudents = _dbContext.Users.Where(x => x.Roles.Select(role => role.RoleId).Contains(_roleHash.Id)).ToList();
 
+            // The return list.
             List<UserViewModel> _studentViewModelList = new List<UserViewModel>();
 
+            // Make a UserViewModel for all the students and add it to the return list.
             foreach (var student in _allStudents)
             {
                 _studentViewModelList.Add(new UserViewModel { Id = student.Id, UserName = student.UserName, Email = student.Email });
             }
 
+            // Sort the list by username.
             _studentViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+
             return _studentViewModelList;
         }
 
@@ -410,77 +486,123 @@ namespace Mooshack_2.Services
             return courseViewModel;
         }
 
-
-
-
-        
+        /// <summary>
+        /// This function removes the student link to a course from the database.
+        /// Cascading is done in the controler.
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
         public bool removeStudentFromCourse(string studentID, int courseID)
         {
+            // Get the row in the CourseStudent table that is the link.
             CourseStudent _deletedCourseStudent = (from course in _dbContext.CourseStudent
                                      where course.CourseID == courseID
                                      where course.StudentID == studentID
                                      select course).FirstOrDefault();
+            // Delete that row.
             _dbContext.CourseStudent.Remove(_deletedCourseStudent);
             _dbContext.SaveChanges();
 
             return true;
         }
 
+        /// <summary>
+        /// This function adds a student to a course by inserting 
+        /// it in to the CourseStudent table in the database.
+        /// </summary>
+        /// <param name="studentName"></param>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
         public bool addStudentToCourse(string studentName, int courseID)
         {
+            // Get the students info from a given username.
             var _student = _dbContext.Users.FirstOrDefault(x => x.UserName == studentName);
 
+            // Create a CourseStudent object with that info.
             CourseStudent _addCourseStudent = new CourseStudent
             {
                 CourseID = courseID,
                 StudentID = _student.Id
             };
+
+            // Add it to the table.
             _dbContext.CourseStudent.Add(_addCourseStudent);
             _dbContext.SaveChanges();
 
             return true;
         }
 
+        /// <summary>
+        /// This function removes the teachers link to a course from the database.
+        /// Cascading is done in the controler.
+        /// </summary>
+        /// <param name="teacherID"></param>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
         public bool removeTeacherFromCourse(string teacherID, int courseID)
         {
+            // Get the row in the CourseTeachers table that is the link.
             CourseTeacher _deletedCourseTeacher = (from course in _dbContext.CourseTeacher
                                                    where course.CourseID == courseID
                                                    where course.TeacherID == teacherID
                                                    select course).FirstOrDefault();
+            // Delete that row.
             _dbContext.CourseTeacher.Remove(_deletedCourseTeacher);
             _dbContext.SaveChanges();
 
             return true;
         }
 
+        /// <summary>
+        /// This function adds a teacher to a course by inserting 
+        /// it in to the CourseTeacher table in the database.
+        /// </summary>
+        /// <param name="teacherName"></param>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
         public bool addTeacherToCourse(string teacherName, int courseID)
         {
+            // Get the teachers info from a given username.
             var _teacher = _dbContext.Users.FirstOrDefault(x => x.UserName == teacherName);
 
+            // Create a CourseTeacher object with that info.
             CourseTeacher _addCourseTeacher = new CourseTeacher
             {
                 CourseID = courseID,
                 TeacherID = _teacher.Id
             };
-            //var _test = _dbContext.CourseTeacher.Contains(_addCourseTeacher);
+
+            // Add it to the table.
             _dbContext.CourseTeacher.Add(_addCourseTeacher);
             _dbContext.SaveChanges();
 
             return true;
         }
 
+        /// <summary>
+        /// This function returns a list of UserViewModels with all the 
+        /// users in the database.
+        /// </summary>
+        /// <returns>List of UserViewModels with all the 
+        /// users in the database</returns>
         public List<UserViewModel> getAllUsers()
         {
+            // Get all the users for the database.
             var _allUsers = _dbContext.Users.ToList();
 
+            // The return list.
             List<UserViewModel> _userViewModelList = new List<UserViewModel>();
 
+            // Make a UserViewModel for all the users and add it to the return list.
             foreach (var user in _allUsers)
             {
                 _userViewModelList.Add(new UserViewModel { Id = user.Id, UserName = user.UserName, Email = user.Email });
             }
 
+            // Sort the list by username.
             _userViewModelList.Sort((x, y) => x.UserName.CompareTo(y.UserName));
+
             return _userViewModelList;
         }
 
@@ -488,7 +610,6 @@ namespace Mooshack_2.Services
         {
             Course _result = getCourseByID(courseID);
             return _result.Active;
-
         }
 
         public void changeCourseActive(int courseID, bool active)
