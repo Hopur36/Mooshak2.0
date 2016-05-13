@@ -224,8 +224,6 @@ namespace Mooshack_2.Controllers
         public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model,HttpPostedFileBase file)
         {
             
-
-
             string _currentpath = HttpContext.Server.MapPath("~");
             if (file.ContentLength >= 0)
             {
@@ -237,8 +235,10 @@ namespace Mooshack_2.Controllers
 
                 model.FilePath = _path;
                 model.DateTimeSubmitted = DateTime.Now;
+                var milestone = _assignmentService.getMilestoneByID(model.MilestoneID);
 
-                SubmissionEvaluator _evaluator = new SubmissionEvaluator(model, file);
+
+                SubmissionEvaluator _evaluator = new SubmissionEvaluator(file,milestone.Input,milestone.Output);
                 model.Accepted = _evaluator.Evaluate();
                 _assignmentService.addSubmission(model);
             }
