@@ -69,7 +69,7 @@ namespace Mooshack_2.Controllers
             AssignmentViewModel _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
             var _course = _courseService.getCourseViewModelByAssignmentID(assignmentID);
             _assignment.CourseName = _course.Name;
-            
+
             return View(_assignment);
         }
 
@@ -136,7 +136,7 @@ namespace Mooshack_2.Controllers
 
             return RedirectToAction("teacherAssignmentPage", "Assignment", new { courseID = courseReturnID });
         }
-        
+
         [Authorize(Roles = "Teacher")]
         public ActionResult deleteMilestone(int milestoneID, int assignmentReturnID)
         {
@@ -145,7 +145,7 @@ namespace Mooshack_2.Controllers
 
             return RedirectToAction("teacherAssignmentMilestonesPage", "Assignment", new { assignmentID = assignmentReturnID });
         }
-        
+
         [Authorize(Roles = "Teacher")]
         public ActionResult CreateMilestone(int assignmentID)
         {
@@ -166,7 +166,7 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Student")]
         /*Student gets information about a single course*/
-        public ActionResult studentAssignmentPage(int? courseID )
+        public ActionResult studentAssignmentPage(int? courseID)
         {
             if (courseID != null)
             {
@@ -206,7 +206,7 @@ namespace Mooshack_2.Controllers
 
         [Authorize(Roles = "Student")]
         [HttpPost]
-        public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model,HttpPostedFileBase file)
+        public ActionResult studentSubmitMilestone(StudentSubmissionViewModel model, HttpPostedFileBase file)
         {
             string _currentpath = HttpContext.Server.MapPath("~");
             if (file.ContentLength >= 0)
@@ -219,7 +219,7 @@ namespace Mooshack_2.Controllers
                 model.FilePath = _path;
                 model.DateTimeSubmitted = DateTime.Now;
                 var _milestone = _assignmentService.getMilestoneByID(model.MilestoneID);
-                SubmissionEvaluator _evaluator = new SubmissionEvaluator(file,_milestone.Input,_milestone.Output);
+                SubmissionEvaluator _evaluator = new SubmissionEvaluator(file, _milestone.Input, _milestone.Output);
                 model.Accepted = _evaluator.Evaluate();
                 _assignmentService.addSubmission(model);
             }
@@ -227,7 +227,7 @@ namespace Mooshack_2.Controllers
             {
                 return View("Error");
             }
-            
+
             return RedirectToAction("viewStudentSubmissions", "Assignment", new { milestoneID = model.MilestoneID });
         }
 
@@ -235,7 +235,7 @@ namespace Mooshack_2.Controllers
         public ActionResult viewStudentSubmissions(int? milestoneID)
         {
             var _studentID = User.Identity.GetUserId();
-            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID,milestoneID.Value);
+            ViewSubmissions _viewSubmissions = _assignmentService.getAllSubmissionsByStudentID(_studentID, milestoneID.Value);
 
             return View(_viewSubmissions);
         }
