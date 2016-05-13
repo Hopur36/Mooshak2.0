@@ -221,6 +221,7 @@
     <Compile Include="Models\ViewModels\CourseViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\CreateMilestoneViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditAssignmentViewModel.cs" />
     <Compile Include="Models\ViewModels\EditMilestoneViewModel.cs" />
     <Compile Include="Models\ViewModels\keyAttribute.cs" />
     <Compile Include="Models\ViewModels\MilestoneViewModel.cs" />
