@@ -147,7 +147,7 @@ namespace Mooshak2._0Test.Services
 
             //Act:
             var assignmentsBefore = _service.getAllAssignments();
-            var result = _service.DeleteAssignment(_assignmentID);
+            var result = _service.deleteAssignment(_assignmentID);
             var assignmentsAfter = _service.getAllAssignments();
 
             //Assert:
