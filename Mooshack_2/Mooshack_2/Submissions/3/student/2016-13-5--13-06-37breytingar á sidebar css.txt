@@ -1,0 +1,18 @@
+
+.colorOfBackground
+{
+    background:#939393;
+}
+
+
+/*Moving and recoloring the Create User link more to the riht*/
+.sidebar-collapse .nav .moveLink
+{
+    margin-left: 30px;
+    background: #939393;
+
+}
+
+
+    
+
