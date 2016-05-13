@@ -151,7 +151,8 @@ namespace Mooshack_2.Controllers
         {
             CreateMilestoneViewModel _newMileStone = new CreateMilestoneViewModel();
             _newMileStone.AssignmentID = assignmentID;
-
+            var _assignment = _assignmentService.GetAssignmentViewModelByID(assignmentID);
+            _newMileStone.AssignmentName = _assignment.Title;
             return View(_newMileStone);
         }
 
