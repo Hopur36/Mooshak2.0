@@ -4,7 +4,6 @@
     ViewBag.Title = "CreateAssignment";
 }
 
-<h2>Create Assignment</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -46,14 +45,10 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class ="btn btn-primary" style="color:white" />
+                @Html.ActionLink("Cancel", "TeacherAssignmentPage", new { courseID = Model.CourseID }, new { @class = "btn btn-primary", @style = "color:white" })
             </div>
         </div>
     </div>
 }
-
-
-<div>
-    @Html.ActionLink("Cancel", "TeacherAssignmentPage", new { courseID = Model.CourseID})
-</div>
 
