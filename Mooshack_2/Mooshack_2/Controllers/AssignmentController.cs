@@ -19,6 +19,9 @@ namespace Mooshack_2.Controllers
         AssignmentService _assignmentService;
         CourseService _courseService;
 
+        /// <summary>
+        /// Constructor for Assignmentcontroller, initialises two assignmentservice and courseservice
+        /// </summary>
         public AssignmentController()
         {
             _assignmentService = new AssignmentService( null );
@@ -31,6 +34,11 @@ namespace Mooshack_2.Controllers
             return View();
         }
 
+        /// <summary>
+        /// returns a view with all assignments within a course specified by courseID
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns></returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult teacherAssignmentPage( int? courseID )
         {
@@ -52,6 +60,11 @@ namespace Mooshack_2.Controllers
             }
         }
 
+        /// <summary>
+        /// returns a view with all milestones within an assignment specified by courseID
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <returns></returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult teacherAssignmentMilestonesPage( int? assignmentID )
         {
@@ -68,6 +81,11 @@ namespace Mooshack_2.Controllers
             }
         }
 
+        /// <summary>
+        /// returns a view with all milestones within an assignment specified by courseID
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <returns></returns>
         [Authorize( Roles = "Student" )]
         public ActionResult studentAssignmentMilestonePage( int? assignmentID )
         {
@@ -85,6 +103,12 @@ namespace Mooshack_2.Controllers
             
         }
 
+        /// <summary>
+        /// Validates the dates specified in startdate and enddate and returns either true or false
+        /// </summary>
+        /// <param name="startdate"></param>
+        /// <param name="enddate"></param>
+        /// <returns>bool</returns>
         public bool dateTimeValidator(DateTime startdate, DateTime enddate)
         {
             DateTime _startDateTime = new DateTime();
@@ -118,6 +142,12 @@ namespace Mooshack_2.Controllers
 
         }
 
+        /// <summary>
+        /// returns a view with a create assignmentformmodel 
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns>view</returns>
+        [Authorize( Roles = "Teacher" )]
         public ActionResult CreateAssignment(int? courseID)
         {
             if(courseID != null)
@@ -149,6 +179,11 @@ namespace Mooshack_2.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// returns a view with a edit assignmentform model
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <returns></returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult EditAssignment( int? assignmentID )
         {
@@ -192,6 +227,11 @@ namespace Mooshack_2.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// returns a view with a edit milestoneform model
+        /// </summary>
+        /// <param name="milestoneID"></param>
+        /// <returns>view</returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult EditMilestone( int? milestoneID )
         {
@@ -219,6 +259,12 @@ namespace Mooshack_2.Controllers
 
         }
 
+        /// <summary>
+        /// Deletes the assignment with the same id as assignmentID
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <param name="courseReturnID"></param>
+        /// <returns>view</returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult deleteAssignment( int assignmentID, int courseReturnID )
         {
@@ -227,6 +273,12 @@ namespace Mooshack_2.Controllers
             return RedirectToAction( "teacherAssignmentPage", "Assignment", new {courseID = courseReturnID} );
         }
 
+        /// <summary>
+        /// Deletes the milestone with the same id as milestoneID
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <param name="courseReturnID"></param>
+        /// <returns>view</returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult deleteMilestone( int milestoneID, int assignmentReturnID )
         {
@@ -237,6 +289,11 @@ namespace Mooshack_2.Controllers
                 new {assignmentID = assignmentReturnID} );
         }
 
+        /// <summary>
+        /// returns a view with a create milestoneform model
+        /// </summary>
+        /// <param name="assignmentID"></param>
+        /// <returns></returns>
         [Authorize( Roles = "Teacher" )]
         public ActionResult CreateMilestone( int? assignmentID )
         {
@@ -283,6 +340,7 @@ namespace Mooshack_2.Controllers
 
             return View("Error404");
         }
+
 
         [Authorize( Roles = "Student" )]
         public ActionResult studentSubmitMilestone( int? milestoneID )
