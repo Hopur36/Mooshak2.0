@@ -70,21 +70,25 @@ namespace Mooshack_2.Controllers
 
         /// <summary>
         /// This is the POST action when AdminCoursePage posts a form.
-        /// This 
+        /// Its starts of by creating the new course by calling createCourse
+        /// in _courseService and then going back to AdminCoursePage.
         /// </summary>
         /// <param name="model"></param>
-        /// <returns></returns>
+        /// <returns> Goes back to AdminCoursePage </returns>
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AdminCoursePage(AdminCourseViewModel model)
         {
             var _course = _courseService.createCourse(model);
-            AdminCourseViewModel _myCourse = new AdminCourseViewModel();
-            _myCourse.ActiveCourses = _courseService.getAllCourses();
-
             return RedirectToAction("AdminCoursePage", "Course");
         }
 
+        /// <summary>
+        /// Deletes the course with the given id by calling
+        /// DeleteCourse in _courseService.
+        /// </summary>
+        /// <param name="courseID"></param>
+        /// <returns> Goes back to AdminCoursePage </returns>
         [Authorize(Roles = "Administrator")]
         public ActionResult deleteCourse(int courseID)
         {
@@ -92,6 +96,15 @@ namespace Mooshack_2.Controllers
             return RedirectToAction("AdminCoursePage", "Course");
         }
 
+        /// <summary>
+        /// This is the GET action for AdminCourseUserPage. What it does is fill the 
+        /// viewModel that is used on the site. It gets all the users liked to a 
+        /// given course ID and then puts the rest in a seperet list.
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="id"></param>
+        /// <param name="Active"></param>
+        /// <returns>A view with a CourseUserViewModel</returns>
         [Authorize(Roles = "Administrator")]
         [HttpGet]
         public ActionResult AdminCourseUsersPage(string Name, int id, bool Active)
@@ -114,7 +127,6 @@ namespace Mooshack_2.Controllers
                 {
                     _myViewModel.TeachersRest.Add(item);
                 }
-
             }
 
             foreach (var item in _allStudents)
@@ -123,12 +135,19 @@ namespace Mooshack_2.Controllers
                 {
                     _myViewModel.StudentsRest.Add(item);
                 }
-
             }
-
             return View(_myViewModel);
         }
 
+        /// <summary>
+        /// This removes a Student from a Course by calling _courseService with 
+        /// a student and course ID.
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <param name="courseID"></param>
+        /// <param name="courseName"></param>
+        /// <param name="Active"></param>
+        /// <returns> Goes back to AdminCourseUsersPage</returns>
         [Authorize(Roles = "Administrator")]
         public ActionResult removeStudentFromCourse(string studentID, int courseID, string courseName,bool Active)
         {
@@ -136,6 +155,14 @@ namespace Mooshack_2.Controllers
             return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = courseName, id = courseID,Active = Active });
         }
 
+        /// <summary>
+        /// This uses a FormCollection to get what student name was selected in the
+        /// dropdown when the form was sent. Then adds that student name to the course by
+        /// calling addStudentToCourse in _courseService.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="form"></param>
+        /// <returns> Goes back to AdminCourseUsersPage</returns>
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddStudentToCourse(CourseUsersViewModel model, FormCollection form)
@@ -146,6 +173,14 @@ namespace Mooshack_2.Controllers
             return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = model.Name, id = model.id, Active = model.Active });
         }
 
+        /// <summary>
+        /// Removes teacher form course by calling removeTeacherFormCourse in _courseService.
+        /// </summary>
+        /// <param name="teacherID"></param>
+        /// <param name="courseID"></param>
+        /// <param name="courseName"></param>
+        /// <param name="Active"></param>
+        /// <returns> Goes back to AdminCourseUserPage</returns>
         [Authorize(Roles = "Administrator")]
         public ActionResult removeTeacherFromCourse(string teacherID, int courseID, string courseName, bool Active)
         {
@@ -153,6 +188,14 @@ namespace Mooshack_2.Controllers
             return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = courseName, id = courseID, Active = Active});
         }
 
+        /// <summary>
+        /// This uses a FormCollection to get what teacher name was selected in the
+        /// dropdown when the form was sent. Then adds that teacher name to the course by
+        /// calling addTeacherToCourse in _courseService.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult AddTeacherToCourse(CourseUsersViewModel model, FormCollection form)
@@ -162,7 +205,6 @@ namespace Mooshack_2.Controllers
             model.Active = _courseService.isCourseActive(model.id);
             return RedirectToAction("AdminCourseUsersPage", "Course", new { Name = model.Name, id = model.id, Active = model.Active });
         }
-
 
         [Authorize(Roles = "Administrator")]
         public ActionResult courseActivateOrDeactivate(string Name, int id, bool Active)
