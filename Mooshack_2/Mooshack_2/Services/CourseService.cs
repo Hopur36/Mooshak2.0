@@ -92,6 +92,10 @@ namespace Mooshack_2.Services
                               select course).FirstOrDefault();
 
             //Make a CourseViewModel and fill in the attributes.
+            if(_course == null)
+            {
+                return null;
+            }
             CourseViewModel _courseViewModel = new CourseViewModel { id = _course.ID, Name = _course.Name };
             return _courseViewModel;
         }
