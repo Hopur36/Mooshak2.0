@@ -578,7 +578,6 @@ namespace Mooshack_2.Controllers
                 {
                     _userManager.AddToRole(_userID.Id, "Administrator");
                 }
-
             }
         }
 

@@ -308,6 +308,14 @@ namespace Mooshack_2.Services
             return _milestoneViewModel;
         }
 
+        public Milestone getMilestoneByID(int mID)
+        {
+            var _milestone = (from item in _dbContext.Milestones
+                              where item.id == mID
+                              select item).FirstOrDefault();
+            return _milestone;
+        }
+
         public bool addSubmission(StudentSubmissionViewModel model)
         {
             Submission newSubmission = new Submission {
